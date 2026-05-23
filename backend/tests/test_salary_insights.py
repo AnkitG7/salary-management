@@ -370,3 +370,31 @@ def test_filter_values_rejects_invalid_field():
     )
 
     assert response.status_code == 400
+
+def test_salary_insights_are_case_insensitive():
+    import uuid
+
+    email = (
+        f"case-test-{uuid.uuid4().hex[:6]}"
+        "@example.com"
+    )
+
+    client.post(
+        "/employees",
+        json={
+            "full_name": "Case Test",
+            "email": email,
+            "job_title": "Backend Engineer",
+            "country": "India",
+            "salary": 100000,
+            "currency": "inr",
+            "employment_status": "active",
+            "date_of_joining": "2024-01-01",
+        },
+    )
+
+    response = client.get(
+        "/salary-insights?country=INDIA"
+    )
+
+    assert response.status_code == 200

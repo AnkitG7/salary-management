@@ -3,6 +3,7 @@ from datetime import date
 from pydantic import BaseModel
 from pydantic import EmailStr
 from pydantic import Field
+from pydantic import field_validator
 
 
 class EmployeeCreate(BaseModel):
@@ -36,6 +37,43 @@ class EmployeeCreate(BaseModel):
     )
 
     date_of_joining: date
+
+    @field_validator(
+    "country",
+    "job_title",
+    mode="before",
+    )
+
+    @classmethod
+    def normalize_lowercase_fields(
+        cls,
+        value: str,
+    ) -> str:
+        return value.strip().lower()
+
+    @field_validator(
+    "currency",
+    "employment_status",
+    mode="before",
+    )
+
+    @classmethod
+    def normalize_uppercase_fields(
+        cls,
+        value: str,
+    ) -> str:
+        return value.strip().upper()
+
+    @field_validator(
+    "email",
+    mode="before",
+    )
+    @classmethod
+    def normalize_email(
+        cls,
+        value: str,
+    ) -> str:
+        return value.strip().lower()
 
 class EmployeeUpdate(BaseModel):
     full_name: str | None = Field(
@@ -77,7 +115,44 @@ class EmployeeUpdate(BaseModel):
 
     date_of_joining: date | None = None
 
-    
+    @field_validator(
+    "country",
+    "job_title",
+    mode="before",
+    )
+
+    @classmethod
+    def normalize_lowercase_fields(
+        cls,
+        value: str,
+    ) -> str:
+        return value.strip().lower()
+
+    @field_validator(
+    "currency",
+    "employment_status",
+    mode="before",
+    )
+
+    @classmethod
+    def normalize_uppercase_fields(
+        cls,
+        value: str,
+    ) -> str:
+        return value.strip().upper()
+
+    @field_validator(
+    "email",
+    mode="before",
+    )
+    @classmethod
+    def normalize_email(
+        cls,
+        value: str,
+    ) -> str:
+        return value.strip().lower()
+
+
 class EmployeeResponse(BaseModel):
     id: int
     full_name: str

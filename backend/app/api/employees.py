@@ -67,7 +67,19 @@ def list_employees(
     db: Session = Depends(get_db),
 ):
     query = db.query(Employee)
+    if country:
+        country = (
+            country
+            .strip()
+            .lower()
+        )
 
+    if job_title:
+        job_title = (
+            job_title
+            .strip()
+            .lower()
+        )
     if country:
         query = query.filter(
             Employee.country == country

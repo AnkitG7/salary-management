@@ -25,6 +25,11 @@ def get_salary_insights(
     country: str = Query(...),
     db: Session = Depends(get_db),
 ):
+    country = (
+    country
+    .strip()
+    .lower()
+    )
     currencies = (
         db.query(Employee.currency)
         .filter(
@@ -88,6 +93,17 @@ def get_average_salary_by_job_title(
     job_title: str = Query(...),
     db: Session = Depends(get_db),
 ):
+    country = (
+    country
+    .strip()
+    .lower()
+    )
+
+    job_title = (
+        job_title
+        .strip()
+        .lower()
+    )
     currencies = (
         db.query(Employee.currency)
         .filter(
@@ -220,6 +236,11 @@ def get_filter_values(
     field: str = Query(...),
     db: Session = Depends(get_db),
 ):
+    field = (
+    field
+    .strip()
+    .lower()
+    )
     if field not in ALLOWED_FILTER_FIELDS:
         raise HTTPException(
             status_code=400,
