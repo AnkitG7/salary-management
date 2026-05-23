@@ -1,13 +1,14 @@
 from fastapi.testclient import TestClient
 
 from app.main import app
-
+import uuid
+from decimal import Decimal
 
 client = TestClient(app)
 
 
 def test_create_employee_returns_201():
-    import uuid
+
 
     email = f"ankit{uuid.uuid4().hex[:6]}@example.com"
     payload = {
@@ -36,13 +37,14 @@ def test_create_employee_returns_201():
     assert response_data["email"] == email
     assert response_data["job_title"] == "software engineer"
     assert response_data["country"] == "india"
-    assert response_data["salary"] == 50000
+    # assert response_data["salary"] == "50000"
+    assert Decimal(response_data["salary"]) == Decimal("50000")
     assert response_data["currency"] == "INR"
     assert response_data["employment_status"] == "ACTIVE"
 
 
 def test_create_employee_rejects_duplicate_email():
-    import uuid
+
 
     email = (
         f"duplicate-{uuid.uuid4().hex[:6]}"

@@ -3,9 +3,14 @@ from datetime import datetime
 
 from sqlalchemy import Date
 from sqlalchemy import DateTime
+from sqlalchemy import Index
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import func
+
+from sqlalchemy import Numeric
+from decimal import Decimal
+
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
@@ -14,6 +19,14 @@ from app.models import Base
 
 class Employee(Base):
     __tablename__ = "employees"
+
+    __table_args__ = (
+        Index(
+            "idx_employee_country_job_title",
+            "country",
+            "job_title",
+        ),
+    )
 
     id: Mapped[int] = mapped_column(
         primary_key=True,
@@ -28,6 +41,7 @@ class Employee(Base):
         String(255),
         unique=True,
         nullable=False,
+        index=True,
     )
 
     job_title: Mapped[str] = mapped_column(
@@ -42,19 +56,25 @@ class Employee(Base):
         index=True,
     )
 
-    salary: Mapped[int] = mapped_column(
-        Integer,
-        nullable=False,
+    # salary: Mapped[int] = mapped_column(
+    #     Integer,
+    #     nullable=False,
+    # )
+    salary: Mapped[float] = mapped_column(
+    Numeric(14, 2),
+    nullable=False,
     )
 
     currency: Mapped[str] = mapped_column(
         String(10),
         nullable=False,
+        index=True,
     )
 
     employment_status: Mapped[str] = mapped_column(
         String(50),
         nullable=False,
+        index=True,
     )
 
     date_of_joining: Mapped[date] = mapped_column(

@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app.main import app
+from decimal import Decimal
 
 
 client = TestClient(app)
@@ -44,7 +45,8 @@ def test_update_employee_salary():
     response_data = response.json()
 
     # assert response_data["salary"] == 150000
-    assert response_data["salary"] == 190000
+    # assert response_data["salary"] == "190000"
+    assert Decimal(response_data["salary"]) == Decimal("190000")
 
 
 def test_update_nonexistent_employee_returns_404():

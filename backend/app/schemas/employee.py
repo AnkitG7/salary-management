@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from pydantic import EmailStr
 from pydantic import Field
 from pydantic import field_validator
+from decimal import Decimal
 
 
 class EmployeeCreate(BaseModel):
@@ -24,7 +25,8 @@ class EmployeeCreate(BaseModel):
         max_length=100,
     )
 
-    salary: int = Field(gt=0)
+    # salary: int = Field(gt=0)
+    salary: Decimal = Field(gt=0)
 
     currency: str = Field(
         min_length=1,
@@ -96,7 +98,11 @@ class EmployeeUpdate(BaseModel):
         max_length=100,
     )
 
-    salary: int | None = Field(
+    # salary: int | None = Field(
+    #     default=None,
+    #     gt=0,
+    # )
+    salary: Decimal | None = Field(
         default=None,
         gt=0,
     )
@@ -159,7 +165,8 @@ class EmployeeResponse(BaseModel):
     email: EmailStr
     job_title: str
     country: str
-    salary: int
+    # salary: int
+    salary: Decimal
     currency: str
     employment_status: str
     date_of_joining: date
