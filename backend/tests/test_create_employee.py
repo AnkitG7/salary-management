@@ -42,9 +42,16 @@ def test_create_employee_returns_201():
 
 
 def test_create_employee_rejects_duplicate_email():
+    import uuid
+
+    email = (
+        f"duplicate-{uuid.uuid4().hex[:6]}"
+        "@example.com"
+    )
     payload = {
         "full_name": "Duplicate User",
-        "email": "duplicate@example.com",
+        # "email": "duplicate@example.com",
+        "email": email,
         "job_title": "Software Engineer",
         "country": "India",
         "salary": 50000,

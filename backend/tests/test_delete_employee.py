@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -7,9 +9,14 @@ client = TestClient(app)
 
 
 def test_delete_employee_returns_204():
+    email = (
+        f"delete-test-{uuid.uuid4().hex[:6]}"
+        "@example.com"
+    )
+
     create_payload = {
         "full_name": "Delete Test",
-        "email": "delete-test-1@example.com",
+        "email": email,
         "job_title": "Engineer",
         "country": "India",
         "salary": 100000,
@@ -23,7 +30,11 @@ def test_delete_employee_returns_204():
         json=create_payload,
     )
 
-    employee_id = create_response.json()["id"]
+    assert create_response.status_code == 201
+
+    employee_id = (
+        create_response.json()["id"]
+    )
 
     response = client.delete(
         f"/employees/{employee_id}"
@@ -33,9 +44,14 @@ def test_delete_employee_returns_204():
 
 
 def test_deleted_employee_is_no_longer_returned():
+    email = (
+        f"delete-verify-{uuid.uuid4().hex[:6]}"
+        "@example.com"
+    )
+
     create_payload = {
         "full_name": "Delete Verify",
-        "email": "deleteverify@example.com",
+        "email": email,
         "job_title": "Engineer",
         "country": "India",
         "salary": 100000,
@@ -49,7 +65,11 @@ def test_deleted_employee_is_no_longer_returned():
         json=create_payload,
     )
 
-    employee_id = create_response.json()["id"]
+    assert create_response.status_code == 201
+
+    employee_id = (
+        create_response.json()["id"]
+    )
 
     delete_response = client.delete(
         f"/employees/{employee_id}"
@@ -60,6 +80,8 @@ def test_deleted_employee_is_no_longer_returned():
     list_response = client.get(
         "/employees"
     )
+
+    assert list_response.status_code == 200
 
     employees = list_response.json()
 

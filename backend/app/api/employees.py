@@ -8,6 +8,7 @@ from app.models.employee import Employee
 from app.schemas.employee import EmployeeCreate
 from app.schemas.employee import EmployeeResponse
 from fastapi import Query
+from sqlalchemy.exc import IntegrityError
 
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
@@ -41,10 +42,22 @@ def create_employee(
 
     db.add(employee)
 
-    db.commit()
+    # db.add(employee)
+
+    try:
+        db.commit()
+
+    except IntegrityError:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "Employee email already exists"
+            ),
+        )
 
     db.refresh(employee)
-
     return employee
 
 
