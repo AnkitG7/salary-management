@@ -21,7 +21,7 @@ def test_delete_employee_returns_204():
         "country": "India",
         "salary": 100000,
         "currency": "INR",
-        "employment_status": "ACTIVE",
+        "employment_status": "FULL_TIME",
         "date_of_joining": "2024-01-01",
     }
 
@@ -56,7 +56,7 @@ def test_deleted_employee_is_no_longer_returned():
         "country": "India",
         "salary": 100000,
         "currency": "INR",
-        "employment_status": "ACTIVE",
+        "employment_status": "FULL_TIME",
         "date_of_joining": "2024-01-01",
     }
 

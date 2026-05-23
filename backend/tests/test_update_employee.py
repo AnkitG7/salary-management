@@ -19,7 +19,7 @@ def test_update_employee_salary():
         "country": "India",
         "salary": 120000,
         "currency": "INR",
-        "employment_status": "ACTIVE",
+        "employment_status": "FULL_TIME",
         "date_of_joining": "2024-01-10",
     }
 
@@ -75,7 +75,7 @@ def test_update_employee_with_duplicate_email_returns_400():
         "country": "India",
         "salary": 100000,
         "currency": "INR",
-        "employment_status": "ACTIVE",
+        "employment_status": "FULL_TIME",
         "date_of_joining": "2024-01-01",
     }
 
@@ -87,7 +87,7 @@ def test_update_employee_with_duplicate_email_returns_400():
         "country": "India",
         "salary": 100000,
         "currency": "INR",
-        "employment_status": "ACTIVE",
+        "employment_status": "FULL_TIME",
         "date_of_joining": "2024-01-01",
     }
 

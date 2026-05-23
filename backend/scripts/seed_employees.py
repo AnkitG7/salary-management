@@ -8,35 +8,44 @@ from sqlalchemy.orm import Session
 from app.core.database import SessionLocal
 from app.models.employee import Employee
 
+# Excellent reuse improvement.
+from app.core.constants import (
+    COUNTRIES_AND_CURRENCIES,
+    EMPLOYMENT_STATUSES,
+    JOB_TITLES,
+)
+
 
 TOTAL_EMPLOYEES = 10_000
 
 BATCH_SIZE = 1_000
 
 
-JOB_TITLES = [
-    "software engineer",
-    "backend engineer",
-    "frontend engineer",
-    "devops engineer",
-    "data engineer",
-    "cloud architect",
-    "product manager",
-]
+# JOB_TITLES = [
+#     "software engineer",
+#     "backend engineer",
+#     "frontend engineer",
+#     "devops engineer",
+#     "data engineer",
+#     "cloud architect",
+#     "product manager",
+# ]
 
-COUNTRIES_AND_CURRENCIES = [
-    ("india", "INR"),
-    ("united states", "USD"),
-    ("canada", "CAD"),
-    ("germany", "EUR"),
-    ("japan", "JPY"),
-]
+# COUNTRIES_AND_CURRENCIES = [
+#     ("india", "INR"),
+#     ("united states", "USD"),
+#     ("canada", "CAD"),
+#     ("germany", "EUR"),
+#     ("japan", "JPY"),
+# ]
 
-EMPLOYMENT_STATUSES = [
-    "ACTIVE",
-    "CONTRACT",
-    "PART_TIME",
-]
+
+# EMPLOYMENT_STATUSES = [
+#     "FULL_TIME",
+#     "PART_TIME",
+#     "CONTRACT",
+#     "INTERN",
+# ]
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent

@@ -19,7 +19,7 @@ def test_create_employee_returns_201():
         "country": "India",
         "salary": 50000,
         "currency": "INR",
-        "employment_status": "ACTIVE",
+        "employment_status": "FULL_TIME",
         "date_of_joining": "2024-01-15",
     }
 
@@ -40,7 +40,7 @@ def test_create_employee_returns_201():
     # assert response_data["salary"] == "50000"
     assert Decimal(response_data["salary"]) == Decimal("50000")
     assert response_data["currency"] == "INR"
-    assert response_data["employment_status"] == "ACTIVE"
+    assert response_data["employment_status"] == "FULL_TIME"
 
 
 def test_create_employee_rejects_duplicate_email():
@@ -58,7 +58,7 @@ def test_create_employee_rejects_duplicate_email():
         "country": "India",
         "salary": 50000,
         "currency": "INR",
-        "employment_status": "ACTIVE",
+        "employment_status": "FULL_TIME",
         "date_of_joining": "2024-01-15",
     }
 

@@ -6,6 +6,11 @@ from pydantic import Field
 from pydantic import field_validator
 from decimal import Decimal
 
+from app.utils.normalization import (
+    normalize_lowercase,
+    normalize_uppercase,
+)
+
 
 class EmployeeCreate(BaseModel):
     full_name: str = Field(
@@ -51,7 +56,7 @@ class EmployeeCreate(BaseModel):
         cls,
         value: str,
     ) -> str:
-        return value.strip().lower()
+        return normalize_lowercase(value)
 
     @field_validator(
     "currency",
@@ -64,7 +69,7 @@ class EmployeeCreate(BaseModel):
         cls,
         value: str,
     ) -> str:
-        return value.strip().upper()
+        return normalize_uppercase(value)
 
     @field_validator(
     "email",
@@ -75,7 +80,7 @@ class EmployeeCreate(BaseModel):
         cls,
         value: str,
     ) -> str:
-        return value.strip().lower()
+        return normalize_lowercase(value)
 
 class EmployeeUpdate(BaseModel):
     full_name: str | None = Field(
@@ -132,7 +137,7 @@ class EmployeeUpdate(BaseModel):
         cls,
         value: str,
     ) -> str:
-        return value.strip().lower()
+        return normalize_lowercase(value)
 
     @field_validator(
     "currency",
@@ -145,7 +150,8 @@ class EmployeeUpdate(BaseModel):
         cls,
         value: str,
     ) -> str:
-        return value.strip().upper()
+        # return value.strip().upper()
+        return normalize_uppercase(value)
 
     @field_validator(
     "email",
@@ -156,7 +162,7 @@ class EmployeeUpdate(BaseModel):
         cls,
         value: str,
     ) -> str:
-        return value.strip().lower()
+        return normalize_lowercase(value)
 
 
 class EmployeeResponse(BaseModel):

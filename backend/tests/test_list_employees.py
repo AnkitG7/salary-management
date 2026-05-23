@@ -57,7 +57,7 @@ def test_list_employees_supports_limit_and_offset():
             "country": "India",
             "salary": 100000,
             "currency": "INR",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
         {
@@ -68,7 +68,7 @@ def test_list_employees_supports_limit_and_offset():
             "country": "India",
             "salary": 120000,
             "currency": "INR",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
     ]

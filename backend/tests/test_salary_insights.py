@@ -31,7 +31,7 @@ def test_salary_insights_by_country():
             "country": country,
             "salary": 100000,
             "currency": "INR",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
         {
@@ -41,7 +41,7 @@ def test_salary_insights_by_country():
             "country": country,
             "salary": 300000,
             "currency": "INR",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
     ]
@@ -100,7 +100,7 @@ def test_average_salary_by_job_title():
             "country": country,
             "salary": 100000,
             "currency": "INR",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
         {
@@ -112,7 +112,7 @@ def test_average_salary_by_job_title():
             "country": country,
             "salary": 300000,
             "currency": "INR",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
     ]
@@ -180,7 +180,7 @@ def test_employee_count_by_country():
             "country": country_1,
             "salary": 100000,
             "currency": "INR",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
         {
@@ -194,7 +194,7 @@ def test_employee_count_by_country():
             "country": country_1,
             "salary": 200000,
             "currency": "INR",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
         {
@@ -208,7 +208,7 @@ def test_employee_count_by_country():
             "country": country_2,
             "salary": 300000,
             "currency": "USD",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
     ]
@@ -252,7 +252,7 @@ def test_employee_count_by_job_title():
             "country": "India",
             "salary": 100000,
             "currency": "INR",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
         {
@@ -266,7 +266,7 @@ def test_employee_count_by_job_title():
             "country": "India",
             "salary": 200000,
             "currency": "INR",
-            "employment_status": "ACTIVE",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
     ]
@@ -388,7 +388,7 @@ def test_salary_insights_are_case_insensitive():
             "country": "India",
             "salary": 100000,
             "currency": "inr",
-            "employment_status": "active",
+            "employment_status": "FULL_TIME",
             "date_of_joining": "2024-01-01",
         },
     )
