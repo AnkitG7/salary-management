@@ -288,3 +288,57 @@ def test_employee_count_by_job_title():
     response_data = response.json()
 
     assert response_data[job_title] >= 2
+
+def test_employment_status_distribution():
+    import uuid
+
+    employees = [
+        {
+            "full_name": "Employee One",
+            "email": (
+                f"status-1-"
+                f"{uuid.uuid4().hex[:6]}"
+                "@example.com"
+            ),
+            "job_title": "Engineer",
+            "country": "India",
+            "salary": 100000,
+            "currency": "INR",
+            "employment_status": "FULL_TIME",
+            "date_of_joining": "2024-01-01",
+        },
+        {
+            "full_name": "Employee Two",
+            "email": (
+                f"status-2-"
+                f"{uuid.uuid4().hex[:6]}"
+                "@example.com"
+            ),
+            "job_title": "Engineer",
+            "country": "India",
+            "salary": 200000,
+            "currency": "INR",
+            "employment_status": "CONTRACT",
+            "date_of_joining": "2024-01-01",
+        },
+    ]
+
+    for employee in employees:
+        create_response = client.post(
+            "/employees",
+            json=employee,
+        )
+
+        assert create_response.status_code == 201
+
+    response = client.get(
+        "/salary-insights/employment-status-distribution"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert response_data["FULL_TIME"] >= 1
+
+    assert response_data["CONTRACT"] >= 1
