@@ -153,3 +153,82 @@ def test_average_salary_by_job_title():
     assert response_data["currency"] == "INR"
 
     assert response_data["average_salary"] == 200000
+
+
+
+
+def test_employee_count_by_country():
+    import uuid
+
+    country_1 = (
+        f"country-a-{uuid.uuid4().hex[:4]}"
+    )
+
+    country_2 = (
+        f"country-b-{uuid.uuid4().hex[:4]}"
+    )
+
+    employees = [
+        {
+            "full_name": "Employee One",
+            "email": (
+                f"country-count-1-"
+                f"{uuid.uuid4().hex[:6]}"
+                "@example.com"
+            ),
+            "job_title": "Engineer",
+            "country": country_1,
+            "salary": 100000,
+            "currency": "INR",
+            "employment_status": "ACTIVE",
+            "date_of_joining": "2024-01-01",
+        },
+        {
+            "full_name": "Employee Two",
+            "email": (
+                f"country-count-2-"
+                f"{uuid.uuid4().hex[:6]}"
+                "@example.com"
+            ),
+            "job_title": "Engineer",
+            "country": country_1,
+            "salary": 200000,
+            "currency": "INR",
+            "employment_status": "ACTIVE",
+            "date_of_joining": "2024-01-01",
+        },
+        {
+            "full_name": "Employee Three",
+            "email": (
+                f"country-count-3-"
+                f"{uuid.uuid4().hex[:6]}"
+                "@example.com"
+            ),
+            "job_title": "Engineer",
+            "country": country_2,
+            "salary": 300000,
+            "currency": "USD",
+            "employment_status": "ACTIVE",
+            "date_of_joining": "2024-01-01",
+        },
+    ]
+
+    for employee in employees:
+        create_response = client.post(
+            "/employees",
+            json=employee,
+        )
+
+        assert create_response.status_code == 201
+
+    response = client.get(
+        "/salary-insights/employee-count-by-country"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert response_data[country_1] >= 2
+
+    assert response_data[country_2] >= 1
