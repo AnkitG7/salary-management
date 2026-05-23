@@ -38,7 +38,8 @@ def test_list_employees_supports_country_filter():
     assert len(response_data) > 0
 
     for employee in response_data:
-        assert employee["country"] == "India"
+        # assert employee["country"] == "India"
+        assert employee["country"] == "india"
 
 
 

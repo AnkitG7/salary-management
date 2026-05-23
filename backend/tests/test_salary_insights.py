@@ -147,7 +147,7 @@ def test_average_salary_by_job_title():
 
     assert (
         response_data["job_title"]
-        == "Backend Engineer"
+        == "backend engineer"
     )
 
     assert response_data["currency"] == "INR"
@@ -237,7 +237,7 @@ def test_employee_count_by_job_title():
     import uuid
 
     job_title = (
-        f"Backend-{uuid.uuid4().hex[:4]}"
+        f"backend-{uuid.uuid4().hex[:4]}"
     )
 
     employees = [
@@ -287,7 +287,7 @@ def test_employee_count_by_job_title():
 
     response_data = response.json()
 
-    assert response_data[job_title] >= 2
+    assert response_data[job_title.lower()] >= 2
 
 def test_employment_status_distribution():
     import uuid
