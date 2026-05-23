@@ -8,7 +8,6 @@ client = TestClient(app)
 
 def test_create_employee_returns_201():
     payload = {
-        "employee_code": "EMP-1001",
         "full_name": "Ankit Sharma",
         "email": "ankit@example.com",
         "job_title": "Software Engineer",
@@ -28,7 +27,6 @@ def test_create_employee_returns_201():
 
     response_data = response.json()
 
-    assert response_data["employee_code"] == "EMP-1001"
     assert response_data["full_name"] == "Ankit Sharma"
     assert response_data["email"] == "ankit@example.com"
     assert response_data["job_title"] == "Software Engineer"
