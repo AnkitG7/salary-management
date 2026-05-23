@@ -13,6 +13,8 @@ from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from app.schemas.employee import EmployeeUpdate
 
+from fastapi import Response
+
 
 router = APIRouter()
 
@@ -132,3 +134,31 @@ def update_employee(
     db.refresh(employee)
 
     return employee
+
+
+@router.delete(
+    "/employees/{employee_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def delete_employee(
+    employee_id: int,
+    db: Session = Depends(get_db),
+):
+    employee = db.get(
+        Employee,
+        employee_id,
+    )
+
+    if not employee:
+        raise HTTPException(
+            status_code=404,
+            detail="Employee not found",
+        )
+
+    db.delete(employee)
+
+    db.commit()
+
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT
+    )
