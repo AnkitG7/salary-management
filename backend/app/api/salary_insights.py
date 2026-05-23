@@ -203,3 +203,40 @@ def get_employment_status_distribution(
         status: count
         for status, count in results
     }
+
+ALLOWED_FILTER_FIELDS = {
+    "country": Employee.country,
+    "job_title": Employee.job_title,
+    "currency": Employee.currency,
+    "employment_status": (
+        Employee.employment_status
+    ),
+}
+
+@router.get(
+    "/salary-insights/filter-values",
+)
+def get_filter_values(
+    field: str = Query(...),
+    db: Session = Depends(get_db),
+):
+    if field not in ALLOWED_FILTER_FIELDS:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid filter field",
+        )
+
+    column = ALLOWED_FILTER_FIELDS[field]
+
+    results = (
+        db.query(column)
+        .distinct()
+        .order_by(column)
+        .all()
+    )
+
+    return [
+        value[0]
+        for value in results
+        if value[0] is not None
+    ]

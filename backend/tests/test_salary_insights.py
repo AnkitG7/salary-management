@@ -362,3 +362,11 @@ def test_filter_values_returns_unique_countries():
         isinstance(value, str)
         for value in response_data
     )
+
+def test_filter_values_rejects_invalid_field():
+    response = client.get(
+        "/salary-insights/filter-values"
+        "?field=salary"
+    )
+
+    assert response.status_code == 400
