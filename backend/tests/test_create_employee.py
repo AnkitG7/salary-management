@@ -7,9 +7,13 @@ client = TestClient(app)
 
 
 def test_create_employee_returns_201():
+    import uuid
+
+    email = f"ankit{uuid.uuid4().hex[:6]}@example.com"
     payload = {
         "full_name": "Ankit Sharma",
-        "email": "ankit5@example.com",
+        # "email": "ankit8@example.com",
+        "email": email,
         "job_title": "Software Engineer",
         "country": "India",
         "salary": 50000,
@@ -28,7 +32,8 @@ def test_create_employee_returns_201():
     response_data = response.json()
 
     assert response_data["full_name"] == "Ankit Sharma"
-    assert response_data["email"] == "ankit5@example.com"
+    # assert response_data["email"] == "ankit8@example.com"
+    assert response_data["email"] == email
     assert response_data["job_title"] == "Software Engineer"
     assert response_data["country"] == "India"
     assert response_data["salary"] == 50000

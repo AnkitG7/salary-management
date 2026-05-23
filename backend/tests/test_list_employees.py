@@ -25,3 +25,17 @@ def test_list_employees_supports_limit():
     response_data = response.json()
 
     assert len(response_data) <= 1
+
+def test_list_employees_supports_country_filter():
+    response = client.get(
+        "/employees?country=India"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert len(response_data) > 0
+
+    for employee in response_data:
+        assert employee["country"] == "India"
