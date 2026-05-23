@@ -39,3 +39,15 @@ def create_employee(
     db.refresh(employee)
 
     return employee
+
+
+@router.get(
+    "/employees",
+    response_model=list[EmployeeResponse],
+)
+def list_employees(
+    db: Session = Depends(get_db),
+):
+    employees = db.query(Employee).all()
+
+    return employees
