@@ -37,7 +37,47 @@ class EmployeeCreate(BaseModel):
 
     date_of_joining: date
 
+class EmployeeUpdate(BaseModel):
+    full_name: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=255,
+    )
 
+    email: EmailStr | None = None
+
+    job_title: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=255,
+    )
+
+    country: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=100,
+    )
+
+    salary: int | None = Field(
+        default=None,
+        gt=0,
+    )
+
+    currency: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=10,
+    )
+
+    employment_status: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=50,
+    )
+
+    date_of_joining: date | None = None
+
+    
 class EmployeeResponse(BaseModel):
     id: int
     full_name: str

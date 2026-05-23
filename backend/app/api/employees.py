@@ -9,6 +9,10 @@ from app.schemas.employee import EmployeeCreate
 from app.schemas.employee import EmployeeResponse
 from fastapi import Query
 
+from fastapi import HTTPException
+from sqlalchemy.exc import IntegrityError
+from app.schemas.employee import EmployeeUpdate
+
 
 router = APIRouter()
 
@@ -81,3 +85,50 @@ def list_employees(
     )
 
     return employees
+
+
+@router.patch(
+    "/employees/{employee_id}",
+    response_model=EmployeeResponse,
+)
+def update_employee(
+    employee_id: int,
+    payload: EmployeeUpdate,
+    db: Session = Depends(get_db),
+):
+    employee = db.get(
+        Employee,
+        employee_id,
+    )
+
+    if not employee:
+        raise HTTPException(
+            status_code=404,
+            detail="Employee not found",
+        )
+
+    update_data = payload.model_dump(
+        exclude_unset=True
+    )
+
+    for field, value in update_data.items():
+        setattr(
+            employee,
+            field,
+            value,
+        )
+
+    try:
+        db.commit()
+
+    except IntegrityError:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=400,
+            detail="Employee update violates database constraints",
+        )
+
+    db.refresh(employee)
+
+    return employee
