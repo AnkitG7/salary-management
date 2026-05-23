@@ -11,3 +11,13 @@ class SalaryInsightsResponse(BaseModel):
     maximum_salary: int
 
     average_salary: float
+
+
+class JobTitleSalaryInsightsResponse(BaseModel):
+    country: str
+
+    currency: str
+
+    job_title: str
+
+    average_salary: float

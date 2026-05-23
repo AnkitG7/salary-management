@@ -8,8 +8,11 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.models.employee import Employee
-from app.schemas.salary_insights import SalaryInsightsResponse
 
+from app.schemas.salary_insights import SalaryInsightsResponse
+from app.schemas.salary_insights import (
+    JobTitleSalaryInsightsResponse,
+)
 
 router = APIRouter()
 
@@ -67,6 +70,71 @@ def get_salary_insights(
         "currency": currency,
         "minimum_salary": minimum_salary,
         "maximum_salary": maximum_salary,
+        "average_salary": round(
+            average_salary,
+            2,
+        ),
+    }
+
+
+@router.get(
+    "/salary-insights/job-title",
+    response_model=(
+        JobTitleSalaryInsightsResponse
+    ),
+)
+def get_average_salary_by_job_title(
+    country: str = Query(...),
+    job_title: str = Query(...),
+    db: Session = Depends(get_db),
+):
+    currencies = (
+        db.query(Employee.currency)
+        .filter(
+            Employee.country == country
+        )
+        .distinct()
+        .all()
+    )
+
+    if not currencies:
+        raise HTTPException(
+            status_code=404,
+            detail="No salary data found",
+        )
+
+    if len(currencies) > 1:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Multiple currencies found "
+                "for the same country"
+            ),
+        )
+
+    currency = currencies[0][0]
+
+    average_salary = (
+        db.query(
+            func.avg(Employee.salary)
+        )
+        .filter(
+            Employee.country == country,
+            Employee.job_title == job_title,
+        )
+        .scalar()
+    )
+
+    if average_salary is None:
+        raise HTTPException(
+            status_code=404,
+            detail="No salary data found",
+        )
+
+    return {
+        "country": country,
+        "currency": currency,
+        "job_title": job_title,
         "average_salary": round(
             average_salary,
             2,
