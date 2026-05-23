@@ -1,6 +1,7 @@
 import random
 import time
 from pathlib import Path
+import uuid
 
 from sqlalchemy.orm import Session
 
@@ -32,11 +33,11 @@ COUNTRIES_AND_CURRENCIES = [
 ]
 
 EMPLOYMENT_STATUSES = [
-    "FULL_TIME",
-    "PART_TIME",
+    "ACTIVE",
     "CONTRACT",
-    "INTERN",
+    "PART_TIME",
 ]
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -67,9 +68,13 @@ def generate_employee(
     first_names: list[str],
     last_names: list[str],
 ) -> Employee:
-    first_name = random.choice(first_names)
+    first_name = random.choice(
+        first_names
+    )
 
-    last_name = random.choice(last_names)
+    last_name = random.choice(
+        last_names
+    )
 
     full_name = (
         f"{first_name.title()} "
@@ -80,10 +85,21 @@ def generate_employee(
         COUNTRIES_AND_CURRENCIES
     )
 
+    # email = (
+    #     f"{first_name}."
+    #     f"{last_name}."
+    #     f"{employee_number}"
+    #     "@example.com"
+    # )
+    unique_suffix = (
+        uuid.uuid4().hex[:8]
+    )
+
     email = (
         f"{first_name}."
         f"{last_name}."
-        f"{employee_number}"
+        f"{employee_number}."
+        f"{unique_suffix}"
         "@example.com"
     )
 
