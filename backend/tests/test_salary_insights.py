@@ -342,3 +342,23 @@ def test_employment_status_distribution():
     assert response_data["FULL_TIME"] >= 1
 
     assert response_data["CONTRACT"] >= 1
+
+
+def test_filter_values_returns_unique_countries():
+    response = client.get(
+        "/salary-insights/filter-values"
+        "?field=country"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert isinstance(response_data, list)
+
+    assert len(response_data) > 0
+
+    assert all(
+        isinstance(value, str)
+        for value in response_data
+    )
