@@ -140,3 +140,23 @@ def get_average_salary_by_job_title(
             2,
         ),
     }
+
+@router.get(
+    "/salary-insights/employee-count-by-country",
+)
+def get_employee_count_by_country(
+    db: Session = Depends(get_db),
+):
+    results = (
+        db.query(
+            Employee.country,
+            func.count(Employee.id),
+        )
+        .group_by(Employee.country)
+        .all()
+    )
+
+    return {
+        country: count
+        for country, count in results
+    }

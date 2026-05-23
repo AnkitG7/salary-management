@@ -232,3 +232,59 @@ def test_employee_count_by_country():
     assert response_data[country_1] >= 2
 
     assert response_data[country_2] >= 1
+
+def test_employee_count_by_job_title():
+    import uuid
+
+    job_title = (
+        f"Backend-{uuid.uuid4().hex[:4]}"
+    )
+
+    employees = [
+        {
+            "full_name": "Employee One",
+            "email": (
+                f"job-title-1-"
+                f"{uuid.uuid4().hex[:6]}"
+                "@example.com"
+            ),
+            "job_title": job_title,
+            "country": "India",
+            "salary": 100000,
+            "currency": "INR",
+            "employment_status": "ACTIVE",
+            "date_of_joining": "2024-01-01",
+        },
+        {
+            "full_name": "Employee Two",
+            "email": (
+                f"job-title-2-"
+                f"{uuid.uuid4().hex[:6]}"
+                "@example.com"
+            ),
+            "job_title": job_title,
+            "country": "India",
+            "salary": 200000,
+            "currency": "INR",
+            "employment_status": "ACTIVE",
+            "date_of_joining": "2024-01-01",
+        },
+    ]
+
+    for employee in employees:
+        create_response = client.post(
+            "/employees",
+            json=employee,
+        )
+
+        assert create_response.status_code == 201
+
+    response = client.get(
+        "/salary-insights/employee-count-by-job-title"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert response_data[job_title] >= 2
