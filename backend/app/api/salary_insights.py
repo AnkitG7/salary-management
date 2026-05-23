@@ -181,3 +181,25 @@ def get_employee_count_by_job_title(
         job_title: count
         for job_title, count in results
     }
+
+@router.get(
+    "/salary-insights/employment-status-distribution",
+)
+def get_employment_status_distribution(
+    db: Session = Depends(get_db),
+):
+    results = (
+        db.query(
+            Employee.employment_status,
+            func.count(Employee.id),
+        )
+        .group_by(
+            Employee.employment_status
+        )
+        .all()
+    )
+
+    return {
+        status: count
+        for status, count in results
+    }
