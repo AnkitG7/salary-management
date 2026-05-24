@@ -4,6 +4,10 @@ import { Alert, Button, Space, Spin, Table, Typography } from "antd";
 
 import { getEmployees } from "../api/employees";
 
+import { PlusOutlined } from "@ant-design/icons";
+
+import CreateEmployeeModal from "./CreateEmployeeModal";
+
 const { Title } = Typography;
 
 function formatText(value) {
@@ -30,9 +34,17 @@ function EmployeeList() {
     pageSize: 10,
   });
 
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
   useEffect(() => {
     fetchEmployees(pagination.pageSize, 0);
   }, []);
+
+  async function refreshEmployees() {
+    const offset = (pagination.current - 1) * pagination.pageSize;
+
+    await fetchEmployees(pagination.pageSize, offset);
+  }
 
   async function fetchEmployees(limit, offset) {
     try {
@@ -156,7 +168,24 @@ function EmployeeList() {
         padding: 24,
       }}
     >
-      <Title level={2}>Employees</Title>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 16,
+        }}
+      >
+        <Title level={2}>Employees</Title>
+
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => setIsCreateModalOpen(true)}
+        >
+          Add Employee
+        </Button>
+      </div>
 
       {error && (
         <Alert
@@ -197,6 +226,12 @@ function EmployeeList() {
           onChange={handleTableChange}
         />
       )}
+
+      <CreateEmployeeModal
+        open={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={refreshEmployees}
+      />
     </div>
   );
 }
