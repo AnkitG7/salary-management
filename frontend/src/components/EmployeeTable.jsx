@@ -1,5 +1,6 @@
 import { Button, Popconfirm, Space, Table, Tag } from "antd";
 import { deleteEmployee } from "../api/employees";
+import formatSalary from "../utils/formatSalary";
 
 const STATUS_COLORS = {
   FULL_TIME: "green",
@@ -46,7 +47,8 @@ export default function EmployeeTable({
       title: "Salary",
       dataIndex: "salary",
       key: "salary",
-      render: (salary, record) => `${salary} ${record.currency}`,
+    //   render: (salary, record) => `${salary} ${record.currency}`,
+      render: (salary, record) => formatSalary(salary, record.currency),
     },
 
     {
