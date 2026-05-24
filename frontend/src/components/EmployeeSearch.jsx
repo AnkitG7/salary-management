@@ -1,25 +1,35 @@
+import { useEffect, useState } from "react";
+
 import { Input } from "antd";
 
-export default function EmployeeSearch({ queryParams, setQueryParams }) {
-  function handleSearch(event) {
-    const value = event.target.value;
+export default function EmployeeSearch({ setQueryParams }) {
+  const [searchInput, setSearchInput] = useState("");
 
-    setQueryParams((previous) => ({
-      ...previous,
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setQueryParams((previous) => ({
+        ...previous,
 
-      search: value,
+        search: searchInput,
 
-      offset: 0,
-    }));
-  }
+        offset: 0,
+      }));
+    }, 400);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [searchInput, setQueryParams]);
 
   return (
     <Input.Search
       placeholder={"Search by name or email"}
       allowClear
       size="large"
-      value={queryParams.search}
-      onChange={handleSearch}
+      value={searchInput}
+      onChange={(event) => {
+        setSearchInput(event.target.value);
+      }}
       style={{
         width: 350,
         marginBottom: 16,
