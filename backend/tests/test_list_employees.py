@@ -7,13 +7,27 @@ client = TestClient(app)
 
 
 def test_list_employees_returns_200():
-    response = client.get("/employees")
+    response = client.get(
+        "/employees"
+    )
 
     assert response.status_code == 200
 
     response_data = response.json()
 
-    assert isinstance(response_data, list)
+    assert "items" in response_data
+    assert "total" in response_data
+
+    assert isinstance(
+        response_data["items"],
+        list,
+    )
+
+    assert isinstance(
+        response_data["total"],
+        int,
+    )
+
 
 def test_list_employees_supports_limit():
     response = client.get(
@@ -24,7 +38,10 @@ def test_list_employees_supports_limit():
 
     response_data = response.json()
 
-    assert len(response_data) <= 1
+    employees = response_data["items"]
+
+    assert len(employees) <= 1
+
 
 def test_list_employees_supports_country_filter():
     response = client.get(
@@ -35,41 +52,80 @@ def test_list_employees_supports_country_filter():
 
     response_data = response.json()
 
-    assert len(response_data) > 0
+    employees = response_data["items"]
 
-    for employee in response_data:
-        # assert employee["country"] == "India"
-        assert employee["country"] == "india"
+    assert len(employees) > 0
 
+    for employee in employees:
+        assert (
+            employee["country"]
+            == "india"
+        )
 
 
 def test_list_employees_supports_limit_and_offset():
     import uuid
 
-    email_1 = f"Employee_1{uuid.uuid4().hex[:6]}@example.com"
-    email_2 = f"Employee_2{uuid.uuid4().hex[:6]}@example.com"
+    email_1 = (
+        f"employee_1_"
+        f"{uuid.uuid4().hex[:6]}"
+        "@example.com"
+    )
+
+    email_2 = (
+        f"employee_2_"
+        f"{uuid.uuid4().hex[:6]}"
+        "@example.com"
+    )
+
     employees_to_create = [
         {
-            "full_name": "Employee One",
-            # "email": "employee-one@example.com",
+            "full_name":
+                "Employee One",
+
             "email": email_1,
-            "job_title": "Engineer",
-            "country": "India",
-            "salary": 100000,
-            "currency": "INR",
-            "employment_status": "FULL_TIME",
-            "date_of_joining": "2024-01-01",
+
+            "job_title":
+                "Engineer",
+
+            "country":
+                "India",
+
+            "salary":
+                100000,
+
+            "currency":
+                "INR",
+
+            "employment_status":
+                "FULL_TIME",
+
+            "date_of_joining":
+                "2024-01-01",
         },
         {
-            "full_name": "Employee Two",
-            # "email": "employee-two@example.com",
+            "full_name":
+                "Employee Two",
+
             "email": email_2,
-            "job_title": "Engineer",
-            "country": "India",
-            "salary": 120000,
-            "currency": "INR",
-            "employment_status": "FULL_TIME",
-            "date_of_joining": "2024-01-01",
+
+            "job_title":
+                "Engineer",
+
+            "country":
+                "India",
+
+            "salary":
+                120000,
+
+            "currency":
+                "INR",
+
+            "employment_status":
+                "FULL_TIME",
+
+            "date_of_joining":
+                "2024-01-01",
         },
     ]
 
@@ -83,7 +139,13 @@ def test_list_employees_supports_limit_and_offset():
         "/employees"
     )
 
-    all_employees = all_response.json()
+    all_response_data = (
+        all_response.json()
+    )
+
+    all_employees = (
+        all_response_data["items"]
+    )
 
     assert len(all_employees) >= 2
 
@@ -95,14 +157,38 @@ def test_list_employees_supports_limit_and_offset():
         "/employees?limit=1&offset=1"
     )
 
-    first_page_data = first_page_response.json()
+    first_page_data = (
+        first_page_response
+        .json()["items"]
+    )
 
-    second_page_data = second_page_response.json()
+    second_page_data = (
+        second_page_response
+        .json()["items"]
+    )
 
     assert len(first_page_data) == 1
+
     assert len(second_page_data) == 1
 
     assert (
         first_page_data[0]["id"]
         != second_page_data[0]["id"]
+    )
+
+
+def test_list_employees_returns_total_count():
+    response = client.get(
+        "/employees"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert (
+        response_data["total"]
+        >= len(
+            response_data["items"]
+        )
     )

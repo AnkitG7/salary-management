@@ -77,20 +77,42 @@ def test_deleted_employee_is_no_longer_returned():
 
     assert delete_response.status_code == 204
 
-    list_response = client.get(
-        "/employees"
+    # list_response = client.get(
+    #     "/employees"
+    # )
+
+    # assert list_response.status_code == 200
+
+    # employees = list_response.json()
+
+    # response_data = (
+    #     list_response.json()
+    # )
+
+
+    # employees = (
+    #     response_data["items"]
+    # )
+
+    # employee_ids = [
+    #     employee["id"]
+    #     for employee in employees
+    # ]
+
+    # employee_ids = [
+    #     employee["id"]
+    #     for employee in employees
+    # ]
+
+    # assert employee_id not in employee_ids
+    get_response = client.get(
+        f"/employees/{employee_id}"
     )
 
-    assert list_response.status_code == 200
-
-    employees = list_response.json()
-
-    employee_ids = [
-        employee["id"]
-        for employee in employees
-    ]
-
-    assert employee_id not in employee_ids
+    assert (
+        get_response.status_code
+        == 404
+    )
 
 
 def test_delete_nonexistent_employee_returns_404():

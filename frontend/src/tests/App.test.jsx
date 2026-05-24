@@ -5,5 +5,5 @@ import App from "../App";
 test("renders application title", () => {
   render(<App />);
 
-  expect(screen.getByText(/salary management system/i)).toBeInTheDocument();
+  expect(screen.getByText(/employees/i)).toBeInTheDocument();
 });

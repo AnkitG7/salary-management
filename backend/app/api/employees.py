@@ -16,6 +16,10 @@ from app.schemas.employee import EmployeeUpdate
 
 from fastapi import Response
 
+from app.schemas.pagination import (
+    EmployeeListResponse,
+)
+
 
 router = APIRouter()
 
@@ -63,7 +67,9 @@ def create_employee(
 
 @router.get(
     "/employees",
-    response_model=list[EmployeeResponse],
+    # response_model=list[EmployeeResponse],
+    response_model=EmployeeListResponse,
+
 )
 def list_employees(
     limit: int = Query(
@@ -103,6 +109,18 @@ def list_employees(
             Employee.job_title == job_title
         )
 
+    # employees = (
+    #     query
+    #     .order_by(Employee.id)
+    #     .offset(offset)
+    #     .limit(limit)
+    #     .all()
+    # )
+
+    # return employees
+    total = query.count()
+
+
     employees = (
         query
         .order_by(Employee.id)
@@ -111,7 +129,36 @@ def list_employees(
         .all()
     )
 
-    return employees
+    return {
+        "items": employees,
+        "total": total,
+    }
+
+
+@router.get(
+    "/employees/{employee_id}",
+    response_model=EmployeeResponse,
+)
+def get_employee(
+    employee_id: int,
+    db: Session = Depends(get_db),
+):
+    employee = (
+        db.query(Employee)
+        .filter(
+            Employee.id
+            == employee_id
+        )
+        .first()
+    )
+
+    if not employee:
+        raise HTTPException(
+            status_code=404,
+            detail="Employee not found",
+        )
+
+    return employee
 
 
 @router.patch(
