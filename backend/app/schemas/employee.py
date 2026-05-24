@@ -80,6 +80,36 @@ class EmployeeCreate(BaseModel):
     ) -> str:
         return normalize_lowercase(value)
 
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "full_name":
+                    "Aarav Sharma",
+
+                "email":
+                    "aarav@example.com",
+
+                "job_title":
+                    "backend engineer",
+
+                "country":
+                    "india",
+
+                "salary":
+                    "2500000.00",
+
+                "currency":
+                    "INR",
+
+                "employment_status":
+                    "FULL_TIME",
+
+                "date_of_joining":
+                    "2024-01-15",
+            }
+        }
+    }
+
 
 class EmployeeUpdate(BaseModel):
     full_name: str | None = Field(
@@ -161,6 +191,18 @@ class EmployeeUpdate(BaseModel):
     ) -> str:
         return normalize_lowercase(value)
 
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "salary":
+                "3000000.00",
+
+                "job_title":
+                "staff engineer",
+            }
+        }
+    }
+
 
 class EmployeeResponse(BaseModel):
     id: int
@@ -175,5 +217,35 @@ class EmployeeResponse(BaseModel):
     date_of_joining: date
 
     model_config = {
-        "from_attributes": True
+        "from_attributes": True,
+
+        "json_schema_extra": {
+            "example": {
+                "id": 1,
+
+                "full_name":
+                    "Aarav Sharma",
+
+                "email":
+                    "aarav@example.com",
+
+                "job_title":
+                    "backend engineer",
+
+                "country":
+                    "india",
+
+                "salary":
+                    "2500000.00",
+
+                "currency":
+                    "INR",
+
+                "employment_status":
+                    "FULL_TIME",
+
+                "date_of_joining":
+                    "2024-01-15",
+            }
+        }
     }
