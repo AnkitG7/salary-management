@@ -1,6 +1,8 @@
 import { Button, Popconfirm, Space, Table, Tag } from "antd";
 import { deleteEmployee } from "../api/employees";
 import formatSalary from "../utils/formatSalary";
+import formatLabel from "../utils/formatLabel";
+import formatDate from "../utils/formatDate";
 
 const STATUS_COLORS = {
   FULL_TIME: "green",
@@ -21,8 +23,12 @@ export default function EmployeeTable({
   const columns = [
     {
       title: "Name",
+
       dataIndex: "full_name",
+
       key: "full_name",
+
+      render: (name) => formatLabel(name),
     },
 
     {
@@ -33,21 +39,29 @@ export default function EmployeeTable({
 
     {
       title: "Job Title",
+
       dataIndex: "job_title",
+
       key: "job_title",
+
+      render: (jobTitle) => formatLabel(jobTitle),
     },
 
     {
       title: "Country",
+
       dataIndex: "country",
+
       key: "country",
+
+      render: (country) => formatLabel(country),
     },
 
     {
       title: "Salary",
       dataIndex: "salary",
       key: "salary",
-    //   render: (salary, record) => `${salary} ${record.currency}`,
+      //   render: (salary, record) => `${salary} ${record.currency}`,
       render: (salary, record) => formatSalary(salary, record.currency),
     },
 
@@ -58,7 +72,9 @@ export default function EmployeeTable({
 
       key: "employment_status",
 
-      render: (status) => <Tag color={STATUS_COLORS[status]}>{status}</Tag>,
+      render: (status) => (
+        <Tag color={STATUS_COLORS[status]}>{formatLabel(status)}</Tag>
+      ),
     },
 
     {
@@ -67,8 +83,11 @@ export default function EmployeeTable({
       dataIndex: "date_of_joining",
 
       key: "date_of_joining",
+
+      render: (date) => formatDate(date),
     },
 
+    ,
     {
       title: "Actions",
 
