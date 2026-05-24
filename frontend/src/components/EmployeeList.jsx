@@ -8,6 +8,7 @@ import {
   Space,
   Spin,
   Table,
+  Tag,
   Typography,
 } from "antd";
 
@@ -27,6 +28,25 @@ function formatText(value) {
   return value
     .replaceAll("_", " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function getStatusColor(status) {
+  switch (status) {
+    case "FULL_TIME":
+      return "green";
+
+    case "PART_TIME":
+      return "blue";
+
+    case "CONTRACT":
+      return "orange";
+
+    case "INTERN":
+      return "default";
+
+    default:
+      return "default";
+  }
 }
 
 function EmployeeList() {
@@ -163,9 +183,10 @@ function EmployeeList() {
 
       key: "employment_status",
 
-      render: (value) => formatText(value),
+      render: (value) => {
+        return <Tag color={getStatusColor(value)}>{formatText(value)}</Tag>;
+      },
     },
-
     {
       title: "Actions",
 
@@ -177,10 +198,8 @@ function EmployeeList() {
             <Button type="link">Edit</Button>
 
             <Popconfirm
-              title="Delete employee"
-              description={
-                "Are you sure you want " + "to delete this employee?"
-              }
+              title="Confirm Delete"
+              description={`Delete "${record.full_name}"?`}
               okText="Yes"
               cancelText="No"
               onConfirm={() => handleDeleteEmployee(record.id)}
