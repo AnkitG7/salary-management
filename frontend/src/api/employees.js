@@ -16,3 +16,7 @@ export async function createEmployee(payload) {
 
   return response.data;
 }
+
+export async function deleteEmployee(employeeId) {
+  await client.delete(`/employees/${employeeId}`);
+}

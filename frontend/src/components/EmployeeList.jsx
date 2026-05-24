@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
 
-import { Alert, Button, Space, Spin, Table, Typography } from "antd";
+import {
+  Alert,
+  Button,
+  message,
+  Popconfirm,
+  Space,
+  Spin,
+  Table,
+  Typography,
+} from "antd";
 
-import { getEmployees } from "../api/employees";
+import { getEmployees, deleteEmployee } from "../api/employees";
 
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -44,6 +53,20 @@ function EmployeeList() {
     const offset = (pagination.current - 1) * pagination.pageSize;
 
     await fetchEmployees(pagination.pageSize, offset);
+  }
+
+  async function handleDeleteEmployee(employeeId) {
+    try {
+      await deleteEmployee(employeeId);
+
+      message.success("Employee deleted successfully");
+
+      await refreshEmployees();
+    } catch (error) {
+      console.error(error);
+
+      message.error("Failed to delete employee");
+    }
   }
 
   async function fetchEmployees(limit, offset) {
@@ -148,14 +171,24 @@ function EmployeeList() {
 
       key: "actions",
 
-      render: () => {
+      render: (_, record) => {
         return (
           <Space>
             <Button type="link">Edit</Button>
 
-            <Button danger type="link">
-              Delete
-            </Button>
+            <Popconfirm
+              title="Delete employee"
+              description={
+                "Are you sure you want " + "to delete this employee?"
+              }
+              okText="Yes"
+              cancelText="No"
+              onConfirm={() => handleDeleteEmployee(record.id)}
+            >
+              <Button danger type="link">
+                Delete
+              </Button>
+            </Popconfirm>
           </Space>
         );
       },
