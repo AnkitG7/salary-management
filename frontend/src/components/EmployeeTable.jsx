@@ -158,8 +158,6 @@ export default function EmployeeTable({
 
     let order = "desc";
 
-
-
     if (sorter.field) {
       sortBy = sorter.field;
 
@@ -188,6 +186,7 @@ export default function EmployeeTable({
 
   return (
     <Table
+
       rowKey="id"
       scroll={{
         x: "max-content",
