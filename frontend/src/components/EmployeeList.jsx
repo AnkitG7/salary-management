@@ -21,10 +21,7 @@ function EmployeeList() {
   });
 
   useEffect(() => {
-    fetchEmployees(
-      pagination.pageSize,
-      (pagination.current - 1) * pagination.pageSize,
-    );
+    fetchEmployees(pagination.pageSize, 0);
   }, []);
 
   async function fetchEmployees(limit, offset) {
@@ -50,10 +47,9 @@ function EmployeeList() {
   async function handleTableChange(pageInfo) {
     setPagination(pageInfo);
 
-    await fetchEmployees(
-      pageInfo.pageSize,
-      (pageInfo.current - 1) * pageInfo.pageSize,
-    );
+    const offset = (pageInfo.current - 1) * pageInfo.pageSize;
+
+    await fetchEmployees(pageInfo.pageSize, offset);
   }
 
   const columns = [
@@ -121,8 +117,12 @@ function EmployeeList() {
           columns={columns}
           pagination={{
             current: pagination.current,
+
             pageSize: pagination.pageSize,
+
             total,
+
+            showSizeChanger: false,
           }}
           onChange={handleTableChange}
         />
