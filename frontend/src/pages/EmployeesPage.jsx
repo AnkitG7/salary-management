@@ -88,6 +88,12 @@ export default function EmployeesPage() {
     <div
       style={{
         padding: 24,
+
+        width: "100%",
+
+        overflowX: "auto",
+
+        boxSizing: "border-box",
       }}
     >
       <Title level={2}>Employees</Title>

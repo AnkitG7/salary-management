@@ -26,7 +26,7 @@ export default function EmployeeTable({
       title: "Name",
 
       dataIndex: "full_name",
-      width: 180,
+      width: 160,
       ellipsis: true,
       key: "full_name",
 
@@ -72,7 +72,7 @@ export default function EmployeeTable({
       title: "Country",
 
       dataIndex: "country",
-      width: 140,
+      width: 120,
 
       key: "country",
       sorter: true,
@@ -122,7 +122,7 @@ export default function EmployeeTable({
       dataIndex: "date_of_joining",
 
       key: "date_of_joining",
-      width: 180,
+      width: 150,
       sorter: true,
       sortOrder:
         queryParams.sort_by === "date_of_joining"
