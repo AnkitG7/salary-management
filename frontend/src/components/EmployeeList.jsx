@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react";
 
-import { Alert, Spin, Table, Typography } from "antd";
+import { Alert, Button, Space, Spin, Table, Typography } from "antd";
 
 import { getEmployees } from "../api/employees";
 
 const { Title } = Typography;
+
+function formatText(value) {
+  if (!value) {
+    return "";
+  }
+
+  return value
+    .replaceAll("_", " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
@@ -29,6 +39,8 @@ function EmployeeList() {
       setLoading(true);
 
       const data = await getEmployees(limit, offset);
+
+      console.log("employees response:", data);
 
       setEmployees(Array.isArray(data.items) ? data.items : []);
 
@@ -55,38 +67,86 @@ function EmployeeList() {
   const columns = [
     {
       title: "Name",
+
       dataIndex: "full_name",
+
       key: "full_name",
     },
+
     {
       title: "Email",
+
       dataIndex: "email",
+
       key: "email",
     },
+
     {
       title: "Job Title",
+
       dataIndex: "job_title",
+
       key: "job_title",
+
+      render: (value) => formatText(value),
     },
+
     {
       title: "Country",
+
       dataIndex: "country",
+
       key: "country",
+
+      render: (value) => formatText(value),
     },
+
     {
       title: "Salary",
+
       dataIndex: "salary",
+
       key: "salary",
+
+      render: (salary, record) => {
+        return `${record.currency} ` + Number(salary).toLocaleString();
+      },
     },
+
     {
       title: "Currency",
+
       dataIndex: "currency",
+
       key: "currency",
     },
+
     {
       title: "Status",
+
       dataIndex: "employment_status",
+
       key: "employment_status",
+
+      render: (value) => formatText(value),
+    },
+
+    {
+      title: "Actions",
+
+      key: "actions",
+
+      render: () => {
+        return (
+          <Space>
+            <Button type="link">Edit</Button>
+
+            <Button danger type="link">
+              Delete
+            </Button>
+          </Space>
+        );
+      },
     },
   ];
 
@@ -109,9 +169,17 @@ function EmployeeList() {
       )}
 
       {loading ? (
-        <Spin size="large" />
+        <div
+          style={{
+            padding: 40,
+            textAlign: "center",
+          }}
+        >
+          <Spin size="large" />
+        </div>
       ) : (
         <Table
+          bordered
           rowKey="id"
           dataSource={employees}
           columns={columns}
@@ -123,6 +191,8 @@ function EmployeeList() {
             total,
 
             showSizeChanger: false,
+
+            showTotal: (total) => `Total Employees: ${total}`,
           }}
           onChange={handleTableChange}
         />
