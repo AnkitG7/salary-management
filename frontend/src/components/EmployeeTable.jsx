@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Space, Table, Tag } from "antd";
+import { Button, message, Popconfirm, Space, Table, Tag } from "antd";
 import { deleteEmployee } from "../api/employees";
 import formatSalary from "../utils/formatSalary";
 import formatLabel from "../utils/formatLabel";
@@ -187,11 +187,19 @@ export default function EmployeeTable({
     }));
   }
   async function handleDelete(employeeId) {
-    await deleteEmployee(employeeId);
+    try {
+      await deleteEmployee(employeeId);
 
-    setQueryParams((previous) => ({
-      ...previous,
-    }));
+      message.success("Employee deleted successfully");
+
+      setQueryParams((previous) => ({
+        ...previous,
+      }));
+    } catch (error) {
+      console.error(error);
+
+      message.error("Failed to delete employee");
+    }
   }
 
   return (
