@@ -2,9 +2,7 @@ import { useEffect } from "react";
 
 import { useState } from "react";
 
-import { useRef } from "react";
-
-import { Alert, Spin, Typography } from "antd";
+import { Alert, Typography } from "antd";
 
 import EmployeeTable from "../components/EmployeeTable";
 
@@ -36,36 +34,40 @@ export default function EmployeesPage() {
     sort_by: "id",
     order: "desc",
   });
-  const debounceTimeout = useRef(null);
 
   async function loadEmployees() {
     try {
       setLoading(true);
-
-      setError("");
 
       const response = await getEmployees(queryParams);
 
       setEmployees(response.items);
 
       setTotal(response.total);
-    } catch (err) {
+
+      setError("");
+    } catch (error) {
+      console.error(error);
+
       setError("Failed to load employees");
     } finally {
       setLoading(false);
     }
   }
 
+  //   useEffect(() => {
+  //     // clearTimeout(debounceTimeout.current);
+
+  //     // debounceTimeout.current = setTimeout(() => {
+  //     //   loadEmployees();
+  //     // }, 300);
+
+  //     return () => {
+  //       clearTimeout(debounceTimeout.current);
+  //     };
+  //   }, [queryParams]);
   useEffect(() => {
-    clearTimeout(debounceTimeout.current);
-
-    debounceTimeout.current = setTimeout(() => {
-      loadEmployees();
-    }, 300);
-
-    return () => {
-      clearTimeout(debounceTimeout.current);
-    };
+    loadEmployees();
   }, [queryParams]);
 
   return (
@@ -94,16 +96,13 @@ export default function EmployeesPage() {
         setQueryParams={setQueryParams}
       />
 
-      {loading ? (
-        <Spin size="large" />
-      ) : (
-        <EmployeeTable
-          employees={employees}
-          total={total}
-          queryParams={queryParams}
-          setQueryParams={setQueryParams}
-        />
-      )}
+      <EmployeeTable
+        loading={loading}
+        employees={employees}
+        total={total}
+        queryParams={queryParams}
+        setQueryParams={setQueryParams}
+      />
     </div>
   );
 }

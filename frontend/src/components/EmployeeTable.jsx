@@ -15,6 +15,7 @@ const STATUS_COLORS = {
 };
 
 export default function EmployeeTable({
+  loading,
   employees,
   total,
   queryParams,
@@ -195,6 +196,7 @@ export default function EmployeeTable({
 
   return (
     <Table
+      loading={loading}
       tableLayout="fixed"
       showSorterTooltip={false}
       rowKey="id"
