@@ -12,6 +12,8 @@ import { getEmployees } from "../api/employees";
 
 import EmployeeSearch from "../components/EmployeeSearch";
 
+import EmployeeFilters from "../components/EmployeeFilters";
+
 const { Title } = Typography;
 
 export default function EmployeesPage() {
@@ -84,6 +86,10 @@ export default function EmployeesPage() {
         />
       )}
       <EmployeeSearch
+        queryParams={queryParams}
+        setQueryParams={setQueryParams}
+      />
+      <EmployeeFilters
         queryParams={queryParams}
         setQueryParams={setQueryParams}
       />

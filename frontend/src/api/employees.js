@@ -37,3 +37,13 @@ export async function createEmployee(payload) {
 export async function deleteEmployee(employeeId) {
   await client.delete(`/employees/${employeeId}`);
 }
+
+export async function getFilterValues(field) {
+  const response = await client.get("/salary-insights/filter-values", {
+    params: {
+      field,
+    },
+  });
+
+  return response.data;
+}
