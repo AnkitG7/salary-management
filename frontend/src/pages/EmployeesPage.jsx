@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useState } from "react";
 
-import { Alert, Typography } from "antd";
+import { Alert, Button, Typography } from "antd";
 
 import EmployeeTable from "../components/EmployeeTable";
 
@@ -23,17 +23,27 @@ export default function EmployeesPage() {
 
   const [error, setError] = useState("");
 
-  const [queryParams, setQueryParams] = useState({
+  const DEFAULT_QUERY_PARAMS = {
     limit: 10,
+
     offset: 0,
+
     search: "",
+
     country: "",
+
     job_title: "",
+
     employment_status: "",
+
     currency: "",
+
     sort_by: "id",
+
     order: "desc",
-  });
+  };
+
+  const [queryParams, setQueryParams] = useState(DEFAULT_QUERY_PARAMS);
 
   async function loadEmployees() {
     try {
@@ -53,6 +63,10 @@ export default function EmployeesPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleResetFilters() {
+    setQueryParams(DEFAULT_QUERY_PARAMS);
   }
 
   //   useEffect(() => {
@@ -95,6 +109,14 @@ export default function EmployeesPage() {
         queryParams={queryParams}
         setQueryParams={setQueryParams}
       />
+      <Button
+        onClick={handleResetFilters}
+        style={{
+          marginBottom: 16,
+        }}
+      >
+        Reset Filters
+      </Button>
 
       <EmployeeTable
         loading={loading}
