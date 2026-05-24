@@ -20,6 +20,30 @@ from app.schemas.pagination import (
     EmployeeListResponse,
 )
 
+MAX_PAGE_SIZE = 50
+
+DEFAULT_SORT_BY = "id"
+
+DEFAULT_ORDER = "desc"
+
+
+ALLOWED_SORT_FIELDS = {
+    "full_name":
+        Employee.full_name,
+
+    "employment_status":
+        Employee.employment_status,
+
+    "country":
+        Employee.country,
+
+    "job_title":
+        Employee.job_title,
+
+    "date_of_joining":
+        Employee.date_of_joining,
+}
+
 
 router = APIRouter()
 
@@ -65,12 +89,9 @@ def create_employee(
     return employee
 
 
-# @router.get(
-#     "/employees",
-#     # response_model=list[EmployeeResponse],
-#     response_model=EmployeeListResponse,
 
-# )
+
+
 @router.get(
     "/employees",
 
@@ -79,12 +100,15 @@ def create_employee(
     summary="List employees",
 
     description="""
-Retrieve employees with pagination and optional filtering.
+Retrieve employees with pagination,
+sorting, and optional filtering.
 
 Supports:
 - pagination using limit/offset
 - filtering by country
 - filtering by job title
+- server-side sorting
+- stable ordering
 
 Used by:
 - HR employee listing UI
@@ -96,42 +120,90 @@ def list_employees(
     limit: int = Query(
         default=10,
         ge=1,
-        le=100,
         description=(
-        "Maximum number of "
-        "employees to return"
+            "Maximum number of "
+            "employees to return"
         ),
     ),
+
     offset: int = Query(
         default=0,
         ge=0,
         description=(
-        "Number of employees "
-        "to skip for pagination"
+            "Number of employees "
+            "to skip for pagination"
         ),
     ),
+
     country: str | None = Query(
         default=None,
         description=(
-        "Filter employees "
-        "by country"
+            "Filter employees "
+            "by country"
         ),
     ),
+
     job_title: str | None = Query(
         default=None,
         description=(
-        "Filter employees "
-        "by job title"
+            "Filter employees "
+            "by job title"
         ),
     ),
+
+    sort_by: str = Query(
+        default=DEFAULT_SORT_BY,
+        description=(
+            "Field used for sorting"
+        ),
+    ),
+
+    order: str = Query(
+        default=DEFAULT_ORDER,
+        description=(
+            "Sorting order: "
+            "asc or desc"
+        ),
+    ),
+
     db: Session = Depends(get_db),
 ):
+    limit = min(
+        limit,
+        MAX_PAGE_SIZE,
+    )
+
+    if (
+        sort_by != "id"
+        and sort_by
+        not in ALLOWED_SORT_FIELDS
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid sort field",
+        )
+
+    if order not in {
+        "asc",
+        "desc",
+    }:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid sort order",
+        )
+
     query = db.query(Employee)
+
     if country:
         country = (
             country
             .strip()
             .lower()
+        )
+
+        query = query.filter(
+            Employee.country
+            == country
         )
 
     if job_title:
@@ -140,30 +212,36 @@ def list_employees(
             .strip()
             .lower()
         )
-    if country:
+
         query = query.filter(
-            Employee.country == country
+            Employee.job_title
+            == job_title
         )
 
-    if job_title:
-        query = query.filter(
-            Employee.job_title == job_title
-        )
-
-    # employees = (
-    #     query
-    #     .order_by(Employee.id)
-    #     .offset(offset)
-    #     .limit(limit)
-    #     .all()
-    # )
-
-    # return employees
     total = query.count()
+
+    if sort_by == "id":
+        sort_column = Employee.id
+    else:
+        sort_column = (
+            ALLOWED_SORT_FIELDS[
+                sort_by
+            ]
+        )
+
+    if order == "asc":
+        query = query.order_by(
+            sort_column.asc(),
+            Employee.id.asc(),
+        )
+    else:
+        query = query.order_by(
+            sort_column.desc(),
+            Employee.id.desc(),
+        )
 
     employees = (
         query
-        .order_by(Employee.id)
         .offset(offset)
         .limit(limit)
         .all()
