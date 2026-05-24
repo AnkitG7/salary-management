@@ -1,4 +1,15 @@
-import { Table } from "antd";
+import { Table, Tag } from "antd";
+
+
+const STATUS_COLORS = {
+  FULL_TIME: "green",
+
+  PART_TIME: "blue",
+
+  CONTRACT: "orange",
+
+  INTERN: "default",
+};
 
 export default function EmployeeTable({
   employees,
@@ -40,9 +51,12 @@ export default function EmployeeTable({
 
     {
       title: "Status",
+
       dataIndex: "employment_status",
 
       key: "employment_status",
+
+      render: (status) => <Tag color={STATUS_COLORS[status]}>{status}</Tag>,
     },
 
     {
