@@ -124,20 +124,22 @@ export default function EmployeeTable({
   return (
     <Table
       rowKey="id"
+      scroll={{
+        x: "max-content",
+      }}
+      bordered
       columns={columns}
       dataSource={employees}
       pagination={{
         current: queryParams.offset / queryParams.limit + 1,
-
         pageSize: queryParams.limit,
-
         total,
-
         showSizeChanger: true,
-
         pageSizeOptions: ["10", "20", "30", "50"],
-
-        showTotal: (total) => `Total Employees: ${total}`,
+        showQuickJumper: true,
+        position: ["bottomCenter"],
+        showTotal: (total, range) =>
+          `Showing ${range[0]}-${range[1]} of ${total} employees`,
       }}
       onChange={handleTableChange}
     />
