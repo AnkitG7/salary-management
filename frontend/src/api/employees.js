@@ -47,3 +47,16 @@ export async function getFilterValues(field) {
 
   return response.data;
 }
+export async function updateEmployee(employeeId, payload) {
+  const response = await client.patch(`/employees/${employeeId}`, payload);
+
+  return response.data;
+}
+
+export async function getSalaryInsights(params) {
+  const response = await client.get("/salary-insights", {
+    params,
+  });
+
+  return response.data;
+}

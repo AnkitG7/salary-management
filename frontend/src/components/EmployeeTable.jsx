@@ -1,9 +1,10 @@
-import { Button, message, Popconfirm, Space, Table, Tag } from "antd";
+import { Button, message, Modal, Space, Table, Tag } from "antd";
 import { deleteEmployee } from "../api/employees";
 import formatSalary from "../utils/formatSalary";
 import formatLabel from "../utils/formatLabel";
 import formatDate from "../utils/formatDate";
-
+import EditEmployeeModal from "./EditEmployeeModal";
+import { useEffect, useState } from "react";
 const STATUS_COLORS = {
   FULL_TIME: "green",
 
@@ -101,7 +102,7 @@ export default function EmployeeTable({
       dataIndex: "employment_status",
 
       key: "employment_status",
-      width: 140,
+      width: 100,
 
       sorter: true,
       sortOrder:
@@ -139,23 +140,54 @@ export default function EmployeeTable({
       title: "Actions",
 
       key: "actions",
-      width: 140,
+      width: 160,
 
       render: (_, employee) => (
-        <Space>
-          <Popconfirm
-            title={`Delete "${employee.full_name}"?`}
-            description={"This action cannot be undone."}
-            okText="Delete"
-            cancelText="Cancel"
-            onConfirm={() => handleDelete(employee.id)}
+        <Space size="small">
+          <Button
+            disabled={isEditModalOpen}
+            onClick={() => {
+              setSelectedEmployee(employee);
+
+              setIsEditModalOpen(true);
+            }}
           >
-            <Button danger>Delete</Button>
-          </Popconfirm>
+            Edit
+          </Button>
+
+          <Button
+            danger
+            disabled={isEditModalOpen}
+            onClick={() => {
+              Modal.confirm({
+                title: "Delete Employee",
+
+                content: `Are you sure you want to delete "${employee.full_name}"?`,
+
+                okText: "Delete",
+
+                cancelText: "Cancel",
+
+                okButtonProps: {
+                  danger: true,
+                },
+
+                async onOk() {
+                  await handleDelete(employee.id);
+                },
+              });
+            }}
+          >
+            Delete
+          </Button>
         </Space>
       ),
     },
   ];
+
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   function handleTableChange(pagination, filters, sorter) {
     const limit = pagination.pageSize;
@@ -203,49 +235,63 @@ export default function EmployeeTable({
   }
 
   return (
-    <Table
-      locale={{
-        emptyText: (
-          <div
-            style={{
-              padding: 24,
-            }}
-          >
-            <div>No employees found</div>
-
+    <>
+      <Table
+        locale={{
+          emptyText: (
             <div
               style={{
-                marginTop: 8,
-                color: "#888",
+                padding: 24,
               }}
             >
-              Try adjusting search or filters
+              <div>No employees found</div>
+
+              <div
+                style={{
+                  marginTop: 8,
+                  color: "#888",
+                }}
+              >
+                Try adjusting search or filters
+              </div>
             </div>
-          </div>
-        ),
-      }}
-      loading={loading}
-      tableLayout="fixed"
-      showSorterTooltip={false}
-      rowKey="id"
-      scroll={{
-        x: "max-content",
-      }}
-      bordered
-      columns={columns}
-      dataSource={employees}
-      pagination={{
-        current: queryParams.offset / queryParams.limit + 1,
-        pageSize: queryParams.limit,
-        total,
-        showSizeChanger: true,
-        pageSizeOptions: ["10", "20", "30", "50"],
-        showQuickJumper: true,
-        position: ["bottomCenter"],
-        showTotal: (total, range) =>
-          `Showing ${range[0]}-${range[1]} of ${total} employees`,
-      }}
-      onChange={handleTableChange}
-    />
+          ),
+        }}
+        loading={loading}
+        tableLayout="fixed"
+        showSorterTooltip={false}
+        rowKey="id"
+        scroll={{
+          x: "max-content",
+        }}
+        bordered
+        columns={columns}
+        dataSource={employees}
+        pagination={{
+          current: queryParams.offset / queryParams.limit + 1,
+          pageSize: queryParams.limit,
+          total,
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "20", "30", "50"],
+          showQuickJumper: true,
+          position: ["bottomCenter"],
+          showTotal: (total, range) =>
+            `Showing ${range[0]}-${range[1]} of ${total} employees`,
+        }}
+        onChange={handleTableChange}
+      />
+      <EditEmployeeModal
+        employee={selectedEmployee}
+        open={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+        }}
+        onSuccess={() => {
+          setQueryParams((previous) => ({
+            ...previous,
+          }));
+        }}
+      />
+    </>
   );
 }
