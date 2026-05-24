@@ -2,11 +2,15 @@ import { useEffect } from "react";
 
 import { useState } from "react";
 
+import { useRef } from "react";
+
 import { Alert, Spin, Typography } from "antd";
 
 import EmployeeTable from "../components/EmployeeTable";
 
 import { getEmployees } from "../api/employees";
+
+import EmployeeSearch from "../components/EmployeeSearch";
 
 const { Title } = Typography;
 
@@ -30,6 +34,7 @@ export default function EmployeesPage() {
     sort_by: "id",
     order: "desc",
   });
+  const debounceTimeout = useRef(null);
 
   async function loadEmployees() {
     try {
@@ -50,7 +55,15 @@ export default function EmployeesPage() {
   }
 
   useEffect(() => {
-    loadEmployees();
+    clearTimeout(debounceTimeout.current);
+
+    debounceTimeout.current = setTimeout(() => {
+      loadEmployees();
+    }, 300);
+
+    return () => {
+      clearTimeout(debounceTimeout.current);
+    };
   }, [queryParams]);
 
   return (
@@ -70,6 +83,10 @@ export default function EmployeesPage() {
           }}
         />
       )}
+      <EmployeeSearch
+        queryParams={queryParams}
+        setQueryParams={setQueryParams}
+      />
 
       {loading ? (
         <Spin size="large" />
