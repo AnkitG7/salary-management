@@ -65,24 +65,65 @@ def create_employee(
     return employee
 
 
+# @router.get(
+#     "/employees",
+#     # response_model=list[EmployeeResponse],
+#     response_model=EmployeeListResponse,
+
+# )
 @router.get(
     "/employees",
-    # response_model=list[EmployeeResponse],
+
     response_model=EmployeeListResponse,
 
+    summary="List employees",
+
+    description="""
+Retrieve employees with pagination and optional filtering.
+
+Supports:
+- pagination using limit/offset
+- filtering by country
+- filtering by job title
+
+Used by:
+- HR employee listing UI
+- frontend pagination
+- analytics filtering
+""",
 )
 def list_employees(
     limit: int = Query(
         default=10,
         ge=1,
         le=100,
+        description=(
+        "Maximum number of "
+        "employees to return"
+        ),
     ),
     offset: int = Query(
         default=0,
         ge=0,
+        description=(
+        "Number of employees "
+        "to skip for pagination"
+        ),
     ),
-    country: str | None = None,
-    job_title: str | None = None,
+    country: str | None = Query(
+        default=None,
+        description=(
+        "Filter employees "
+        "by country"
+        ),
+    ),
+    job_title: str | None = Query(
+        default=None,
+        description=(
+        "Filter employees "
+        "by job title"
+        ),
+    ),
     db: Session = Depends(get_db),
 ):
     query = db.query(Employee)
@@ -119,7 +160,6 @@ def list_employees(
 
     # return employees
     total = query.count()
-
 
     employees = (
         query

@@ -46,11 +46,10 @@ class EmployeeCreate(BaseModel):
     date_of_joining: date
 
     @field_validator(
-    "country",
-    "job_title",
-    mode="before",
+        "country",
+        "job_title",
+        mode="before",
     )
-
     @classmethod
     def normalize_lowercase_fields(
         cls,
@@ -59,11 +58,10 @@ class EmployeeCreate(BaseModel):
         return normalize_lowercase(value)
 
     @field_validator(
-    "currency",
-    "employment_status",
-    mode="before",
+        "currency",
+        "employment_status",
+        mode="before",
     )
-
     @classmethod
     def normalize_uppercase_fields(
         cls,
@@ -72,8 +70,8 @@ class EmployeeCreate(BaseModel):
         return normalize_uppercase(value)
 
     @field_validator(
-    "email",
-    mode="before",
+        "email",
+        mode="before",
     )
     @classmethod
     def normalize_email(
@@ -81,6 +79,7 @@ class EmployeeCreate(BaseModel):
         value: str,
     ) -> str:
         return normalize_lowercase(value)
+
 
 class EmployeeUpdate(BaseModel):
     full_name: str | None = Field(
@@ -127,11 +126,10 @@ class EmployeeUpdate(BaseModel):
     date_of_joining: date | None = None
 
     @field_validator(
-    "country",
-    "job_title",
-    mode="before",
+        "country",
+        "job_title",
+        mode="before",
     )
-
     @classmethod
     def normalize_lowercase_fields(
         cls,
@@ -140,11 +138,10 @@ class EmployeeUpdate(BaseModel):
         return normalize_lowercase(value)
 
     @field_validator(
-    "currency",
-    "employment_status",
-    mode="before",
+        "currency",
+        "employment_status",
+        mode="before",
     )
-
     @classmethod
     def normalize_uppercase_fields(
         cls,
@@ -154,8 +151,8 @@ class EmployeeUpdate(BaseModel):
         return normalize_uppercase(value)
 
     @field_validator(
-    "email",
-    mode="before",
+        "email",
+        mode="before",
     )
     @classmethod
     def normalize_email(

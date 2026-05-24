@@ -20,15 +20,32 @@ router = APIRouter()
 @router.get(
     "/salary-insights",
     response_model=SalaryInsightsResponse,
+    summary=(
+        "Get salary statistics "
+        "for a country"
+    ),
+    description="""
+Retrieve:
+- minimum salary
+- maximum salary
+- average salary
+
+for employees within a country.
+
+Used by:
+- HR analytics dashboard
+- compensation analysis
+""",
+
 )
 def get_salary_insights(
     country: str = Query(...),
     db: Session = Depends(get_db),
 ):
     country = (
-    country
-    .strip()
-    .lower()
+        country
+        .strip()
+        .lower()
     )
     currencies = (
         db.query(Employee.currency)
@@ -94,9 +111,9 @@ def get_average_salary_by_job_title(
     db: Session = Depends(get_db),
 ):
     country = (
-    country
-    .strip()
-    .lower()
+        country
+        .strip()
+        .lower()
     )
 
     job_title = (
@@ -157,6 +174,7 @@ def get_average_salary_by_job_title(
         ),
     }
 
+
 @router.get(
     "/salary-insights/employee-count-by-country",
 )
@@ -198,6 +216,7 @@ def get_employee_count_by_job_title(
         for job_title, count in results
     }
 
+
 @router.get(
     "/salary-insights/employment-status-distribution",
 )
@@ -220,6 +239,7 @@ def get_employment_status_distribution(
         for status, count in results
     }
 
+
 ALLOWED_FILTER_FIELDS = {
     "country": Employee.country,
     "job_title": Employee.job_title,
@@ -229,6 +249,7 @@ ALLOWED_FILTER_FIELDS = {
     ),
 }
 
+
 @router.get(
     "/salary-insights/filter-values",
 )
@@ -237,9 +258,9 @@ def get_filter_values(
     db: Session = Depends(get_db),
 ):
     field = (
-    field
-    .strip()
-    .lower()
+        field
+        .strip()
+        .lower()
     )
     if field not in ALLOWED_FILTER_FIELDS:
         raise HTTPException(
