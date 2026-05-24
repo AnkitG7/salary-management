@@ -1,15 +1,14 @@
 from datetime import date
 from datetime import datetime
 
+from decimal import Decimal
+
 from sqlalchemy import Date
 from sqlalchemy import DateTime
 from sqlalchemy import Index
-from sqlalchemy import Integer
+from sqlalchemy import Numeric
 from sqlalchemy import String
 from sqlalchemy import func
-
-from sqlalchemy import Numeric
-from decimal import Decimal
 
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -35,6 +34,7 @@ class Employee(Base):
     full_name: Mapped[str] = mapped_column(
         String(255),
         nullable=False,
+        index=True,
     )
 
     email: Mapped[str] = mapped_column(
@@ -56,13 +56,9 @@ class Employee(Base):
         index=True,
     )
 
-    # salary: Mapped[int] = mapped_column(
-    #     Integer,
-    #     nullable=False,
-    # )
-    salary: Mapped[float] = mapped_column(
-    Numeric(14, 2),
-    nullable=False,
+    salary: Mapped[Decimal] = mapped_column(
+        Numeric(14, 2),
+        nullable=False,
     )
 
     currency: Mapped[str] = mapped_column(
@@ -80,6 +76,7 @@ class Employee(Base):
     date_of_joining: Mapped[date] = mapped_column(
         Date,
         nullable=False,
+        index=True,
     )
 
     created_at: Mapped[datetime] = mapped_column(
