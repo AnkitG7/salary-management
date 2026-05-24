@@ -15,7 +15,7 @@ from sqlalchemy.exc import IntegrityError
 from app.schemas.employee import EmployeeUpdate
 
 from fastapi import Response
-
+from sqlalchemy import or_
 from app.schemas.pagination import (
     EmployeeListResponse,
 )
@@ -90,8 +90,6 @@ def create_employee(
 
 
 
-
-
 @router.get(
     "/employees",
 
@@ -101,12 +99,15 @@ def create_employee(
 
     description="""
 Retrieve employees with pagination,
-sorting, and optional filtering.
+sorting, searching, and filtering.
 
 Supports:
 - pagination using limit/offset
 - filtering by country
 - filtering by job title
+- filtering by employment status
+- filtering by currency
+- searching by full name/email
 - server-side sorting
 - stable ordering
 
@@ -148,6 +149,30 @@ def list_employees(
         description=(
             "Filter employees "
             "by job title"
+        ),
+    ),
+
+    employment_status: str | None = Query(
+        default=None,
+        description=(
+            "Filter employees "
+            "by employment status"
+        ),
+    ),
+
+    currency: str | None = Query(
+        default=None,
+        description=(
+            "Filter employees "
+            "by currency"
+        ),
+    ),
+
+    search: str | None = Query(
+        default=None,
+        description=(
+            "Search employees by "
+            "full name or email"
         ),
     ),
 
@@ -194,16 +219,15 @@ def list_employees(
 
     query = db.query(Employee)
 
+    # -------------------------
+    # Normalize Inputs
+    # -------------------------
+
     if country:
         country = (
             country
             .strip()
             .lower()
-        )
-
-        query = query.filter(
-            Employee.country
-            == country
         )
 
     if job_title:
@@ -213,12 +237,80 @@ def list_employees(
             .lower()
         )
 
+    if employment_status:
+        employment_status = (
+            employment_status
+            .strip()
+            .upper()
+        )
+
+    if currency:
+        currency = (
+            currency
+            .strip()
+            .upper()
+        )
+
+    if search:
+        search = (
+            search
+            .strip()
+            .lower()
+        )
+
+    # -------------------------
+    # Apply Filters
+    # -------------------------
+
+    if country:
+        query = query.filter(
+            Employee.country
+            == country
+        )
+
+    if job_title:
         query = query.filter(
             Employee.job_title
             == job_title
         )
 
+    if employment_status:
+        query = query.filter(
+            Employee.employment_status
+            == employment_status
+        )
+
+    if currency:
+        query = query.filter(
+            Employee.currency
+            == currency
+        )
+
+    # -------------------------
+    # Apply Search
+    # -------------------------
+
+    if search:
+        search_term = (
+            f"%{search}%"
+        )
+
+        query = query.filter(
+            or_(
+                Employee.full_name.ilike(
+                    search_term
+                ),
+                Employee.email.ilike(
+                    search_term
+                ),
+            )
+        )
+
     total = query.count()
+
+    # -------------------------
+    # Apply Sorting
+    # -------------------------
 
     if sort_by == "id":
         sort_column = Employee.id
@@ -239,6 +331,10 @@ def list_employees(
             sort_column.desc(),
             Employee.id.desc(),
         )
+
+    # -------------------------
+    # Apply Pagination
+    # -------------------------
 
     employees = (
         query

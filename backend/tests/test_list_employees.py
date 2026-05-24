@@ -256,3 +256,144 @@ def test_limit_is_capped_at_max_page_size():
         )
         <= 50
     )
+##########################################
+
+def test_list_employees_supports_search_by_name():
+    response = client.get(
+        "/employees?search=aarav"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    items = response_data["items"]
+
+    assert len(items) > 0
+
+    for employee in items:
+        assert (
+            "aarav"
+            in employee[
+                "full_name"
+            ].lower()
+        )
+
+def test_list_employees_supports_search_by_email():
+    response = client.get(
+        "/employees?search=@example.com"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    items = response_data["items"]
+
+    assert len(items) > 0
+
+def test_search_is_case_insensitive():
+    response = client.get(
+        "/employees?search=AARAV"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    items = response_data["items"]
+
+    assert len(items) > 0
+
+
+def test_empty_search_returns_all_results():
+    response = client.get(
+        "/employees?search="
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert "items" in response_data
+
+
+def test_list_employees_supports_job_title_filter():
+    response = client.get(
+        "/employees?job_title=backend engineer"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    items = response_data["items"]
+
+    assert len(items) > 0
+
+    for employee in items:
+        assert (
+            employee["job_title"]
+            == "backend engineer"
+        )
+
+def test_list_employees_supports_employment_status_filter():
+    response = client.get(
+        "/employees?employment_status=FULL_TIME"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    items = response_data["items"]
+
+    assert len(items) > 0
+
+    for employee in items:
+        assert (
+            employee[
+                "employment_status"
+            ]
+            == "FULL_TIME"
+        )
+
+
+def test_list_employees_supports_currency_filter():
+    response = client.get(
+        "/employees?currency=INR"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    items = response_data["items"]
+
+    assert len(items) > 0
+
+    for employee in items:
+        assert (
+            employee["currency"]
+            == "INR"
+        )
+
+
+def test_country_filter_is_case_insensitive():
+    response = client.get(
+        "/employees?country=INDIA"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    items = response_data["items"]
+
+    assert len(items) > 0
+
+    for employee in items:
+        assert (
+            employee["country"]
+            == "india"
+        )
