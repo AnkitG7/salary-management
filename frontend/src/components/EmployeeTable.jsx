@@ -28,6 +28,15 @@ export default function EmployeeTable({
 
       key: "full_name",
 
+      sorter: true,
+
+      sortOrder:
+        queryParams.sort_by === "full_name"
+          ? queryParams.order === "asc"
+            ? "ascend"
+            : "descend"
+          : null,
+
       render: (name) => formatLabel(name),
     },
 
@@ -43,6 +52,13 @@ export default function EmployeeTable({
       dataIndex: "job_title",
 
       key: "job_title",
+      sorter: true,
+      sortOrder:
+        queryParams.sort_by === "job_title"
+          ? queryParams.order === "asc"
+            ? "ascend"
+            : "descend"
+          : null,
 
       render: (jobTitle) => formatLabel(jobTitle),
     },
@@ -53,6 +69,13 @@ export default function EmployeeTable({
       dataIndex: "country",
 
       key: "country",
+      sorter: true,
+      sortOrder:
+        queryParams.sort_by === "country"
+          ? queryParams.order === "asc"
+            ? "ascend"
+            : "descend"
+          : null,
 
       render: (country) => formatLabel(country),
     },
@@ -72,6 +95,14 @@ export default function EmployeeTable({
 
       key: "employment_status",
 
+      sorter: true,
+      sortOrder:
+        queryParams.sort_by === "employment_status"
+          ? queryParams.order === "asc"
+            ? "ascend"
+            : "descend"
+          : null,
+
       render: (status) => (
         <Tag color={STATUS_COLORS[status]}>{formatLabel(status)}</Tag>
       ),
@@ -83,6 +114,13 @@ export default function EmployeeTable({
       dataIndex: "date_of_joining",
 
       key: "date_of_joining",
+      sorter: true,
+      sortOrder:
+        queryParams.sort_by === "date_of_joining"
+          ? queryParams.order === "asc"
+            ? "ascend"
+            : "descend"
+          : null,
 
       render: (date) => formatDate(date),
     },
@@ -116,10 +154,16 @@ export default function EmployeeTable({
 
     const offset = (currentPage - 1) * limit;
 
+    let sortBy = "id";
+
     let order = "desc";
 
-    if (sorter.order === "ascend") {
-      order = "asc";
+
+
+    if (sorter.field) {
+      sortBy = sorter.field;
+
+      order = sorter.order === "ascend" ? "asc" : "desc";
     }
 
     setQueryParams((previous) => ({
@@ -129,7 +173,7 @@ export default function EmployeeTable({
 
       offset,
 
-      sort_by: sorter.field || "id",
+      sort_by: sortBy,
 
       order,
     }));
