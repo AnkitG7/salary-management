@@ -196,6 +196,26 @@ export default function EmployeeTable({
 
   return (
     <Table
+      locale={{
+        emptyText: (
+          <div
+            style={{
+              padding: 24,
+            }}
+          >
+            <div>No employees found</div>
+
+            <div
+              style={{
+                marginTop: 8,
+                color: "#888",
+              }}
+            >
+              Try adjusting search or filters
+            </div>
+          </div>
+        ),
+      }}
       loading={loading}
       tableLayout="fixed"
       showSorterTooltip={false}
