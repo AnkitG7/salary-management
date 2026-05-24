@@ -192,3 +192,67 @@ def test_list_employees_returns_total_count():
             response_data["items"]
         )
     )
+
+
+def test_list_employees_supports_sorting():
+    response = client.get(
+        "/employees?sort_by=full_name&order=asc"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    items = response_data["items"]
+
+    names = [
+        employee["full_name"]
+        for employee in items
+    ]
+
+    assert names == sorted(names)
+
+def test_invalid_sort_field_returns_400():
+    response = client.get(
+        "/employees?sort_by=salary"
+    )
+
+    assert response.status_code == 400
+
+    response_data = response.json()
+
+    assert (
+        response_data["detail"]
+        == "Invalid sort field"
+    )
+
+
+def test_invalid_sort_order_returns_400():
+    response = client.get(
+        "/employees?order=random"
+    )
+
+    assert response.status_code == 400
+
+    response_data = response.json()
+
+    assert (
+        response_data["detail"]
+        == "Invalid sort order"
+    )
+
+def test_limit_is_capped_at_max_page_size():
+    response = client.get(
+        "/employees?limit=1000"
+    )
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+
+    assert (
+        len(
+            response_data["items"]
+        )
+        <= 50
+    )
