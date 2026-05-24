@@ -1,5 +1,5 @@
-import { Table, Tag } from "antd";
-
+import { Button, Popconfirm, Space, Table, Tag } from "antd";
+import { deleteEmployee } from "../api/employees";
 
 const STATUS_COLORS = {
   FULL_TIME: "green",
@@ -66,6 +66,26 @@ export default function EmployeeTable({
 
       key: "date_of_joining",
     },
+
+    {
+      title: "Actions",
+
+      key: "actions",
+
+      render: (_, employee) => (
+        <Space>
+          <Popconfirm
+            title={`Delete "${employee.full_name}"?`}
+            description={"This action cannot be undone."}
+            okText="Delete"
+            cancelText="Cancel"
+            onConfirm={() => handleDelete(employee.id)}
+          >
+            <Button danger>Delete</Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
   ];
 
   function handleTableChange(pagination, filters, sorter) {
@@ -91,6 +111,13 @@ export default function EmployeeTable({
       sort_by: sorter.field || "id",
 
       order,
+    }));
+  }
+  async function handleDelete(employeeId) {
+    await deleteEmployee(employeeId);
+
+    setQueryParams((previous) => ({
+      ...previous,
     }));
   }
 
