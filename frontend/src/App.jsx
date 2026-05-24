@@ -1,7 +1,5 @@
-import EmployeeList from "./components/EmployeeList";
+import EmployeesPage from "./pages/EmployeesPage";
 
-function App() {
-  return <EmployeeList />;
+export default function App() {
+  return <EmployeesPage />;
 }
-
-export default App;

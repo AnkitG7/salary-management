@@ -1,10 +1,27 @@
 import client from "./client";
 
-export async function getEmployees(limit = 10, offset = 0) {
+export async function getEmployees({
+  limit = 10,
+  offset = 0,
+  search = "",
+  country = "",
+  job_title = "",
+  employment_status = "",
+  currency = "",
+  sort_by = "id",
+  order = "desc",
+} = {}) {
   const response = await client.get("/employees", {
     params: {
       limit,
       offset,
+      search,
+      country,
+      job_title,
+      employment_status,
+      currency,
+      sort_by,
+      order,
     },
   });
 
