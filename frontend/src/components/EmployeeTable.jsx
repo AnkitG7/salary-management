@@ -25,7 +25,8 @@ export default function EmployeeTable({
       title: "Name",
 
       dataIndex: "full_name",
-
+      width: 180,
+      ellipsis: true,
       key: "full_name",
 
       sorter: true,
@@ -44,13 +45,16 @@ export default function EmployeeTable({
       title: "Email",
       dataIndex: "email",
       key: "email",
+      width: 380,
+      ellipsis: true,
     },
 
     {
       title: "Job Title",
 
       dataIndex: "job_title",
-
+      width: 200,
+      ellipsis: true,
       key: "job_title",
       sorter: true,
       sortOrder:
@@ -67,6 +71,7 @@ export default function EmployeeTable({
       title: "Country",
 
       dataIndex: "country",
+      width: 140,
 
       key: "country",
       sorter: true,
@@ -83,6 +88,7 @@ export default function EmployeeTable({
     {
       title: "Salary",
       dataIndex: "salary",
+      width: 160,
       key: "salary",
       //   render: (salary, record) => `${salary} ${record.currency}`,
       render: (salary, record) => formatSalary(salary, record.currency),
@@ -94,6 +100,7 @@ export default function EmployeeTable({
       dataIndex: "employment_status",
 
       key: "employment_status",
+      width: 140,
 
       sorter: true,
       sortOrder:
@@ -114,6 +121,7 @@ export default function EmployeeTable({
       dataIndex: "date_of_joining",
 
       key: "date_of_joining",
+      width: 180,
       sorter: true,
       sortOrder:
         queryParams.sort_by === "date_of_joining"
@@ -130,6 +138,7 @@ export default function EmployeeTable({
       title: "Actions",
 
       key: "actions",
+      width: 140,
 
       render: (_, employee) => (
         <Space>
@@ -186,7 +195,8 @@ export default function EmployeeTable({
 
   return (
     <Table
-
+      tableLayout="fixed"
+      showSorterTooltip={false}
       rowKey="id"
       scroll={{
         x: "max-content",
