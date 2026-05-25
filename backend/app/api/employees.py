@@ -20,6 +20,10 @@ from app.schemas.pagination import (
     EmployeeListResponse,
 )
 
+from app.utils.validators import (
+    validate_country_currency,
+)
+
 MAX_PAGE_SIZE = 50
 
 DEFAULT_SORT_BY = "id"
@@ -57,6 +61,10 @@ def create_employee(
     payload: EmployeeCreate,
     db: Session = Depends(get_db),
 ):
+    validate_country_currency(
+        payload.country,
+        payload.currency,
+    )
     employee = Employee(
         full_name=payload.full_name,
         email=payload.email,
@@ -398,6 +406,21 @@ def update_employee(
     update_data = payload.model_dump(
         exclude_unset=True
     )
+
+    updated_country = update_data.get(
+        "country",
+        employee.country,
+    )
+
+    updated_currency = update_data.get(
+        "currency",
+        employee.currency,
+    )
+
+    validate_country_currency(
+        updated_country,
+        updated_currency,
+        )
 
     for field, value in update_data.items():
         setattr(

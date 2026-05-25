@@ -6,6 +6,10 @@ from app.api.salary_insights import router as salary_insights_router
 
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.metadata import (
+    router as metadata_router,
+)
+
 app = FastAPI(
     title="Salary Management API",
 
@@ -55,6 +59,10 @@ def health_check():
     return {
         "status": "healthy"
     }
+
+app.include_router(metadata_router,
+                    tags=["Metadata"])
+
 
 app.include_router(
     employee_router,

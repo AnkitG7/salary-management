@@ -14,9 +14,10 @@ import {
 
 import dayjs from "dayjs";
 
-import { useState } from "react";
+import { createEmployee, getCountryCurrencyMapping } from "../../api/employees";
 
-import { createEmployee } from "../../api/employees";
+
+import { useEffect, useState } from "react";
 
 const { Title } = Typography;
 
@@ -42,76 +43,10 @@ const EMPLOYMENT_OPTIONS = [
   },
 ];
 
-const CURRENCY_OPTIONS = [
-  {
-    value: "USD",
-    label: "USD ($)",
-    symbol: "$",
-  },
 
-  {
-    value: "EUR",
-    label: "EUR (€)",
-    symbol: "€",
-  },
-
-  {
-    value: "GBP",
-    label: "GBP (£)",
-    symbol: "£",
-  },
-
-  {
-    value: "INR",
-    label: "INR (₹)",
-    symbol: "₹",
-  },
-
-  {
-    value: "CAD",
-    label: "CAD (C$)",
-    symbol: "C$",
-  },
-
-  {
-    value: "AUD",
-    label: "AUD (A$)",
-    symbol: "A$",
-  },
-
-  {
-    value: "JPY",
-    label: "JPY (¥)",
-    symbol: "¥",
-  },
-
-  {
-    value: "CNY",
-    label: "CNY (¥)",
-    symbol: "¥",
-  },
-
-  {
-    value: "CHF",
-    label: "CHF (Fr)",
-    symbol: "Fr",
-  },
-
-  {
-    value: "AED",
-    label: "AED (د.إ)",
-    symbol: "د.إ",
-  },
-
-  {
-    value: "SGD",
-    label: "SGD (S$)",
-    symbol: "S$",
-  },
-];
 
 function normalizeText(value) {
-  return value?.trim().replace(/\b\w/g, (char) => char.toUpperCase());
+  return value?.trim();
 }
 
 export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
@@ -119,11 +54,46 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
 
   const [submitting, setSubmitting] = useState(false);
 
-  const selectedCurrency = Form.useWatch("currency", form);
+  const [countryCurrencyData, setCountryCurrencyData] = useState([]);
 
-  const activeSymbol =
-    CURRENCY_OPTIONS.find((currency) => currency.value === selectedCurrency)
-      ?.symbol || "";
+
+
+  async function loadCountryCurrencyData() {
+    try {
+      const response = await getCountryCurrencyMapping();
+
+      setCountryCurrencyData(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useEffect(() => {
+    loadCountryCurrencyData();
+  }, []);
+
+
+  const countryOptions = countryCurrencyData.map((item) => ({
+    label: item.country
+  .split(" ")
+  .map(
+    (word) =>
+      word.charAt(0).toUpperCase() +
+      word.slice(1),
+  )
+  .join(" "),
+    value: item.country,
+  }));
+  function handleCountryChange(country) {
+    const selectedCountry = countryCurrencyData.find(
+      (item) => item.country === country,
+    );
+
+    form.setFieldsValue({
+      country,
+      currency: selectedCountry?.currency || "",
+    });
+  }
+
 
   async function handleSubmit(values) {
     if (submitting) {
@@ -144,7 +114,7 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
 
         job_title: normalizeText(values.job_title),
 
-        country: normalizeText(values.country),
+        country: values.country,
 
         date_of_joining: values.date_of_joining.format("YYYY-MM-DD"),
       };
@@ -232,9 +202,6 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
         layout="vertical"
         onFinish={handleSubmit}
         preserve={false}
-        initialValues={{
-          currency: "USD",
-        }}
       >
         {/* PERSONAL INFORMATION */}
         <Title
@@ -342,16 +309,17 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
               rules={[
                 {
                   required: true,
-                  message: "Please enter country",
-                },
-
-                {
-                  max: 100,
-                  message: "Country name too long",
+                  message: "Please select country",
                 },
               ]}
             >
-              <Input placeholder="United States" maxLength={100} />
+              <Select
+                showSearch
+                placeholder="Select country"
+                options={countryOptions}
+                optionFilterProp="label"
+                onChange={handleCountryChange}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -447,12 +415,13 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
                 min={0}
                 precision={2}
                 placeholder="50,000"
-                prefix={activeSymbol}
+
                 formatter={(value) =>
                   value ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ""
                 }
                 parser={(value) => {
-                  const parsed = value.replace(/[^\d.-]/g, "");
+                  // const parsed = value.replace(/[^\d.-]/g, "");
+                  const parsed = (value || "").replace(/[^\d.-]/g, "");
 
                   return parsed ? Number(parsed) : null;
                 }}
@@ -467,16 +436,11 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
               rules={[
                 {
                   required: true,
-                  message: "Please select currency",
+                  message: "Currency is required",
                 },
               ]}
             >
-              <Select
-                showSearch
-                placeholder="Select currency"
-                options={CURRENCY_OPTIONS}
-                optionFilterProp="label"
-              />
+              <Input disabled />
             </Form.Item>
           </Col>
         </Row>

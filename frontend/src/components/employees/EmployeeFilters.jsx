@@ -34,7 +34,7 @@ export default function EmployeeFilters({ queryParams, setQueryParams }) {
     }
 
     loadFilters();
-  }, []);
+  }, [filtersRefreshKey]);
 
   function updateFilter(field, value) {
     setQueryParams((previous) => ({

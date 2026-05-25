@@ -29,6 +29,7 @@ export default function EmployeesPage() {
   };
 
   const [queryParams, setQueryParams] = useState(DEFAULT_QUERY_PARAMS);
+  const [filtersRefreshKey, setFiltersRefreshKey] = useState(0);
   const debounceTimeout = useRef(null);
 
   async function loadEmployees() {
@@ -145,6 +146,7 @@ export default function EmployeesPage() {
               <EmployeeFilters
                 queryParams={queryParams}
                 setQueryParams={setQueryParams}
+                filtersRefreshKey={filtersRefreshKey}
               />
             </Col>
 
@@ -190,7 +192,10 @@ export default function EmployeesPage() {
         onClose={() => setIsCreateModalOpen(false)}
         onSuccess={() => {
           setIsCreateModalOpen(false);
+
           loadEmployees();
+
+          setFiltersRefreshKey((previous) => previous + 1);
         }}
       />
     </div>

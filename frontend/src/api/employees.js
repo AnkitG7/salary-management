@@ -99,3 +99,9 @@ export async function getEmploymentStatusDistribution() {
 
   return response.data;
 }
+
+export async function getCountryCurrencyMapping() {
+  const response = await client.get("/metadata/countries");
+
+  return response.data;
+}
