@@ -17,8 +17,10 @@ from app.core.constants import (
 
 
 TOTAL_EMPLOYEES = 10_000
+# TOTAL_EMPLOYEES = 356
 
 BATCH_SIZE = 1_000
+# BATCH_SIZE = 5
 
 
 # JOB_TITLES = [

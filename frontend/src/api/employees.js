@@ -60,3 +60,34 @@ export async function getSalaryInsights(params) {
 
   return response.data;
 }
+
+// export async function getFilterValues(field) {
+//   const response = await client.get("/salary-insights/filter-values", {
+//     params: {
+//       field,
+//     },
+//   });
+
+//   return response.data;
+// }
+
+export async function getEmploymentStatusDistribution(country) {
+  const response = await client.get(
+    "/salary-insights/employment-status-distribution",
+    {
+      params: {
+        country,
+      },
+    },
+  );
+
+  return response.data;
+}
+
+export async function getEmployeeCountByCountry() {
+  const response = await client.get(
+    "/salary-insights/employee-count-by-country",
+  );
+
+  return response.data;
+}

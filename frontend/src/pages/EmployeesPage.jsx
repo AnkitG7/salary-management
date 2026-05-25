@@ -1,22 +1,39 @@
-import { useEffect } from "react";
-
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { Alert, Button, Typography } from "antd";
 
 import EmployeeTable from "../components/EmployeeTable";
 
-import { getEmployees } from "../api/employees";
+import { getEmployees, getSalaryInsights } from "../api/employees";
 
 import EmployeeSearch from "../components/EmployeeSearch";
 
 import EmployeeFilters from "../components/EmployeeFilters";
 
+import SalaryInsights from "../components/SalaryInsights";
+
 const { Title } = Typography;
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState([]);
+  const [insights, setInsights] = useState({
+    average_salary: 0,
+    minimum_salary: 0,
+    maximum_salary: 0,
+    total_employees: 0,
+    currency: "USD",
+  });
+  async function loadSalaryInsights() {
+    try {
+      const response = await getSalaryInsights({
+        country: queryParams.country,
+      });
 
+      setInsights(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   const [total, setTotal] = useState(0);
 
   const [loading, setLoading] = useState(false);
@@ -44,6 +61,7 @@ export default function EmployeesPage() {
   };
 
   const [queryParams, setQueryParams] = useState(DEFAULT_QUERY_PARAMS);
+  const debounceTimeout = useRef(null);
 
   async function loadEmployees() {
     try {
@@ -69,19 +87,21 @@ export default function EmployeesPage() {
     setQueryParams(DEFAULT_QUERY_PARAMS);
   }
 
-  //   useEffect(() => {
-  //     // clearTimeout(debounceTimeout.current);
 
-  //     // debounceTimeout.current = setTimeout(() => {
-  //     //   loadEmployees();
-  //     // }, 300);
-
-  //     return () => {
-  //       clearTimeout(debounceTimeout.current);
-  //     };
-  //   }, [queryParams]);
   useEffect(() => {
-    loadEmployees();
+    clearTimeout(debounceTimeout.current);
+
+    debounceTimeout.current = setTimeout(() => {
+      loadEmployees();
+
+      if (queryParams.country) {
+        loadSalaryInsights();
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(debounceTimeout.current);
+    };
   }, [queryParams]);
 
   return (
@@ -107,6 +127,7 @@ export default function EmployeesPage() {
           }}
         />
       )}
+      <SalaryInsights insights={insights} />
       <EmployeeSearch
         queryParams={queryParams}
         setQueryParams={setQueryParams}
