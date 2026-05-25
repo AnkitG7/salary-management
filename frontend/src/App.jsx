@@ -5,7 +5,7 @@ import AppLayout from "./layouts/AppLayout";
 import DashboardPage from "./pages/DashboardPage";
 
 import EmployeesPage from "./pages/EmployeesPage";
-
+import EmployeeDetailsPage from "./pages/EmployeeDetailsPage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -14,6 +14,7 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
 
           <Route path="/employees" element={<EmployeesPage />} />
+          <Route path="/employees/:id" element={<EmployeeDetailsPage />} />
 
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Route>

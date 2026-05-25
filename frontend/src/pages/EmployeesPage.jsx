@@ -1,62 +1,30 @@
-import { useEffect, useState, useRef } from "react";
+import { Alert, Button, Card, Col, Row, Space, Typography } from "antd";
+import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { useEffect, useRef, useState } from "react";
+import EmployeeTable from "../components/employees/EmployeeTable";
+import { getEmployees } from "../api/employees";
+import EmployeeSearch from "../components/employees/EmployeeSearch";
+import EmployeeFilters from "../components/employees/EmployeeFilters";
+import CreateEmployeeModal from "../components/employees/CreateEmployeeModal";
 
-import { Alert, Button, Typography } from "antd";
-
-import EmployeeTable from "../components/EmployeeTable";
-
-import { getEmployees, getSalaryInsights } from "../api/employees";
-
-import EmployeeSearch from "../components/EmployeeSearch";
-
-import EmployeeFilters from "../components/EmployeeFilters";
-
-import SalaryInsights from "../components/SalaryInsights";
-
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState([]);
-  const [insights, setInsights] = useState({
-    average_salary: 0,
-    minimum_salary: 0,
-    maximum_salary: 0,
-    total_employees: 0,
-    currency: "USD",
-  });
-  async function loadSalaryInsights() {
-    try {
-      const response = await getSalaryInsights({
-        country: queryParams.country,
-      });
-
-      setInsights(response);
-    } catch (error) {
-      console.error(error);
-    }
-  }
   const [total, setTotal] = useState(0);
-
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState("");
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const DEFAULT_QUERY_PARAMS = {
     limit: 10,
-
     offset: 0,
-
     search: "",
-
     country: "",
-
     job_title: "",
-
     employment_status: "",
-
     currency: "",
-
     sort_by: "id",
-
     order: "desc",
   };
 
@@ -66,17 +34,12 @@ export default function EmployeesPage() {
   async function loadEmployees() {
     try {
       setLoading(true);
-
       const response = await getEmployees(queryParams);
-
-      setEmployees(response.items);
-
-      setTotal(response.total);
-
+      setEmployees(response.items || []);
+      setTotal(response.total || 0);
       setError("");
     } catch (error) {
       console.error(error);
-
       setError("Failed to load employees");
     } finally {
       setLoading(false);
@@ -87,16 +50,11 @@ export default function EmployeesPage() {
     setQueryParams(DEFAULT_QUERY_PARAMS);
   }
 
-
   useEffect(() => {
     clearTimeout(debounceTimeout.current);
 
     debounceTimeout.current = setTimeout(() => {
       loadEmployees();
-
-      if (queryParams.country) {
-        loadSalaryInsights();
-      }
     }, 300);
 
     return () => {
@@ -108,15 +66,48 @@ export default function EmployeesPage() {
     <div
       style={{
         padding: 24,
-
         width: "100%",
-
-        overflowX: "auto",
-
         boxSizing: "border-box",
       }}
     >
-      <Title level={2}>Employees</Title>
+      <Row
+        justify="space-between"
+        align="middle"
+        style={{
+          marginBottom: 24,
+        }}
+      >
+        <Col>
+          <Title
+            level={2}
+            style={{
+              marginBottom: 4,
+            }}
+          >
+            Employees
+          </Title>
+
+          <Text
+            type="secondary"
+            style={{
+              fontSize: 16,
+            }}
+          >
+            Manage and view all employees in your organization.
+          </Text>
+        </Col>
+
+        <Col>
+          <Button
+            type="primary"
+            size="large"
+            icon={<PlusOutlined />}
+            onClick={() => setIsCreateModalOpen(true)}
+          >
+            Add Employee
+          </Button>
+        </Col>
+      </Row>
 
       {error && (
         <Alert
@@ -127,23 +118,64 @@ export default function EmployeesPage() {
           }}
         />
       )}
-      <SalaryInsights insights={insights} />
-      <EmployeeSearch
-        queryParams={queryParams}
-        setQueryParams={setQueryParams}
-      />
-      <EmployeeFilters
-        queryParams={queryParams}
-        setQueryParams={setQueryParams}
-      />
-      <Button
-        onClick={handleResetFilters}
+
+      <Card
+        bordered={false}
         style={{
-          marginBottom: 16,
+          borderRadius: 20,
+          marginBottom: 24,
+          boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
         }}
       >
-        Reset Filters
-      </Button>
+        <Space
+          direction="vertical"
+          size={20}
+          style={{
+            width: "100%",
+          }}
+        >
+          <EmployeeSearch
+            queryParams={queryParams}
+            setQueryParams={setQueryParams}
+          />
+
+          {/* Adjusted row layout using align="end" to lock components down against the bottom axis margin */}
+          <Row justify="space-between" align="end" gutter={[16, 16]}>
+            <Col flex="auto">
+              <EmployeeFilters
+                queryParams={queryParams}
+                setQueryParams={setQueryParams}
+              />
+            </Col>
+
+            <Col style={{ display: "flex", flexDirection: "column" }}>
+              {/* Invisible placeholder matching the font height of the select labels above */}
+              <span
+                style={{ marginBottom: 8, visibility: "hidden", height: 22 }}
+                aria-hidden="true"
+              >
+                Spacer
+              </span>
+              <Button
+                icon={<ReloadOutlined style={{ marginRight: 4 }} />}
+                onClick={handleResetFilters}
+                danger
+                type="dashed"
+                style={{
+                  borderRadius: 8,
+                  height: 32, // Forces absolute match to standard dropdown input sizing blocks
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: 500,
+                }}
+              >
+                Reset Filters
+              </Button>
+            </Col>
+          </Row>
+        </Space>
+      </Card>
 
       <EmployeeTable
         loading={loading}
@@ -151,6 +183,15 @@ export default function EmployeesPage() {
         total={total}
         queryParams={queryParams}
         setQueryParams={setQueryParams}
+      />
+
+      <CreateEmployeeModal
+        open={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={() => {
+          setIsCreateModalOpen(false);
+          loadEmployees();
+        }}
       />
     </div>
   );

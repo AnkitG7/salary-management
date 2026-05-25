@@ -12,7 +12,7 @@ import {
   Typography,
 } from "antd";
 
-import { getEmployees, deleteEmployee } from "../api/employees";
+import { getEmployees, deleteEmployee } from "../../api/employees";
 
 import { PlusOutlined } from "@ant-design/icons";
 

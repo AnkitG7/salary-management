@@ -39,10 +39,14 @@ export default function RecentEmployeesTable({
       render: (_, employee) => (
         <Space size={12}>
           <Avatar
+            size={42}
             style={{
-              backgroundColor: "#1677ff",
-
-              fontWeight: 600,
+              backgroundColor: "#f0f5ff",
+              color: "#1d39c4",
+              fontWeight: 700,
+              fontSize: 16,
+              border: "1px solid #d6e4ff",
+              flexShrink: 0,
             }}
           >
             {getInitials(employee.full_name)}

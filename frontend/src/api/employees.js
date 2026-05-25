@@ -91,3 +91,9 @@ export async function getEmployeeCountByCountry() {
 
   return response.data;
 }
+
+export async function getEmployeeById(id) {
+  const response = await client.get(`/employees/${id}`);
+
+  return response.data;
+}

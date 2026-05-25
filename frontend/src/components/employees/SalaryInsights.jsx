@@ -1,6 +1,6 @@
 import { Card, Col, Row, Statistic } from "antd";
 
-import formatSalary from "../utils/formatSalary";
+import formatSalary from "../../utils/formatSalary";
 
 export default function SalaryInsights({ insights }) {
   return (
