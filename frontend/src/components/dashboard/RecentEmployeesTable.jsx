@@ -1,18 +1,15 @@
-import { Avatar, Card, Space, Table, Tag, Typography } from "antd";
+import { Avatar, Card, Empty, Space, Table, Tag, Typography } from "antd";
 
 import formatDate from "../../utils/formatDate";
 
 import formatLabel from "../../utils/formatLabel";
 
-const { Text } = Typography;
+const { Title, Text } = Typography;
 
 const STATUS_COLORS = {
   FULL_TIME: "green",
-
   PART_TIME: "blue",
-
   CONTRACT: "orange",
-
   INTERN: "default",
 };
 
@@ -25,27 +22,26 @@ function getInitials(name = "") {
     .toUpperCase();
 }
 
-export default function RecentEmployeesTable({
-  employees,
-
-  loading,
-}) {
+export default function RecentEmployeesTable({ employees, loading }) {
   const columns = [
     {
       title: "Employee",
-
       key: "employee",
-
       render: (_, employee) => (
-        <Space size={12}>
+        <Space
+          size={14}
+          style={{
+            alignItems: "center",
+          }}
+        >
           <Avatar
-            size={42}
+            size={46}
             style={{
-              backgroundColor: "#f0f5ff",
-              color: "#1d39c4",
+              backgroundColor: "#eef2ff",
+              color: "#4338ca",
               fontWeight: 700,
-              fontSize: 16,
-              border: "1px solid #d6e4ff",
+              fontSize: 15,
+              border: "1px solid #c7d2fe",
               flexShrink: 0,
             }}
           >
@@ -57,12 +53,22 @@ export default function RecentEmployeesTable({
               strong
               style={{
                 display: "block",
+                fontSize: 14,
+                color: "#0f172a",
+                marginBottom: 2,
               }}
             >
               {formatLabel(employee.full_name)}
             </Text>
 
-            <Text type="secondary">{employee.email}</Text>
+            <Text
+              type="secondary"
+              style={{
+                fontSize: 12,
+              }}
+            >
+              {employee.email}
+            </Text>
           </div>
         </Space>
       ),
@@ -70,38 +76,48 @@ export default function RecentEmployeesTable({
 
     {
       title: "Job Title",
-
       dataIndex: "job_title",
-
       key: "job_title",
-
-      render: (value) => formatLabel(value),
+      render: (value) => (
+        <Text
+          style={{
+            fontSize: 13,
+          }}
+        >
+          {formatLabel(value)}
+        </Text>
+      ),
     },
 
     {
       title: "Country",
-
       dataIndex: "country",
-
       key: "country",
-
-      render: (value) => formatLabel(value),
+      render: (value) => (
+        <Text
+          style={{
+            fontSize: 13,
+          }}
+        >
+          {formatLabel(value)}
+        </Text>
+      ),
     },
 
     {
       title: "Status",
-
       dataIndex: "employment_status",
-
       key: "employment_status",
-
       render: (status) => (
         <Tag
           color={STATUS_COLORS[status]}
           style={{
             borderRadius: 999,
-
-            paddingInline: 10,
+            paddingInline: 12,
+            paddingBlock: 2,
+            fontWeight: 600,
+            fontSize: 12,
+            border: "none",
           }}
         >
           {formatLabel(status)}
@@ -111,30 +127,59 @@ export default function RecentEmployeesTable({
 
     {
       title: "Date Joined",
-
       dataIndex: "date_of_joining",
-
       key: "date_of_joining",
-
-      render: (value) => formatDate(value),
+      render: (value) => (
+        <Text
+          style={{
+            fontSize: 13,
+          }}
+        >
+          {formatDate(value)}
+        </Text>
+      ),
     },
   ];
 
   return (
     <Card
-      title="Recent Employee Activity"
       variant="borderless"
       style={{
-        borderRadius: 20,
-
-        boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+        borderRadius: 28,
+        boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
       }}
-      styles={{
-        body: {
-          padding: 0,
-        },
+      bodyStyle={{
+        padding: "28px 28px 20px",
       }}
     >
+      {/* Header */}
+      <div
+        style={{
+          marginBottom: 24,
+        }}
+      >
+        <Title
+          level={4}
+          style={{
+            margin: 0,
+            marginBottom: 6,
+            color: "#0f172a",
+          }}
+        >
+          Recent Employee Activity
+        </Title>
+
+        <Text
+          type="secondary"
+          style={{
+            fontSize: 14,
+          }}
+        >
+          Latest workforce onboarding activity across the organization.
+        </Text>
+      </div>
+
+      {/* Table */}
       <Table
         rowKey="id"
         columns={columns}
@@ -142,6 +187,25 @@ export default function RecentEmployeesTable({
         loading={loading}
         pagination={false}
         size="middle"
+        locale={{
+          emptyText: (
+            <Empty
+              description="No recent employees found"
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+            />
+          ),
+        }}
+        style={{
+          marginTop: 4,
+        }}
+        rowClassName={() => "recent-employee-row"}
+      />
+
+      {/* Bottom Spacer */}
+      <div
+        style={{
+          height: 6,
+        }}
       />
     </Card>
   );

@@ -6,6 +6,8 @@ import DashboardPage from "./pages/DashboardPage";
 
 import EmployeesPage from "./pages/EmployeesPage";
 import EmployeeDetailsPage from "./pages/EmployeeDetailsPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -15,7 +17,7 @@ export default function App() {
 
           <Route path="/employees" element={<EmployeesPage />} />
           <Route path="/employees/:id" element={<EmployeeDetailsPage />} />
-
+          <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Route>
       </Routes>

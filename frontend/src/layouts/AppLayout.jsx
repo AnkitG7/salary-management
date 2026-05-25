@@ -1,4 +1,4 @@
-import { Layout, Menu, Typography } from "antd";
+import { Layout, Menu } from "antd";
 
 import {
   DashboardOutlined,
@@ -6,15 +6,11 @@ import {
   BarChartOutlined,
 } from "@ant-design/icons";
 
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 const { Header, Content } = Layout;
 
-const { Title } = Typography;
-
 export default function AppLayout() {
-  const navigate = useNavigate();
-
   const location = useLocation();
 
   return (
@@ -26,76 +22,120 @@ export default function AppLayout() {
     >
       <Header
         style={{
-          background: "#ffffff",
-          padding: "0 32px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #f0f0f0",
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
-        }}
-      >
-        <Title
-          level={3}
-          style={{
-            margin: 0,
-          }}
-        >
-          SalaryManage
-        </Title>
-
-        <Menu
-          mode="horizontal"
-          selectedKeys={[location.pathname]}
-          style={{
-            borderBottom: "none",
-            minWidth: 320,
-            justifyContent: "flex-end",
-          }}
-          items={[
-            {
-              key: "/dashboard",
-
-              icon: <DashboardOutlined />,
-
-              label: "Dashboard",
-
-              onClick: () => navigate("/dashboard"),
-            },
-
-            {
-              key: "/employees",
-
-              icon: <TeamOutlined />,
-
-              label: "Employees",
-
-              onClick: () => navigate("/employees"),
-            },
-
-            // {
-            //   key: "/analytics",
-
-            //   icon: <BarChartOutlined />,
-
-            //   label: "Analytics",
-
-            //   onClick: () => navigate("/analytics"),
-            // },
-          ]}
-        />
-      </Header>
-
-      <Content
-        style={{
-          padding: 24,
+          background: "transparent",
+          padding: "20px 24px 0",
+          height: "auto",
+          lineHeight: "normal",
         }}
       >
         <div
           style={{
-            maxWidth: 1400,
+            background: "#ffffff",
+            borderRadius: 24,
+            padding: "18px 32px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            boxShadow: "0 6px 24px rgba(15, 23, 42, 0.06)",
+            border: "1px solid rgba(226,232,240,0.9)",
+          }}
+        >
+          {/* Left Side */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 16,
+            }}
+          >
+            {/* Logo */}
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 16,
+                background: "linear-gradient(135deg, #1677ff 0%, #6941c6 100%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#ffffff",
+                fontSize: 22,
+                fontWeight: 700,
+                boxShadow: "0 10px 24px rgba(22,119,255,0.25)",
+              }}
+            >
+              S
+            </div>
+
+            {/* Brand */}
+            <div>
+              <div
+                style={{
+                  fontSize: 28,
+                  fontWeight: 700,
+                  color: "#0f172a",
+                  lineHeight: 1,
+                  letterSpacing: "-0.6px",
+                }}
+              >
+                SalaryManage
+              </div>
+
+              <div
+                style={{
+                  marginTop: 4,
+                  fontSize: 13,
+                  color: "#64748b",
+                  fontWeight: 500,
+                }}
+              >
+                Workforce Intelligence Platform
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <Menu
+            mode="horizontal"
+            selectedKeys={[location.pathname]}
+            style={{
+              border: "none",
+              background: "transparent",
+              minWidth: 420,
+              display: "flex",
+              justifyContent: "flex-end",
+              fontSize: 15,
+              fontWeight: 600,
+            }}
+            items={[
+              {
+                key: "/dashboard",
+                icon: <DashboardOutlined />,
+                label: <Link to="/dashboard">Dashboard</Link>,
+              },
+              {
+                key: "/employees",
+                icon: <TeamOutlined />,
+                label: <Link to="/employees">Employees</Link>,
+              },
+              {
+                key: "/analytics",
+                icon: <BarChartOutlined />,
+                label: <Link to="/analytics">Analytics</Link>,
+              },
+            ]}
+          />
+        </div>
+      </Header>
+
+      <Content
+        style={{
+          padding: "24px",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1440,
             margin: "0 auto",
           }}
         >
