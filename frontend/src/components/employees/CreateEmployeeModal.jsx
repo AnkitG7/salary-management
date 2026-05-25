@@ -428,7 +428,6 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
                         new Error("Salary must be a valid number"),
                       );
                     }
-
                     if (numericValue <= 0) {
                       return Promise.reject(
                         new Error("Salary must be greater than 0"),
