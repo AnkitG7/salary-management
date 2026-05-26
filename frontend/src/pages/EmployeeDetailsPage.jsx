@@ -5,13 +5,13 @@ import {
   Card,
   Col,
   Descriptions,
-  Modal,
   Row,
   Space,
   Spin,
   Tag,
   Typography,
   message,
+  Modal,
   theme,
 } from "antd";
 
@@ -59,6 +59,8 @@ export default function EmployeeDetailsPage() {
   const [employee, setEmployee] = useState(null);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   async function loadEmployee() {
     try {
@@ -240,26 +242,7 @@ export default function EmployeeDetailsPage() {
                 style={{
                   borderRadius: 8,
                 }}
-                onClick={() => {
-                  Modal.confirm({
-                    title: "Delete Employee Record",
-                    
-
-                    content: `Are you sure you want to remove "${employee.full_name}" from organization records? This action cannot be reversed.`,
-
-                    okText: "Delete Profile",
-
-                    cancelText: "Cancel",
-
-                    okButtonProps: {
-                      danger: true,
-                    },
-
-                    async onOk() {
-                      await handleDelete();
-                    },
-                  });
-                }}
+                onClick={() => setIsDeleteModalOpen(true)}
               >
                 Delete Employee
               </Button>
@@ -650,6 +633,32 @@ export default function EmployeeDetailsPage() {
           loadEmployee();
         }}
       />
+      <Modal
+        open={isDeleteModalOpen}
+        onCancel={() => setIsDeleteModalOpen(false)}
+        onOk={async () => {
+          await handleDelete();
+
+          setIsDeleteModalOpen(false);
+        }}
+        okText="Delete Profile"
+        cancelText="Cancel"
+        okButtonProps={{
+          danger: true,
+        }}
+        centered
+        title="Delete Employee Record"
+      >
+        <div
+          style={{
+            marginTop: 12,
+            lineHeight: 1.7,
+          }}
+        >
+          Are you sure you want to remove "{employee.full_name}" from
+          organization records? This action cannot be reversed.
+        </div>
+      </Modal>
     </>
   );
 }

@@ -45,7 +45,6 @@ function Root() {
 
           fontFamily: "Inter, sans-serif",
         },
-        
       }}
     >
       <App isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />

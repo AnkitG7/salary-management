@@ -55,7 +55,7 @@ export default function EmployeeTable({
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
+  
   const columns = [
     {
       title: "Employee",
