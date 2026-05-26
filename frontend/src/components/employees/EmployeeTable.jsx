@@ -6,10 +6,11 @@ import {
   Modal,
   Space,
   Table,
-  Tag,Empty,
+  Tag,
+  Empty,
   Tooltip,
   Typography,
-  theme
+  theme,
 } from "antd";
 
 import { DeleteOutlined, EditOutlined, UserOutlined } from "@ant-design/icons";
@@ -55,7 +56,11 @@ export default function EmployeeTable({
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const [employeeToDelete, setEmployeeToDelete] = useState(null);
+
   const columns = [
     {
       title: "Employee",
@@ -277,23 +282,9 @@ export default function EmployeeTable({
               onClick={(event) => {
                 event.stopPropagation();
 
-                Modal.confirm({
-                  title: "Delete Employee",
+                setEmployeeToDelete(employee);
 
-                  content: `Are you sure you want to delete "${employee.full_name}"?`,
-
-                  okText: "Delete",
-
-                  cancelText: "Cancel",
-
-                  okButtonProps: {
-                    danger: true,
-                  },
-
-                  async onOk() {
-                    await handleDelete(employee.id);
-                  },
-                });
+                setIsDeleteModalOpen(true);
               }}
             />
           </Tooltip>
@@ -438,6 +429,57 @@ export default function EmployeeTable({
           }));
         }}
       />
+      <Modal
+        open={isDeleteModalOpen}
+        centered
+        onCancel={() => {
+          setIsDeleteModalOpen(false);
+
+          setEmployeeToDelete(null);
+        }}
+        onOk={async () => {
+          await handleDelete(employeeToDelete.id);
+
+          setIsDeleteModalOpen(false);
+
+          setEmployeeToDelete(null);
+        }}
+        okText="Delete"
+        cancelText="Cancel"
+        okButtonProps={{
+          danger: true,
+        }}
+        styles={{
+          content: {
+            borderRadius: 24,
+
+            background: token.colorBgContainer,
+          },
+        }}
+        title={
+          <span
+            style={{
+              color: token.colorText,
+            }}
+          >
+            Delete Employee
+          </span>
+        }
+      >
+        <div
+          style={{
+            color: token.colorTextSecondary,
+
+            marginTop: 12,
+
+            lineHeight: 1.7,
+          }}
+        >
+          Are you sure you want to delete "
+          {formatLabel(employeeToDelete?.full_name)}
+          "?
+        </div>
+      </Modal>
     </>
   );
 }
