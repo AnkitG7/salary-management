@@ -113,13 +113,14 @@ export default function AppLayout({ isDarkMode, setIsDarkMode }) {
             {/* BRAND */}
             <div style={{ minWidth: 0 }}>
               {" "}
-              {/* ✅ Wrapper needs to allow shrinking */}
+              {/*  Wrapper needs to allow shrinking */}
               <div
                 style={{
                   fontSize: 30,
                   fontWeight: 800,
                   color: token.colorText,
-                  lineHeight: 1,
+                  lineHeight: 1.2,
+                  paddingBottom: 2,
                   letterSpacing: "-1px",
                   whiteSpace: "nowrap",
                   overflow: "hidden", // Hides text that overflows
