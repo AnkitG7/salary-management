@@ -1,25 +1,39 @@
-# Logs
-logs
-*.log
+# =========================
+# NODE MODULES
+# =========================
+
+node_modules/
+
+# =========================
+# BUILD OUTPUT
+# =========================
+
+dist/
+
+# =========================
+# ENV FILES
+# =========================
+
+.env
+.env.local
+
+# =========================
+# LOGS
+# =========================
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# =========================
+# TEST / CACHE
+# =========================
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-.env
+coverage/
+.pytest_cache/
+
+# =========================
+# VITE
+# =========================
+
+vite.svg
