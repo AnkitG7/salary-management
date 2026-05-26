@@ -1,4 +1,18 @@
 COUNTRY_CURRENCY_MAP = {
+    "india": "INR",
+    "united states": "USD",
+    "united kingdom": "GBP",
+    "germany": "EUR",
+    "japan": "JPY",
+    "china": "CNY",
+    "russia": "RUB",
+    "finland": "EUR",
+    "france": "EUR",
+    "italy": "EUR",
+    "netherlands": "EUR",
+    "spain": "EUR",
+    "south korea": "KRW",
+
     "afghanistan": "AFN",
     "albania": "ALL",
     "algeria": "DZD",
@@ -30,7 +44,7 @@ COUNTRY_CURRENCY_MAP = {
     "canada": "CAD",
     "chad": "XAF",
     "chile": "CLP",
-    "china": "CNY",
+
     "colombia": "COP",
     "congo": "XAF",
     "costa rica": "CRC",
@@ -49,12 +63,11 @@ COUNTRY_CURRENCY_MAP = {
     "ethiopia": "ETB",
 
     "fiji": "FJD",
-    "finland": "EUR",
-    "france": "EUR",
+
 
     "gabon": "XAF",
     "georgia": "GEL",
-    "germany": "EUR",
+
     "ghana": "GHS",
     "greece": "EUR",
     "guatemala": "GTQ",
@@ -66,16 +79,16 @@ COUNTRY_CURRENCY_MAP = {
     "hungary": "HUF",
 
     "iceland": "ISK",
-    "india": "INR",
+
     "indonesia": "IDR",
     "iran": "IRR",
     "iraq": "IQD",
     "ireland": "EUR",
     "israel": "ILS",
-    "italy": "EUR",
+
 
     "jamaica": "JMD",
-    "japan": "JPY",
+
     "jordan": "JOD",
 
     "kazakhstan": "KZT",
@@ -106,7 +119,7 @@ COUNTRY_CURRENCY_MAP = {
 
     "namibia": "NAD",
     "nepal": "NPR",
-    "netherlands": "EUR",
+
     "new zealand": "NZD",
     "nicaragua": "NIO",
     "nigeria": "NGN",
@@ -127,7 +140,7 @@ COUNTRY_CURRENCY_MAP = {
     "qatar": "QAR",
 
     "romania": "RON",
-    "russia": "RUB",
+
     "rwanda": "RWF",
 
     "saudi arabia": "SAR",
@@ -138,8 +151,8 @@ COUNTRY_CURRENCY_MAP = {
     "slovenia": "EUR",
     "somalia": "SOS",
     "south africa": "ZAR",
-    "south korea": "KRW",
-    "spain": "EUR",
+
+
     "sri lanka": "LKR",
     "sudan": "SDG",
     "sweden": "SEK",
@@ -157,8 +170,7 @@ COUNTRY_CURRENCY_MAP = {
     "uganda": "UGX",
     "ukraine": "UAH",
     "united arab emirates": "AED",
-    "united kingdom": "GBP",
-    "united states": "USD",
+
     "uruguay": "UYU",
     "uzbekistan": "UZS",
 

@@ -1,8 +1,9 @@
-import { Typography } from "antd";
+import { Typography ,theme} from "antd";
 
 const { Title, Text } = Typography;
 
 export default function AnalyticsHeader() {
+  const { token } = theme.useToken();
   return (
     <div
       style={{
@@ -13,14 +14,16 @@ export default function AnalyticsHeader() {
         level={2}
         style={{
           marginBottom: 4,
+          color: token.colorText,
         }}
       >
         Analytics Dashboard
       </Title>
 
       <Text
-        type="secondary"
+        // type="secondary"
         style={{
+          color: token.colorTextSecondary,
           fontSize: 16,
         }}
       >

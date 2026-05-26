@@ -1,4 +1,4 @@
-import { Card, Statistic, Tag, Typography } from "antd";
+import { Card, Statistic, Tag, Typography, theme } from "antd";
 
 import { RiseOutlined } from "@ant-design/icons";
 
@@ -9,13 +9,15 @@ import formatSalary from "../../utils/formatSalary";
 const { Title, Text } = Typography;
 
 export default function JobTitleSalaryInsight({ data }) {
+  const { token } = theme.useToken();
   return (
     <Card
       bordered={false}
       style={{
         borderRadius: 20,
 
-        boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+        // boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+        boxShadow: token.boxShadowSecondary,
 
         height: "100%",
       }}
@@ -38,7 +40,7 @@ export default function JobTitleSalaryInsight({ data }) {
             level={4}
             style={{
               marginTop: 6,
-
+              color: token.colorText,
               marginBottom: 0,
             }}
           >
@@ -47,12 +49,15 @@ export default function JobTitleSalaryInsight({ data }) {
         </div>
 
         <Tag
-          color="blue"
           bordered={false}
           style={{
             paddingInline: 12,
 
             borderRadius: 999,
+
+            background: token.colorPrimaryBg,
+
+            color: token.colorPrimary,
           }}
         >
           {formatLabel(data.country)}
@@ -66,7 +71,7 @@ export default function JobTitleSalaryInsight({ data }) {
         prefix={<RiseOutlined />}
         valueStyle={{
           fontSize: 32,
-
+          color: token.colorText,
           fontWeight: 700,
         }}
       />

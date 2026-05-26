@@ -1,4 +1,4 @@
-import { Card, Typography } from "antd";
+import { Card, Typography,theme } from "antd";
 
 import {
   Bar,
@@ -15,14 +15,14 @@ import formatLabel from "../../utils/formatLabel";
 const { Text } = Typography;
 
 export default function EmployeeCountByJobTitleChart({ data }) {
+  const { token } = theme.useToken();
   return (
     <Card
       bordered={false}
       style={{
         borderRadius: 20,
-
-        boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-
+        // boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+        boxShadow: token.boxShadowSecondary,
         height: "100%",
       }}
     >
@@ -36,10 +36,9 @@ export default function EmployeeCountByJobTitleChart({ data }) {
         <div
           style={{
             fontSize: 20,
-
             fontWeight: 700,
-
             marginTop: 4,
+            color: token.colorText,
           }}
         >
           Employees By Job Title
@@ -48,11 +47,25 @@ export default function EmployeeCountByJobTitleChart({ data }) {
 
       <ResponsiveContainer width="100%" height={320}>
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke={token.colorBorderSecondary}
+          />
 
-          <XAxis dataKey="job_title" tickFormatter={formatLabel} />
+          {/* <XAxis dataKey="job_title" tickFormatter={formatLabel} /> */}
+          <XAxis
+            dataKey="job_title"
+            tickFormatter={formatLabel}
+            tick={{
+              fill: token.colorTextSecondary,
+            }}
+          />
 
-          <YAxis />
+          <YAxis
+            tick={{
+              fill: token.colorTextSecondary,
+            }}
+          />
 
           <Tooltip />
 

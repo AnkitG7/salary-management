@@ -1,4 +1,13 @@
-import { Avatar, Card, Empty, Space, Table, Tag, Typography } from "antd";
+import {
+  Avatar,
+  Card,
+  Empty,
+  Space,
+  Table,
+  Tag,
+  Typography,
+  theme,
+} from "antd";
 
 import formatDate from "../../utils/formatDate";
 
@@ -23,6 +32,7 @@ function getInitials(name = "") {
 }
 
 export default function RecentEmployeesTable({ employees, loading }) {
+  const { token } = theme.useToken();
   const columns = [
     {
       title: "Employee",
@@ -37,11 +47,14 @@ export default function RecentEmployeesTable({ employees, loading }) {
           <Avatar
             size={46}
             style={{
-              backgroundColor: "#eef2ff",
-              color: "#4338ca",
+              // backgroundColor: "#eef2ff",
+              backgroundColor: token.colorBgElevated,
+              // color: "#4338ca",
+              color: token.colorPrimary,
               fontWeight: 700,
               fontSize: 15,
-              border: "1px solid #c7d2fe",
+              // border: "1px solid #c7d2fe",
+              border: `1px solid ${token.colorBorderSecondary}`,
               flexShrink: 0,
             }}
           >
@@ -54,7 +67,9 @@ export default function RecentEmployeesTable({ employees, loading }) {
               style={{
                 display: "block",
                 fontSize: 14,
-                color: "#0f172a",
+                // color: "#0f172a",
+                color: token.colorText,
+
                 marginBottom: 2,
               }}
             >
@@ -146,7 +161,9 @@ export default function RecentEmployeesTable({ employees, loading }) {
       variant="borderless"
       style={{
         borderRadius: 28,
-        boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
+        // boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
+        background: token.colorBgContainer,
+        boxShadow: token.boxShadowSecondary,
       }}
       bodyStyle={{
         padding: "28px 28px 20px",
@@ -163,7 +180,8 @@ export default function RecentEmployeesTable({ employees, loading }) {
           style={{
             margin: 0,
             marginBottom: 6,
-            color: "#0f172a",
+            // color: "#0f172a",
+            color: token.colorText,
           }}
         >
           Recent Employee Activity

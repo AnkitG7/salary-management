@@ -1,10 +1,14 @@
-import { Col, Row, Select } from "antd";
+import { Col, Row, Select, theme } from "antd";
 
 import { useEffect, useState } from "react";
 
+import formatLabel from "../../utils/formatLabel";
+
 import { getFilterValues } from "../../api/employees";
 
-export default function EmployeeFilters({ queryParams, setQueryParams }) {
+export default function EmployeeFilters({ queryParams, setQueryParams, filtersRefreshKey, }) {
+  const { token } = theme.useToken();
+
   const [countries, setCountries] = useState([]);
 
   const [jobTitles, setJobTitles] = useState([]);
@@ -24,6 +28,12 @@ export default function EmployeeFilters({ queryParams, setQueryParams }) {
           ]);
 
         setCountries(countryValues || []);
+        if (
+          queryParams.country &&
+          !countryValues.includes(queryParams.country)
+        ) {
+          updateFilter("country", "");
+        }
 
         setJobTitles(jobTitleValues || []);
 
@@ -56,6 +66,7 @@ export default function EmployeeFilters({ queryParams, setQueryParams }) {
             fontWeight: 600,
 
             marginBottom: 8,
+            color: token.colorText,
           }}
         >
           Country
@@ -68,12 +79,13 @@ export default function EmployeeFilters({ queryParams, setQueryParams }) {
           value={queryParams.country || undefined}
           onChange={(value) => updateFilter("country", value || "")}
           options={countries.map((country) => ({
-            label: country,
+            label: formatLabel(country),
 
             value: country,
           }))}
           style={{
             width: "100%",
+
           }}
         />
       </Col>
@@ -86,6 +98,7 @@ export default function EmployeeFilters({ queryParams, setQueryParams }) {
             fontWeight: 600,
 
             marginBottom: 8,
+            color: token.colorText,
           }}
         >
           Job Title
@@ -98,12 +111,13 @@ export default function EmployeeFilters({ queryParams, setQueryParams }) {
           value={queryParams.job_title || undefined}
           onChange={(value) => updateFilter("job_title", value || "")}
           options={jobTitles.map((jobTitle) => ({
-            label: jobTitle,
+            label: formatLabel(jobTitle),
 
             value: jobTitle,
           }))}
           style={{
             width: "100%",
+
           }}
         />
       </Col>
@@ -116,6 +130,7 @@ export default function EmployeeFilters({ queryParams, setQueryParams }) {
             fontWeight: 600,
 
             marginBottom: 8,
+            color: token.colorText,
           }}
         >
           Employment Status
@@ -154,6 +169,7 @@ export default function EmployeeFilters({ queryParams, setQueryParams }) {
           ]}
           style={{
             width: "100%",
+            
           }}
         />
       </Col>
@@ -166,6 +182,7 @@ export default function EmployeeFilters({ queryParams, setQueryParams }) {
             fontWeight: 600,
 
             marginBottom: 8,
+            color: token.colorText,
           }}
         >
           Currency
@@ -184,6 +201,7 @@ export default function EmployeeFilters({ queryParams, setQueryParams }) {
           }))}
           style={{
             width: "100%",
+
           }}
         />
       </Col>

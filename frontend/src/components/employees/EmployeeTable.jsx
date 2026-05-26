@@ -6,9 +6,10 @@ import {
   Modal,
   Space,
   Table,
-  Tag,
+  Tag,Empty,
   Tooltip,
   Typography,
+  theme
 } from "antd";
 
 import { DeleteOutlined, EditOutlined, UserOutlined } from "@ant-design/icons";
@@ -45,7 +46,10 @@ export default function EmployeeTable({
   total,
   queryParams,
   setQueryParams,
+  onEmployeeDeleted,
 }) {
+  const { token } = theme.useToken();
+
   const navigate = useNavigate();
 
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -84,11 +88,14 @@ export default function EmployeeTable({
           <Avatar
             size={42}
             style={{
-              backgroundColor: "#f0f5ff",
-              color: "#1d39c4",
+              // backgroundColor: "#f0f5ff",
+              backgroundColor: token.colorBgElevated,
+              // color: "#1d39c4",
+              color: token.colorPrimary,
               fontWeight: 700,
               fontSize: 16,
-              border: "1px solid #d6e4ff",
+              // border: "1px solid #d6e4ff",
+              border: `1px solid ${token.colorBorderSecondary}`,
               flexShrink: 0,
             }}
           >
@@ -108,6 +115,7 @@ export default function EmployeeTable({
                 fontWeight: 600,
 
                 marginBottom: 2,
+                color: token.colorText,
               }}
             >
               {formatLabel(employee.full_name)}
@@ -248,6 +256,7 @@ export default function EmployeeTable({
           <Tooltip title="Edit Employee">
             <Button
               type="text"
+              shape="circle"
               icon={<EditOutlined />}
               onClick={(event) => {
                 event.stopPropagation();
@@ -263,6 +272,7 @@ export default function EmployeeTable({
             <Button
               danger
               type="text"
+              shape="circle"
               icon={<DeleteOutlined />}
               onClick={(event) => {
                 event.stopPropagation();
@@ -328,6 +338,8 @@ export default function EmployeeTable({
 
       message.success("Employee deleted successfully");
 
+      onEmployeeDeleted?.();
+
       setQueryParams((previous) => ({
         ...previous,
       }));
@@ -345,7 +357,8 @@ export default function EmployeeTable({
         style={{
           borderRadius: 20,
 
-          boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+          // boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+          boxShadow: token.boxShadowSecondary,
         }}
       >
         <Table
@@ -364,13 +377,15 @@ export default function EmployeeTable({
                   padding: 24,
                 }}
               >
-                <div>No employees found</div>
+                {/* <div>No employees found</div> */}
+                <Empty description="No employees found" />
 
                 <div
                   style={{
                     marginTop: 8,
 
-                    color: "#888",
+                    // color: "#888",
+                    color: token.colorTextSecondary,
                   }}
                 >
                   Try adjusting search or filters

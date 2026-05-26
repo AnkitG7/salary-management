@@ -1,8 +1,9 @@
-import { Input } from "antd";
+import { Input,theme } from "antd";
 
 import { SearchOutlined } from "@ant-design/icons";
 
 export default function EmployeeSearch({ queryParams, setQueryParams }) {
+  const { token } = theme.useToken();
   return (
     <div>
       <div
@@ -12,6 +13,7 @@ export default function EmployeeSearch({ queryParams, setQueryParams }) {
           fontWeight: 600,
 
           marginBottom: 8,
+          color: token.colorText,
         }}
       >
         Search
@@ -24,7 +26,8 @@ export default function EmployeeSearch({ queryParams, setQueryParams }) {
         prefix={
           <SearchOutlined
             style={{
-              color: "#999",
+              // color: "#999",
+              color: token.colorTextSecondary,
             }}
           />
         }
@@ -42,6 +45,9 @@ export default function EmployeeSearch({ queryParams, setQueryParams }) {
           maxWidth: 420,
 
           borderRadius: 12,
+          background: token.colorBgContainer,
+
+          color: token.colorText,
         }}
       />
     </div>

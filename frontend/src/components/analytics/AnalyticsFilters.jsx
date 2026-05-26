@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row, Select } from "antd";
+import { Button, Card, Col, Row, Select, theme} from "antd";
 
 import { useEffect, useState } from "react";
 
@@ -10,6 +10,8 @@ export default function AnalyticsFilters({
   selectedJobTitle,
   setSelectedJobTitle,
 }) {
+  const { token } = theme.useToken();
+
   const [countries, setCountries] = useState([]);
 
   const [jobTitles, setJobTitles] = useState([]);
@@ -42,7 +44,9 @@ export default function AnalyticsFilters({
 
         marginBottom: 24,
 
-        boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+        boxShadow: token.boxShadowSecondary,
+
+        // boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
       }}
     >
       <Row gutter={[16, 16]}>
@@ -50,10 +54,9 @@ export default function AnalyticsFilters({
           <div
             style={{
               fontSize: 13,
-
               fontWeight: 600,
-
               marginBottom: 8,
+              color: token.colorText,
             }}
           >
             Country
@@ -80,10 +83,9 @@ export default function AnalyticsFilters({
           <div
             style={{
               fontSize: 13,
-
               fontWeight: 600,
-
               marginBottom: 8,
+              color: token.colorText,
             }}
           >
             Job Title

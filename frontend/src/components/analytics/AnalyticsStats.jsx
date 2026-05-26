@@ -1,4 +1,4 @@
-import { Card, Col, Row, Statistic, Typography } from "antd";
+import { Card, Col, Row, Statistic, Typography ,theme} from "antd";
 
 import {
   ArrowDownOutlined,
@@ -11,6 +11,7 @@ import formatSalary from "../../utils/formatSalary";
 const { Text } = Typography;
 
 export default function AnalyticsStats({ insights }) {
+  const { token } = theme.useToken();
   const cards = [
     {
       title: "Average Salary",
@@ -51,7 +52,8 @@ export default function AnalyticsStats({ insights }) {
             style={{
               borderRadius: 20,
 
-              boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+              // boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+              boxShadow: token.boxShadowSecondary,
             }}
           >
             <div
@@ -65,11 +67,18 @@ export default function AnalyticsStats({ insights }) {
                 marginBottom: 12,
               }}
             >
-              <Text type="secondary">{card.title}</Text>
+              <Text
+                style={{
+                  color: token.colorTextSecondary,
+                }}
+              >
+                {card.title}
+              </Text>
 
               <div
                 style={{
                   fontSize: 18,
+                  color: token.colorPrimary,
                 }}
               >
                 {card.icon}
@@ -81,8 +90,8 @@ export default function AnalyticsStats({ insights }) {
               formatter={(value) => formatSalary(value, insights.currency)}
               valueStyle={{
                 fontSize: 28,
-
                 fontWeight: 700,
+                color: token.colorText,
               }}
             />
           </Card>

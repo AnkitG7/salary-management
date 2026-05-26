@@ -1,4 +1,5 @@
-import { Alert, Col, Empty, Row, Spin, Typography } from "antd";
+import { Alert, Card, Col, Empty, Row, Spin, Typography, theme } from "antd";
+import { BarChartOutlined } from "@ant-design/icons";
 
 import { useEffect, useState } from "react";
 
@@ -21,6 +22,8 @@ import GlobalWorkforceAnalyticsSection from "../components/analytics/GlobalWorkf
 const { Title, Text } = Typography;
 
 export default function AnalyticsPage() {
+  const { token } = theme.useToken();
+
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState("");
@@ -102,19 +105,6 @@ export default function AnalyticsPage() {
           acc[key] = [];
         }
 
-        /*
-              IMPORTANT:
-              Check your backend field name here.
-
-              If salary becomes NaN,
-              replace employee.salary
-              with the actual field.
-
-              Example:
-              employee.salary_in_usd
-              employee.salary_amount
-            */
-
         acc[key].push(Number(employee.salary));
 
         return acc;
@@ -155,6 +145,7 @@ export default function AnalyticsPage() {
       console.error(error);
     }
   }
+
   async function loadGlobalAnalytics() {
     try {
       const [employmentResponse, countryResponse, jobTitleResponse] =
@@ -166,10 +157,6 @@ export default function AnalyticsPage() {
           getEmployeeCountByJobTitle(),
         ]);
 
-      /*
-      Employment Distribution
-    */
-
       const formattedEmployment = Object.entries(employmentResponse || {}).map(
         ([name, value]) => ({
           name,
@@ -178,10 +165,6 @@ export default function AnalyticsPage() {
       );
 
       setEmploymentStatusData(formattedEmployment);
-
-      /*
-      Country Distribution
-    */
 
       const formattedCountries = Object.entries(countryResponse || {}).map(
         ([country, count]) => ({
@@ -192,10 +175,6 @@ export default function AnalyticsPage() {
 
       setCountryDistributionData(formattedCountries);
 
-      /*
-      Job Title Distribution
-    */
-
       const formattedJobTitles = Object.entries(jobTitleResponse || {}).map(
         ([job_title, count]) => ({
           job_title,
@@ -203,7 +182,6 @@ export default function AnalyticsPage() {
         }),
       );
 
-    //   setJobTitleDistributionData(formattedJobTitles);
       setJobTitleDistributionData(
         formattedJobTitles.sort((a, b) => b.count - a.count).slice(0, 8),
       );
@@ -243,47 +221,105 @@ export default function AnalyticsPage() {
   return (
     <div
       style={{
-        padding: 24,
+        width: "100%",
+        padding: 28,
+        background: token.colorBgLayout,
+        boxSizing: "border-box",
       }}
     >
-      {/* Header */}
-      <div
+      {/* HERO */}
+      <Card
+        variant="borderless"
         style={{
           marginBottom: 32,
+          borderRadius: 36,
+          overflow: "hidden",
+          background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+          // boxShadow: "0 10px 30px rgba(0,0,0,0.14)",
+          boxShadow: token.boxShadowSecondary,
+        }}
+        styles={{
+          body: {
+            padding: 40,
+          },
         }}
       >
-        <Title
-          level={2}
-          style={{
-            marginBottom: 4,
-          }}
-        >
-          Analytics Dashboard
-        </Title>
+        <Row justify="space-between" align="middle" gutter={[32, 32]}>
+          {/* LEFT */}
+          <Col flex="auto">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 22,
+              }}
+            >
+              {/* ICON */}
+              <div
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 28,
+                  background: "rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(12px)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#ffffff",
+                  fontSize: 34,
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.14)",
+                }}
+              >
+                <BarChartOutlined />
+              </div>
 
-        <Text
-          type="secondary"
-          style={{
-            fontSize: 16,
-          }}
-        >
-          Workforce salary insights, compensation benchmarking, and employee
-          distribution analytics.
-        </Text>
-      </div>
+              {/* TEXT */}
+              <div>
+                <Title
+                  level={1}
+                  style={{
+                    color: "#ffffff",
+                    margin: 0,
+                    fontWeight: 800,
+                    letterSpacing: "-1.2px",
+                  }}
+                >
+                  Analytics
+                </Title>
 
-      {/* Error State */}
+                <Text
+                  style={{
+                    color: "rgba(255,255,255,0.78)",
+                    fontSize: 16,
+                    lineHeight: 1.7,
+                    display: "block",
+                    marginTop: 12,
+                    maxWidth: 760,
+                  }}
+                >
+                  Workforce salary benchmarking, compensation intelligence,
+                  employee distribution, and organizational analytics across
+                  global operations.
+                </Text>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Card>
+
+      {/* ERROR */}
       {error && (
         <Alert
           type="error"
           message={error}
           style={{
             marginBottom: 24,
+            borderRadius: 18,
           }}
         />
       )}
 
-      {/* Country Analytics */}
+      {/* COUNTRY ANALYTICS */}
       <CountryAnalyticsSection
         countries={countries}
         selectedCountry={selectedCountry}
@@ -292,25 +328,35 @@ export default function AnalyticsPage() {
         loading={loading}
       />
 
-      {/* Empty State */}
+      {/* EMPTY */}
       {!salaryInsights && !loading && (
-        <Empty
-          description="No analytics available"
+        <Card
+          variant="borderless"
           style={{
-            marginTop: 48,
-          }}
-        />
-      )}
-
-      {/* Analytics Sections */}
-      {salaryInsights && (
-        <Row
-          gutter={[24, 24]}
-          style={{
-            marginTop: 24,
+            borderRadius: 28,
+            // boxShadow: "0 10px 30px rgba(15,23,42,0.06)",
+            boxShadow: token.boxShadowSecondary,
+            background: token.colorBgContainer,
           }}
         >
-          {/* Job Title Analytics */}
+          <Empty
+            description="No analytics available"
+            style={{
+              marginTop: 20,
+            }}
+          />
+        </Card>
+      )}
+
+      {/* MAIN ANALYTICS */}
+      {salaryInsights && (
+        <Row
+          gutter={[28, 28]}
+          style={{
+            marginTop: 28,
+          }}
+        >
+          {/* JOB TITLE */}
           <Col xs={24}>
             <JobTitleAnalyticsSection
               mode={mode}
@@ -324,7 +370,7 @@ export default function AnalyticsPage() {
             />
           </Col>
 
-          {/* Global Analytics Placeholder */}
+          {/* GLOBAL */}
           <Col xs={24}>
             <GlobalWorkforceAnalyticsSection
               employmentStatusData={employmentStatusData}
@@ -335,12 +381,12 @@ export default function AnalyticsPage() {
         </Row>
       )}
 
-      {/* Loading */}
+      {/* LOADING */}
       {loading && (
         <div
           style={{
             textAlign: "center",
-            marginTop: 32,
+            marginTop: 48,
           }}
         >
           <Spin size="large" />

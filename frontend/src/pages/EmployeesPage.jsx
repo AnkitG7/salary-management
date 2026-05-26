@@ -1,19 +1,42 @@
-import { Alert, Button, Card, Col, Row, Space, Typography } from "antd";
-import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Row,
+  Space,
+  Typography,
+  theme,
+} from "antd";
+
+import { PlusOutlined, ReloadOutlined, TeamOutlined } from "@ant-design/icons";
+
 import { useEffect, useRef, useState } from "react";
+
 import EmployeeTable from "../components/employees/EmployeeTable";
+
 import { getEmployees } from "../api/employees";
+
 import EmployeeSearch from "../components/employees/EmployeeSearch";
+
 import EmployeeFilters from "../components/employees/EmployeeFilters";
+
 import CreateEmployeeModal from "../components/employees/CreateEmployeeModal";
 
 const { Title, Text } = Typography;
 
 export default function EmployeesPage() {
+  const { token } = theme.useToken();
+
   const [employees, setEmployees] = useState([]);
+
   const [total, setTotal] = useState(0);
+
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState("");
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const DEFAULT_QUERY_PARAMS = {
@@ -29,18 +52,25 @@ export default function EmployeesPage() {
   };
 
   const [queryParams, setQueryParams] = useState(DEFAULT_QUERY_PARAMS);
+
   const [filtersRefreshKey, setFiltersRefreshKey] = useState(0);
+
   const debounceTimeout = useRef(null);
 
   async function loadEmployees() {
     try {
       setLoading(true);
+
       const response = await getEmployees(queryParams);
+
       setEmployees(response.items || []);
+
       setTotal(response.total || 0);
+
       setError("");
     } catch (error) {
       console.error(error);
+
       setError("Failed to load employees");
     } finally {
       setLoading(false);
@@ -66,82 +96,243 @@ export default function EmployeesPage() {
   return (
     <div
       style={{
-        padding: 24,
         width: "100%",
+        padding: 36,
         boxSizing: "border-box",
       }}
     >
-      <Row
-        justify="space-between"
-        align="middle"
+      {/* HERO */}
+      <Card
+        variant="borderless"
         style={{
-          marginBottom: 24,
+          marginBottom: 36,
+          borderRadius: 40,
+          overflow: "hidden",
+          position: "relative",
+          background:
+            "linear-gradient(135deg, #2563eb 0%, #1d4ed8 45%, #4338ca 100%)",
+          boxShadow: "0 24px 80px rgba(37,99,235,0.22)",
+          border: "1px solid rgba(255,255,255,0.08)",
+        }}
+        styles={{
+          body: {
+            padding: 48,
+          },
         }}
       >
-        <Col>
-          <Title
-            level={2}
-            style={{
-              marginBottom: 4,
-            }}
-          >
-            Employees
-          </Title>
+        {/* Glow */}
+        <div
+          style={{
+            position: "absolute",
+            top: -140,
+            right: -120,
+            width: 360,
+            height: 360,
+            borderRadius: "50%",
+            background: "rgba(255,255,255,0.08)",
+            filter: "blur(18px)",
+          }}
+        />
 
-          <Text
-            type="secondary"
-            style={{
-              fontSize: 16,
-            }}
-          >
-            Manage and view all employees in your organization.
-          </Text>
-        </Col>
+        <div
+          style={{
+            position: "absolute",
+            bottom: -120,
+            left: -100,
+            width: 280,
+            height: 280,
+            borderRadius: "50%",
+            background: "rgba(255,255,255,0.06)",
+            filter: "blur(14px)",
+          }}
+        />
 
-        <Col>
-          <Button
-            type="primary"
-            size="large"
-            icon={<PlusOutlined />}
-            onClick={() => setIsCreateModalOpen(true)}
-          >
-            Add Employee
-          </Button>
-        </Col>
-      </Row>
+        <Row
+          justify="space-between"
+          align="middle"
+          gutter={[32, 32]}
+          style={{
+            position: "relative",
+            zIndex: 2,
+          }}
+        >
+          {/* LEFT */}
+          <Col flex="auto">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 28,
+              }}
+            >
+              {/* ICON */}
+              <div
+                style={{
+                  width: 94,
+                  height: 94,
+                  borderRadius: 34,
+                  background: "rgba(255,255,255,0.12)",
+                  backdropFilter: "blur(16px)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#ffffff",
+                  fontSize: 40,
+                  flexShrink: 0,
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  boxShadow: "0 18px 42px rgba(0,0,0,0.14)",
+                }}
+              >
+                <TeamOutlined />
+              </div>
 
+              {/* TEXT */}
+              <div>
+                <Title
+                  level={1}
+                  style={{
+                    color: "#ffffff",
+                    margin: 0,
+                    fontWeight: 800,
+                    letterSpacing: "-1.8px",
+                    lineHeight: 1,
+                  }}
+                >
+                  Employees
+                </Title>
+
+                <Text
+                  style={{
+                    color: "rgba(255,255,255,0.82)",
+                    fontSize: 17,
+                    display: "block",
+                    marginTop: 16,
+                    lineHeight: 1.9,
+                    maxWidth: 780,
+                  }}
+                >
+                  Manage workforce operations, employee lifecycle, compensation
+                  intelligence, organizational records, and enterprise staffing
+                  analytics from a centralized workforce management platform.
+                </Text>
+              </div>
+            </div>
+          </Col>
+
+          {/* BUTTON */}
+          <Col>
+            <Button
+              type="primary"
+              size="large"
+              icon={<PlusOutlined />}
+              onClick={() => setIsCreateModalOpen(true)}
+              style={{
+                height: 60,
+                paddingInline: 34,
+                borderRadius: 20,
+                background: "#ffffff",
+                // background: token.colorBgContainer,
+                color: "#2563eb",
+                border: "none",
+                fontWeight: 700,
+                fontSize: 15,
+                boxShadow: "0 16px 36px rgba(0,0,0,0.18)",
+              }}
+            >
+              Add Employee
+            </Button>
+          </Col>
+        </Row>
+      </Card>
+
+      {/* ERROR */}
       {error && (
         <Alert
           type="error"
           message={error}
           style={{
-            marginBottom: 16,
+            marginBottom: 28,
+            borderRadius: 18,
           }}
         />
       )}
 
+      {/* FILTERS */}
       <Card
-        bordered={false}
+        variant="borderless"
         style={{
-          borderRadius: 20,
-          marginBottom: 24,
-          boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+          borderRadius: 34,
+          marginBottom: 36,
+          // background: "rgba(255,255,255,0.92)",
+          background: token.colorBgContainer,
+          backdropFilter: "blur(16px)",
+          // border: "1px solid rgba(226,232,240,0.8)",
+          border: `1px solid ${token.colorBorderSecondary}`,
+          // boxShadow: "0 18px 48px rgba(15,23,42,0.06)",
+          boxShadow: token.boxShadowSecondary,
+          overflow: "hidden",
+        }}
+        styles={{
+          body: {
+            padding: 36,
+          },
         }}
       >
         <Space
           direction="vertical"
-          size={20}
+          size={32}
           style={{
             width: "100%",
           }}
         >
+          {/* HEADER */}
+          <div>
+            <Title
+              level={4}
+              style={{
+                margin: 0,
+                // color: "#0f172a",
+                color: token.colorText,
+                fontWeight: 700,
+                letterSpacing: "-0.6px",
+              }}
+            >
+              Employee Filters
+            </Title>
+
+            <Text
+              style={{
+                // color: "#64748b",
+                color: token.colorTextDescription,
+                fontSize: 14,
+                display: "block",
+                marginTop: 10,
+                lineHeight: 1.8,
+                maxWidth: 760,
+              }}
+            >
+              Search and filter workforce records across departments, countries,
+              employment types, compensation structures, and organizational
+              operations.
+            </Text>
+          </div>
+
+          <Divider
+            style={{
+              margin: 0,
+              // borderColor: "rgba(226,232,240,0.8)",
+              borderColor: token.colorBorderSecondary,
+            }}
+          />
+
+          {/* SEARCH */}
           <EmployeeSearch
             queryParams={queryParams}
             setQueryParams={setQueryParams}
           />
 
-          {/* Adjusted row layout using align="end" to lock components down against the bottom axis margin */}
-          <Row justify="space-between" align="end" gutter={[16, 16]}>
+          {/* FILTER ROW */}
+          <Row justify="space-between" align="end" gutter={[28, 28]}>
             <Col flex="auto">
               <EmployeeFilters
                 queryParams={queryParams}
@@ -150,26 +341,25 @@ export default function EmployeesPage() {
               />
             </Col>
 
-            <Col style={{ display: "flex", flexDirection: "column" }}>
-              {/* Invisible placeholder matching the font height of the select labels above */}
-              <span
-                style={{ marginBottom: 8, visibility: "hidden", height: 22 }}
-                aria-hidden="true"
-              >
-                Spacer
-              </span>
+            {/* RESET */}
+            <Col>
               <Button
-                icon={<ReloadOutlined style={{ marginRight: 4 }} />}
+                icon={<ReloadOutlined />}
                 onClick={handleResetFilters}
-                danger
-                type="dashed"
+                size="large"
                 style={{
-                  borderRadius: 8,
-                  height: 32, // Forces absolute match to standard dropdown input sizing blocks
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: 500,
+                  height: 52,
+                  borderRadius: 18,
+                  paddingInline: 28,
+                  fontWeight: 700,
+                  // border: "1px solid rgba(226,232,240,0.9)",
+                  border: `1px solid ${token.colorBorderSecondary}`,
+                  // background: "#f8fafc",
+                  background: token.colorBgElevated,
+                  // color: "#334155",
+                  color: token.colorText,
+                  // boxShadow: "0 8px 18px rgba(15,23,42,0.04)",
+                  boxShadow: token.boxShadowSecondary,
                 }}
               >
                 Reset Filters
@@ -179,14 +369,40 @@ export default function EmployeesPage() {
         </Space>
       </Card>
 
-      <EmployeeTable
-        loading={loading}
-        employees={employees}
-        total={total}
-        queryParams={queryParams}
-        setQueryParams={setQueryParams}
-      />
+      {/* TABLE SECTION */}
+      <Card
+        variant="borderless"
+        style={{
+          borderRadius: 34,
+          // background: "#ffffff",
+          background: token.colorBgContainer,
+          // border: "1px solid rgba(226,232,240,0.8)",
+          border: `1px solid ${token.colorBorderSecondary}`,
+          // boxShadow: "0 18px 48px rgba(15,23,42,0.06)",
+          boxShadow: token.boxShadowSecondary,
+          overflow: "hidden",
+        }}
+        styles={{
+          body: {
+            padding: 30,
+          },
+        }}
+      >
+        <EmployeeTable
+          loading={loading}
+          employees={employees}
+          total={total}
+          queryParams={queryParams}
+          setQueryParams={setQueryParams}
+          onEmployeeDeleted={() => {
+            loadEmployees();
 
+            setFiltersRefreshKey((previous) => previous + 1);
+          }}
+        />
+      </Card>
+
+      {/* CREATE MODAL */}
       <CreateEmployeeModal
         open={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}

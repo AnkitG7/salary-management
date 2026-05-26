@@ -12,6 +12,7 @@ import {
   Tag,
   Typography,
   message,
+  theme,
 } from "antd";
 
 import {
@@ -47,6 +48,8 @@ const STATUS_COLORS = {
 };
 
 export default function EmployeeDetailsPage() {
+  const { token } = theme.useToken();
+
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -174,7 +177,7 @@ export default function EmployeeDetailsPage() {
       <div
         style={{
           padding: "32px",
-          background: "#f8f9fa",
+          background: token.colorBgLayout,
           minHeight: "100vh",
         }}
       >
@@ -240,6 +243,7 @@ export default function EmployeeDetailsPage() {
                 onClick={() => {
                   Modal.confirm({
                     title: "Delete Employee Record",
+                    
 
                     content: `Are you sure you want to remove "${employee.full_name}" from organization records? This action cannot be reversed.`,
 
@@ -268,7 +272,8 @@ export default function EmployeeDetailsPage() {
           bordered={false}
           style={{
             borderRadius: 20,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+            // boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+            boxShadow: token.boxShadowSecondary,
             marginBottom: 24,
             padding: "8px 12px",
           }}
@@ -280,11 +285,14 @@ export default function EmployeeDetailsPage() {
                   size={84}
                   src={employee.avatar_url || null}
                   style={{
-                    backgroundColor: "#f0f5ff",
-                    color: "#1d39c4",
+                    // backgroundColor: "#f0f5ff",
+                    backgroundColor: token.colorBgElevated,
+                    // color: "#1d39c4",
+                    color: token.colorPrimary,
                     fontSize: 28,
                     fontWeight: 700,
-                    border: "2px solid #d6e4ff",
+                    // border: "2px solid #d6e4ff",
+                    border: `2px solid ${token.colorBorderSecondary}`,
                   }}
                 >
                   {employee.full_name
@@ -311,7 +319,8 @@ export default function EmployeeDetailsPage() {
                   <Text
                     style={{
                       fontSize: 16,
-                      color: "#595959",
+                      // color: "#595959",
+                      color: token.colorTextSecondary,
                       fontWeight: 500,
                     }}
                   >
@@ -418,7 +427,8 @@ export default function EmployeeDetailsPage() {
               bordered={false}
               style={{
                 borderRadius: 20,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+                // boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+                boxShadow: token.boxShadowSecondary,
                 height: "100%",
               }}
             >
@@ -426,13 +436,15 @@ export default function EmployeeDetailsPage() {
                 column={1}
                 items={infoItems}
                 labelStyle={{
-                  color: "#8c8c8c",
+                  // color: "#8c8c8c",
+                  color: token.colorTextSecondary,
                   fontWeight: 500,
                   width: "35%",
                   paddingBottom: 16,
                 }}
                 contentStyle={{
-                  color: "#262626",
+                  // color: "#262626",
+                  color: token.colorText,
                   fontWeight: 600,
                   paddingBottom: 16,
                 }}
@@ -465,7 +477,8 @@ export default function EmployeeDetailsPage() {
                 bordered={false}
                 style={{
                   borderRadius: 20,
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+                  // boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+                  boxShadow: token.boxShadowSecondary,
                 }}
               >
                 <Row
@@ -494,7 +507,8 @@ export default function EmployeeDetailsPage() {
                   justify="space-between"
                   style={{
                     paddingBottom: 16,
-                    borderBottom: "1px dashed #f0f0f0",
+                    // borderBottom: "1px dashed #f0f0f0",
+                    borderBottom: `1px dashed ${token.colorBorderSecondary}`,
                   }}
                 >
                   <Col>
@@ -529,7 +543,8 @@ export default function EmployeeDetailsPage() {
                       strong
                       style={{
                         fontSize: 20,
-                        color: "#2f54eb",
+                        // color: "#2f54eb",
+                        color: token.colorPrimary,
                       }}
                     >
                       {formatSalary(employee.salary, employee.currency)}
@@ -554,18 +569,21 @@ export default function EmployeeDetailsPage() {
                 bordered={false}
                 style={{
                   borderRadius: 20,
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+                  // boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+                  boxShadow: token.boxShadowSecondary,
                 }}
               >
                 <Descriptions
                   column={1}
                   labelStyle={{
-                    color: "#8c8c8c",
+                    // color: "#8c8c8c",
+                    color: token.colorTextSecondary,
                     fontWeight: 500,
                     paddingBottom: 12,
                   }}
                   contentStyle={{
-                    color: "#262626",
+                    // color: "#262626",
+                    color: token.colorText,
                     fontWeight: 600,
                     textAlign: "right",
                     paddingBottom: 12,

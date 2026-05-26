@@ -10,6 +10,7 @@ import {
   Table,
   Tag,
   Typography,
+  theme,
 } from "antd";
 
 import { getEmployees, deleteEmployee } from "../../api/employees";
@@ -50,6 +51,7 @@ function getStatusColor(status) {
 }
 
 function EmployeeList() {
+  const { token } = theme.useToken();
   const [employees, setEmployees] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -57,6 +59,7 @@ function EmployeeList() {
   const [error, setError] = useState("");
 
   const [total, setTotal] = useState(0);
+  // const [filtersRefreshKey, setFiltersRefreshKey] = useState(0);
 
   const [pagination, setPagination] = useState({
     current: 1,
@@ -80,7 +83,7 @@ function EmployeeList() {
       await deleteEmployee(employeeId);
 
       message.success("Employee deleted successfully");
-
+      // setFiltersRefreshKey((prev) => prev + 1);
       await refreshEmployees();
     } catch (error) {
       console.error(error);
@@ -218,6 +221,7 @@ function EmployeeList() {
     <div
       style={{
         padding: 24,
+        background: token.colorBgLayout,
       }}
     >
       <div
@@ -228,7 +232,15 @@ function EmployeeList() {
           marginBottom: 16,
         }}
       >
-        <Title level={2}>Employees</Title>
+        {/* <Title level={2}>Employees</Title> */}
+        <Title
+          level={2}
+          style={{
+            color: token.colorText,
+          }}
+        >
+          Employees
+        </Title>
 
         <Button
           type="primary"
@@ -254,6 +266,7 @@ function EmployeeList() {
           style={{
             padding: 40,
             textAlign: "center",
+            color: token.colorText,
           }}
         >
           <Spin size="large" />
