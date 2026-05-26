@@ -64,44 +64,30 @@ export default function AppLayout({ isDarkMode, setIsDarkMode }) {
           }}
         >
           {/* LEFT SIDE */}
-
-          <div
+          <Link
+            to="/dashboard" // This makes the whole area clickable and routes to the dashboard
             style={{
               display: "flex",
-
               alignItems: "center",
-
               gap: 18,
-
               minWidth: 0,
+              textDecoration: "none", // Prevents default link underlines
             }}
           >
             {/* LOGO */}
-
             <div
               style={{
                 width: 58,
-
                 height: 58,
-
                 borderRadius: 20,
-
                 background: "linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)",
-
                 display: "flex",
-
                 alignItems: "center",
-
                 justifyContent: "center",
-
                 color: "#ffffff",
-
                 fontSize: 28,
-
                 fontWeight: 800,
-
                 flexShrink: 0,
-
                 boxShadow: "0 14px 30px rgba(37,99,235,0.30)",
               }}
             >
@@ -109,11 +95,9 @@ export default function AppLayout({ isDarkMode, setIsDarkMode }) {
             </div>
 
             {/* BRAND */}
-
-            {/* BRAND */}
             <div style={{ minWidth: 0 }}>
               {" "}
-              {/*  Wrapper needs to allow shrinking */}
+              {/* Wrapper needs to allow shrinking */}
               <div
                 style={{
                   fontSize: 30,
@@ -132,25 +116,18 @@ export default function AppLayout({ isDarkMode, setIsDarkMode }) {
               <Text
                 style={{
                   marginTop: 6,
-
                   display: "block",
-
                   fontSize: 13,
-
                   color: token.colorTextSecondary,
-
                   fontWeight: 500,
-
                   letterSpacing: "0.2px",
                 }}
               >
                 Workforce Intelligence Platform
               </Text>
             </div>
-          </div>
-
+          </Link>{" "}
           {/* RIGHT SIDE */}
-
           <div
             style={{
               display: "flex",
