@@ -110,24 +110,25 @@ export default function AppLayout({ isDarkMode, setIsDarkMode }) {
 
             {/* BRAND */}
 
-            {/* BRAND */}
-            <div style={{ minWidth: 0 }}>
-              {" "}
-              {/* ✅ Wrapper needs to allow shrinking */}
+            <div>
               <div
                 style={{
                   fontSize: 30,
+
                   fontWeight: 800,
+
                   color: token.colorText,
+
                   lineHeight: 1,
+
                   letterSpacing: "-1px",
+
                   whiteSpace: "nowrap",
-                  overflow: "hidden", // Hides text that overflows
-                  textOverflow: "ellipsis", // Adds "..." when cramped
                 }}
               >
                 SalaryManage
               </div>
+
               <Text
                 style={{
                   marginTop: 6,
@@ -157,11 +158,8 @@ export default function AppLayout({ isDarkMode, setIsDarkMode }) {
               alignItems: "center",
 
               gap: 18,
-              flex: 1,
-              justifyContent: "flex-end",
-              minWidth: 0,
 
-              // flexShrink: 0,
+              flexShrink: 0,
             }}
           >
             {/* NAVIGATION */}
@@ -177,11 +175,8 @@ export default function AppLayout({ isDarkMode, setIsDarkMode }) {
                 fontSize: 15,
 
                 fontWeight: 600,
-                flex: 1,
-                minWidth: 0,
-                justifyContent: "flex-end",
 
-                // minWidth: 420,
+                minWidth: 420,
               }}
               items={[
                 {
