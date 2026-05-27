@@ -2,6 +2,11 @@
 
 Production-style full-stack salary management platform built for managing employee records, salary analytics, and workforce insights at scale.
 
+## Video Demo
+
+[Watch Project Demo](https://youtu.be/Ti9TOIn72V8)
+
+---
 Designed using modern frontend and backend technologies with a focus on:
 
 - scalable architecture
