@@ -176,11 +176,7 @@ Additional analytics were added to improve HR visibility and workforce understan
 ![Employee Details](./screenshots/employees_details.png)
 
 
-# Demo Video
 
-Watch the application demo here:
-
-[Project Demo Video](https://your-video-link)
 
 # System Architecture
 
