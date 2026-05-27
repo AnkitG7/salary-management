@@ -41,11 +41,11 @@ export default function JobTitleAnalyticsSection({
       style={{
         borderRadius: 32,
         marginBottom: 28,
-        // background: "#ffffff",
+
         background: token.colorBgContainer,
-        // border: "1px solid rgba(226,232,240,0.8)",
+
         border: `1px solid ${token.colorBorderSecondary}`,
-        // boxShadow: "0 10px 40px rgba(15,23,42,0.06)",
+
         boxShadow: token.boxShadowSecondary,
         overflow: "hidden",
       }}
@@ -65,7 +65,7 @@ export default function JobTitleAnalyticsSection({
           level={2}
           style={{
             marginBottom: 8,
-            // color: "#0f172a",
+
             color: token.colorText,
             fontWeight: 700,
             letterSpacing: "-0.8px",
@@ -76,7 +76,6 @@ export default function JobTitleAnalyticsSection({
 
         <Text
           style={{
-            // color: "#64748b",
             color: token.colorTextDescription,
             fontSize: 15,
           }}
@@ -121,11 +120,10 @@ export default function JobTitleAnalyticsSection({
             onChange={(event) => setMode(event.target.value)}
             size="large"
             style={{
-              // background: "#f8fafc",
               background: token.colorBgElevated,
               padding: 6,
               borderRadius: 14,
-              // border: "1px solid rgba(226,232,240,0.9)",
+
               border: `1px solid ${token.colorBorderSecondary}`,
             }}
           >
@@ -165,7 +163,7 @@ export default function JobTitleAnalyticsSection({
               level={3}
               style={{
                 marginBottom: 6,
-                // color: "#0f172a",
+
                 color: token.colorText,
                 letterSpacing: "-0.5px",
               }}
@@ -175,7 +173,6 @@ export default function JobTitleAnalyticsSection({
 
             <Text
               style={{
-                // color: "#64748b",
                 color: token.colorTextDescription,
                 fontSize: 14,
               }}
@@ -192,11 +189,11 @@ export default function JobTitleAnalyticsSection({
                   style={{
                     borderRadius: 24,
                     height: "100%",
-                    // background: "#ffffff",
+
                     background: token.colorBgContainer,
-                    // border: "1px solid rgba(226,232,240,0.7)",
+
                     border: `1px solid ${token.colorBorderSecondary}`,
-                    // boxShadow: "0 4px 20px rgba(15,23,42,0.04)",
+
                     boxShadow: token.boxShadowSecondary,
                     transition: "all 0.25s ease",
                   }}
@@ -236,7 +233,7 @@ export default function JobTitleAnalyticsSection({
                         style={{
                           display: "block",
                           fontSize: 15,
-                          // color: "#0f172a",
+
                           color: token.colorText,
                         }}
                       >
@@ -245,7 +242,6 @@ export default function JobTitleAnalyticsSection({
 
                       <Text
                         style={{
-                          // color: "#94a3b8",
                           color: token.colorTextSecondary,
                           fontSize: 12,
                         }}
@@ -264,7 +260,7 @@ export default function JobTitleAnalyticsSection({
                     valueStyle={{
                       fontSize: 28,
                       fontWeight: 800,
-                      // color: "#0f172a",
+
                       color: token.colorText,
                       letterSpacing: "-1px",
                     }}
@@ -284,9 +280,9 @@ export default function JobTitleAnalyticsSection({
             borderRadius: 28,
             background:
               "linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(59,130,246,0.04) 100%)",
-            // border: "1px solid rgba(226,232,240,0.8)",
+
             border: `1px solid ${token.colorBorderSecondary}`,
-            // boxShadow: "0 10px 30px rgba(15,23,42,0.05)",
+
             boxShadow: token.boxShadowSecondary,
           }}
           bodyStyle={{
@@ -321,7 +317,7 @@ export default function JobTitleAnalyticsSection({
                 style={{
                   fontSize: 13,
                   fontWeight: 600,
-                  // color: "#64748b",
+
                   color: token.colorTextDescription,
                   letterSpacing: "0.4px",
                   textTransform: "uppercase",
@@ -335,7 +331,7 @@ export default function JobTitleAnalyticsSection({
                 style={{
                   marginTop: 10,
                   marginBottom: 20,
-                  // color: "#0f172a",
+
                   color: token.colorText,
                   letterSpacing: "-0.8px",
                 }}
@@ -352,7 +348,7 @@ export default function JobTitleAnalyticsSection({
                 valueStyle={{
                   fontSize: 38,
                   fontWeight: 800,
-                  // color: "#0f172a",
+
                   color: token.colorText,
                   letterSpacing: "-1px",
                 }}

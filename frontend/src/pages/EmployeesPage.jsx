@@ -231,7 +231,7 @@ export default function EmployeesPage() {
                 paddingInline: 34,
                 borderRadius: 20,
                 background: "#ffffff",
-                // background: token.colorBgContainer,
+
                 color: "#2563eb",
                 border: "none",
                 fontWeight: 700,
@@ -263,12 +263,12 @@ export default function EmployeesPage() {
         style={{
           borderRadius: 34,
           marginBottom: 36,
-          // background: "rgba(255,255,255,0.92)",
+
           background: token.colorBgContainer,
           backdropFilter: "blur(16px)",
-          // border: "1px solid rgba(226,232,240,0.8)",
+
           border: `1px solid ${token.colorBorderSecondary}`,
-          // boxShadow: "0 18px 48px rgba(15,23,42,0.06)",
+
           boxShadow: token.boxShadowSecondary,
           overflow: "hidden",
         }}
@@ -291,7 +291,7 @@ export default function EmployeesPage() {
               level={4}
               style={{
                 margin: 0,
-                // color: "#0f172a",
+
                 color: token.colorText,
                 fontWeight: 700,
                 letterSpacing: "-0.6px",
@@ -302,7 +302,6 @@ export default function EmployeesPage() {
 
             <Text
               style={{
-                // color: "#64748b",
                 color: token.colorTextDescription,
                 fontSize: 14,
                 display: "block",
@@ -320,7 +319,7 @@ export default function EmployeesPage() {
           <Divider
             style={{
               margin: 0,
-              // borderColor: "rgba(226,232,240,0.8)",
+
               borderColor: token.colorBorderSecondary,
             }}
           />
@@ -352,13 +351,13 @@ export default function EmployeesPage() {
                   borderRadius: 18,
                   paddingInline: 28,
                   fontWeight: 700,
-                  // border: "1px solid rgba(226,232,240,0.9)",
+
                   border: `1px solid ${token.colorBorderSecondary}`,
-                  // background: "#f8fafc",
+
                   background: token.colorBgElevated,
-                  // color: "#334155",
+
                   color: token.colorText,
-                  // boxShadow: "0 8px 18px rgba(15,23,42,0.04)",
+
                   boxShadow: token.boxShadowSecondary,
                 }}
               >
@@ -374,11 +373,11 @@ export default function EmployeesPage() {
         variant="borderless"
         style={{
           borderRadius: 34,
-          // background: "#ffffff",
+
           background: token.colorBgContainer,
-          // border: "1px solid rgba(226,232,240,0.8)",
+
           border: `1px solid ${token.colorBorderSecondary}`,
-          // boxShadow: "0 18px 48px rgba(15,23,42,0.06)",
+
           boxShadow: token.boxShadowSecondary,
           overflow: "hidden",
         }}

@@ -93,13 +93,12 @@ export default function EmployeeTable({
           <Avatar
             size={42}
             style={{
-              // backgroundColor: "#f0f5ff",
               backgroundColor: token.colorBgElevated,
-              // color: "#1d39c4",
+
               color: token.colorPrimary,
               fontWeight: 700,
               fontSize: 16,
-              // border: "1px solid #d6e4ff",
+
               border: `1px solid ${token.colorBorderSecondary}`,
               flexShrink: 0,
             }}
@@ -347,8 +346,6 @@ export default function EmployeeTable({
         bordered={false}
         style={{
           borderRadius: 20,
-
-          // boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
           boxShadow: token.boxShadowSecondary,
         }}
       >
@@ -375,7 +372,6 @@ export default function EmployeeTable({
                   style={{
                     marginTop: 8,
 
-                    // color: "#888",
                     color: token.colorTextSecondary,
                   }}
                 >

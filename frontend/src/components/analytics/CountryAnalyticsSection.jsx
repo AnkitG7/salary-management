@@ -40,10 +40,7 @@ export default function CountryAnalyticsSection({
         borderRadius: 32,
         marginBottom: 28,
         background: token.colorBgContainer,
-        // border: "1px solid rgba(226,232,240,0.8)",
-        // border: "1px solid rgba(226,232,240,0.8)",
         border: `1px solid ${token.colorBorderSecondary}`,
-        // boxShadow: "0 10px 40px rgba(15,23,42,0.06)",
         overflow: "hidden",
       }}
       styles={{
@@ -62,7 +59,6 @@ export default function CountryAnalyticsSection({
           level={2}
           style={{
             marginBottom: 8,
-            // color: "#0f172a",
             color: token.colorText,
             fontWeight: 700,
             letterSpacing: "-0.8px",
@@ -73,7 +69,6 @@ export default function CountryAnalyticsSection({
 
         <Text
           style={{
-            // color: "#64748b",
             color: token.colorTextDescription,
             fontSize: 15,
           }}
@@ -100,7 +95,6 @@ export default function CountryAnalyticsSection({
               strong
               style={{
                 fontSize: 14,
-                // color: "#334155",
                 color: token.colorText,
               }}
             >
@@ -134,7 +128,6 @@ export default function CountryAnalyticsSection({
                 variant="borderless"
                 style={{
                   borderRadius: 24,
-                  // border: "1px solid rgba(226,232,240,0.7)",
                   border: `1px solid ${token.colorBorderSecondary}`,
                 }}
               >
@@ -172,7 +165,6 @@ export default function CountryAnalyticsSection({
                 <div>
                   <Text
                     style={{
-                      // color: "#475569",
                       color: token.colorTextSecondary,
                       fontSize: 13,
                       fontWeight: 600,
@@ -190,7 +182,6 @@ export default function CountryAnalyticsSection({
                   >
                     <Text
                       style={{
-                        // color: "#64748b",
                         color: token.colorTextDescription,
                         fontSize: 13,
                       }}
@@ -226,7 +217,6 @@ export default function CountryAnalyticsSection({
                 valueStyle={{
                   fontSize: 34,
                   fontWeight: 800,
-                  // color: "#0f172a",
                   color: token.colorText,
                   letterSpacing: "-1px",
                 }}
@@ -261,7 +251,6 @@ export default function CountryAnalyticsSection({
                 <div>
                   <Text
                     style={{
-                      // color: "#475569",
                       color: token.colorTextSecondary,
                       fontSize: 13,
                       fontWeight: 600,
@@ -279,7 +268,6 @@ export default function CountryAnalyticsSection({
                   >
                     <Text
                       style={{
-                        // color: "#64748b",
                         color: token.colorTextDescription,
                         fontSize: 13,
                       }}
@@ -314,7 +302,7 @@ export default function CountryAnalyticsSection({
                 valueStyle={{
                   fontSize: 34,
                   fontWeight: 800,
-                  // color: "#0f172a",
+
                   color: token.colorText,
                   letterSpacing: "-1px",
                 }}
@@ -349,7 +337,6 @@ export default function CountryAnalyticsSection({
                 <div>
                   <Text
                     style={{
-                      // color: "#475569",
                       color: token.colorTextSecondary,
                       fontSize: 13,
                       fontWeight: 600,
@@ -367,7 +354,6 @@ export default function CountryAnalyticsSection({
                   >
                     <Text
                       style={{
-                        // color: "#64748b",
                         color: token.colorTextDescription,
                         fontSize: 13,
                       }}
@@ -402,7 +388,7 @@ export default function CountryAnalyticsSection({
                 valueStyle={{
                   fontSize: 34,
                   fontWeight: 800,
-                  // color: "#0f172a",
+
                   color: token.colorText,
                   letterSpacing: "-1px",
                 }}
@@ -417,13 +403,12 @@ export default function CountryAnalyticsSection({
         style={{
           marginTop: 28,
           paddingTop: 20,
-          // borderTop: "1px solid rgba(226,232,240,0.8)",
+
           borderTop: `1px solid ${token.colorBorderSecondary}`,
         }}
       >
         <Text
           style={{
-            // color: "#64748b",
             color: token.colorTextDescription,
             fontSize: 13,
           }}

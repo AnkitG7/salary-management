@@ -57,11 +57,10 @@ export default function EmploymentStatusChart({ employmentStats = {} }) {
       variant="borderless"
       style={{
         borderRadius: 32,
-        // background: "#ffffff",
         background: token.colorBgContainer,
-        // border: "1px solid rgba(226,232,240,0.8)",
+
         border: `1px solid ${token.colorBorderSecondary}`,
-        // boxShadow: "0 10px 40px rgba(15,23,42,0.06)",
+
         boxShadow: token.boxShadowSecondary,
         overflow: "hidden",
         height: "100%",
@@ -82,7 +81,7 @@ export default function EmploymentStatusChart({ employmentStats = {} }) {
           level={3}
           style={{
             margin: 0,
-            // color: "#0f172a",
+
             color: token.colorText,
             fontWeight: 700,
             letterSpacing: "-0.6px",
@@ -93,7 +92,6 @@ export default function EmploymentStatusChart({ employmentStats = {} }) {
 
         <Text
           style={{
-            // color: "#64748b",
             color: token.colorTextDescription,
             fontSize: 15,
             marginTop: 6,
@@ -164,23 +162,21 @@ export default function EmploymentStatusChart({ employmentStats = {} }) {
                 ]}
                 contentStyle={{
                   borderRadius: 20,
-                  // border: "1px solid #e2e8f0",
+
                   border: `1px solid ${token.colorBorderSecondary}`,
                   boxShadow: "0 12px 32px rgba(15,23,42,0.08)",
-                  // background: "#ffffff",
+
                   background: token.colorBgElevated,
                   padding: "14px 16px",
                 }}
                 labelStyle={{
-                  // color: "#0f172a",
                   color: token.colorText,
                   fontWeight: 700,
                   marginBottom: 8,
                 }}
                 itemStyle={{
-                  // color: "#475569",
                   color: token.colorTextSecondary,
-                  // color: token.colorTextSecondary,
+
                   fontWeight: 500,
                 }}
               />
@@ -206,7 +202,7 @@ export default function EmploymentStatusChart({ employmentStats = {} }) {
                 style={{
                   fontSize: 42,
                   fontWeight: 800,
-                  // fill: "#0f172a",
+
                   fill: token.colorText,
                   letterSpacing: "-1px",
                 }}
@@ -222,7 +218,7 @@ export default function EmploymentStatusChart({ employmentStats = {} }) {
                 dominantBaseline="middle"
                 style={{
                   fontSize: 13,
-                  // fill: "#94a3b8",
+
                   fill: token.colorTextSecondary,
                   letterSpacing: "0.4px",
                   textTransform: "uppercase",

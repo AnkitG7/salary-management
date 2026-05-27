@@ -100,7 +100,7 @@ export default function DashboardStats({
               borderRadius: 28,
               background: card.background,
               border: card.border,
-              // boxShadow: "0 10px 30px rgba(15,23,42,0.05)",
+
               boxShadow: token.boxShadowSecondary,
               overflow: "hidden",
             }}
@@ -130,7 +130,7 @@ export default function DashboardStats({
                     fontWeight: 600,
                     textTransform: "uppercase",
                     letterSpacing: "0.5px",
-                    // color: "#475569",
+
                     color: token.colorTextSecondary,
                   }}
                 >
@@ -144,7 +144,6 @@ export default function DashboardStats({
                 >
                   <Text
                     style={{
-                      // color: "#64748b",
                       color: token.colorTextDescription,
                       fontSize: 13,
                       lineHeight: 1.5,
@@ -181,7 +180,7 @@ export default function DashboardStats({
               valueStyle={{
                 fontSize: 38,
                 fontWeight: 800,
-                // color: "#0f172a",
+
                 color: token.colorText,
                 letterSpacing: "-1px",
                 lineHeight: 1,

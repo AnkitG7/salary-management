@@ -138,8 +138,6 @@ export default function AppLayout({ isDarkMode, setIsDarkMode }) {
               flex: 1,
               justifyContent: "flex-end",
               minWidth: 0,
-
-              // flexShrink: 0,
             }}
           >
             {/* NAVIGATION */}
@@ -158,8 +156,6 @@ export default function AppLayout({ isDarkMode, setIsDarkMode }) {
                 flex: 1,
                 minWidth: 0,
                 justifyContent: "flex-end",
-
-                // minWidth: 420,
               }}
               items={[
                 {

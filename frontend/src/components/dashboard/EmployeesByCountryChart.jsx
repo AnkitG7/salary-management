@@ -36,9 +36,9 @@ export default function EmployeesByCountryChart({ data = [] }) {
       variant="borderless"
       style={{
         borderRadius: 32,
-        // background: "#ffffff",
+
         background: token.colorBgContainer,
-        // border: "1px solid rgba(226,232,240,0.8)",
+
         border: `1px solid ${token.colorBorderSecondary}`,
         boxShadow: "0 10px 40px rgba(15,23,42,0.06)",
         overflow: "hidden",
@@ -60,7 +60,7 @@ export default function EmployeesByCountryChart({ data = [] }) {
           level={3}
           style={{
             margin: 0,
-            // color: "#0f172a",
+
             color: token.colorText,
             fontWeight: 700,
             letterSpacing: "-0.6px",
@@ -71,7 +71,6 @@ export default function EmployeesByCountryChart({ data = [] }) {
 
         <Text
           style={{
-            // color: "#64748b",
             color: token.colorTextDescription,
             fontSize: 15,
             marginTop: 6,
@@ -127,7 +126,6 @@ export default function EmployeesByCountryChart({ data = [] }) {
               <CartesianGrid
                 strokeDasharray="3 6"
                 vertical={false}
-                // stroke="#e2e8f0"
                 stroke={token.colorBorderSecondary}
               />
 
@@ -142,7 +140,6 @@ export default function EmployeesByCountryChart({ data = [] }) {
                 textAnchor="end"
                 height={60}
                 tick={{
-                  // fill: "#64748b",
                   fill: token.colorTextSecondary,
                   fontSize: 12,
                   fontWeight: 500,
@@ -154,7 +151,6 @@ export default function EmployeesByCountryChart({ data = [] }) {
                 tickLine={false}
                 axisLine={false}
                 tick={{
-                  // fill: "#94a3b8",
                   fill: token.colorTextSecondary,
                   fontSize: 12,
                 }}
@@ -171,7 +167,7 @@ export default function EmployeesByCountryChart({ data = [] }) {
                 ]}
                 contentStyle={{
                   borderRadius: 20,
-                  // border: "1px solid #e2e8f0",
+
                   border: `1px solid ${token.colorBorderSecondary}`,
                   boxShadow: "0 12px 32px rgba(15,23,42,0.08)",
                   background: "#ffffff",
@@ -179,13 +175,11 @@ export default function EmployeesByCountryChart({ data = [] }) {
                   padding: "14px 16px",
                 }}
                 labelStyle={{
-                  // color: "#0f172a",
                   color: token.colorText,
                   fontWeight: 700,
                   marginBottom: 8,
                 }}
                 itemStyle={{
-                  // color: "#475569",
                   color: token.colorTextSecondary,
                   fontWeight: 500,
                 }}

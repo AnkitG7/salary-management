@@ -1,4 +1,4 @@
-import { Input,theme } from "antd";
+import { Input, theme } from "antd";
 
 import { SearchOutlined } from "@ant-design/icons";
 
@@ -26,7 +26,6 @@ export default function EmployeeSearch({ queryParams, setQueryParams }) {
         prefix={
           <SearchOutlined
             style={{
-              // color: "#999",
               color: token.colorTextSecondary,
             }}
           />

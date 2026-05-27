@@ -6,7 +6,11 @@ import formatLabel from "../../utils/formatLabel";
 
 import { getFilterValues } from "../../api/employees";
 
-export default function EmployeeFilters({ queryParams, setQueryParams, filtersRefreshKey, }) {
+export default function EmployeeFilters({
+  queryParams,
+  setQueryParams,
+  filtersRefreshKey,
+}) {
   const { token } = theme.useToken();
 
   const [countries, setCountries] = useState([]);
@@ -85,7 +89,6 @@ export default function EmployeeFilters({ queryParams, setQueryParams, filtersRe
           }))}
           style={{
             width: "100%",
-
           }}
         />
       </Col>
@@ -117,7 +120,6 @@ export default function EmployeeFilters({ queryParams, setQueryParams, filtersRe
           }))}
           style={{
             width: "100%",
-
           }}
         />
       </Col>
@@ -169,7 +171,6 @@ export default function EmployeeFilters({ queryParams, setQueryParams, filtersRe
           ]}
           style={{
             width: "100%",
-            
           }}
         />
       </Col>
@@ -201,7 +202,6 @@ export default function EmployeeFilters({ queryParams, setQueryParams, filtersRe
           }))}
           style={{
             width: "100%",
-
           }}
         />
       </Col>

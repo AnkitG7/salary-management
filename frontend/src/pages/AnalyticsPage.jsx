@@ -235,7 +235,7 @@ export default function AnalyticsPage() {
           borderRadius: 36,
           overflow: "hidden",
           background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-          // boxShadow: "0 10px 30px rgba(0,0,0,0.14)",
+
           boxShadow: token.boxShadowSecondary,
         }}
         styles={{
@@ -334,7 +334,7 @@ export default function AnalyticsPage() {
           variant="borderless"
           style={{
             borderRadius: 28,
-            // boxShadow: "0 10px 30px rgba(15,23,42,0.06)",
+
             boxShadow: token.boxShadowSecondary,
             background: token.colorBgContainer,
           }}

@@ -184,7 +184,7 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
           borderRadius: 32,
           overflow: "hidden",
           padding: 0,
-          // background: "#f8fafc",
+
           background: token.colorBgLayout,
         },
 
@@ -275,11 +275,11 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
             style={{
               borderRadius: 28,
               marginBottom: 28,
-              // background: "#ffffff",
+
               background: token.colorBgContainer,
-              // border: "1px solid rgba(226,232,240,0.8)",
+
               border: `1px solid ${token.colorBorderSecondary}`,
-              // boxShadow: "0 12px 36px rgba(15,23,42,0.05)",
+
               boxShadow: token.boxShadowSecondary,
             }}
             styles={{
@@ -359,11 +359,11 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
             style={{
               borderRadius: 28,
               marginBottom: 28,
-              // background: "#ffffff",
+
               background: token.colorBgContainer,
-              // border: "1px solid rgba(226,232,240,0.8)",
+
               border: `1px solid ${token.colorBorderSecondary}`,
-              // boxShadow: "0 12px 36px rgba(15,23,42,0.05)",
+
               boxShadow: token.boxShadowSecondary,
             }}
             styles={{
@@ -482,11 +482,11 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
             variant="borderless"
             style={{
               borderRadius: 28,
-              // background: "#ffffff",
+
               background: token.colorBgContainer,
-              // border: "1px solid rgba(226,232,240,0.8)",
+
               border: `1px solid ${token.colorBorderSecondary}`,
-              // boxShadow: "0 12px 36px rgba(15,23,42,0.05)",
+
               boxShadow: token.boxShadowSecondary,
             }}
             styles={{
@@ -541,7 +541,6 @@ export default function CreateEmployeeModal({ open, onClose, onSuccess }) {
           1,2a
         */
 
-                        // const numericRegex = /^\d+(\.\d{1,2})?$/;
                         const numericRegex = /^-?\d+(\.\d{1,2})?$/;
 
                         if (!numericRegex.test(valueAsString)) {

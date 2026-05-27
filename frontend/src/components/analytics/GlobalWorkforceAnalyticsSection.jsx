@@ -27,14 +27,6 @@ const GRADIENTS = [
   ["#c4b5fd", "#a78bfa"],
 ];
 
-// function formatLabel(value = "") {
-//   return String(value)
-//     .toLowerCase()
-//     .split("_")
-//     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-//     .join(" ");
-// }
-
 function formatLabel(value = "") {
   return String(value)
     .toLowerCase()
@@ -51,11 +43,8 @@ export default function GlobalWorkforceAnalyticsSection({
   const { token } = theme.useToken();
   const tooltipStyle = {
     borderRadius: 18,
-    // border: "1px solid #e2e8f0",
     border: `1px solid ${token.colorBorderSecondary}`,
-    // boxShadow: "0 12px 32px rgba(15,23,42,0.08)",
     boxShadow: token.boxShadowSecondary,
-    // background: "#ffffff",
     background: token.colorBgElevated,
     color: token.colorText,
     padding: "12px 14px",
@@ -71,12 +60,8 @@ export default function GlobalWorkforceAnalyticsSection({
         variant="borderless"
         style={{
           borderRadius: 32,
-          // background: "#ffffff",
           background: token.colorBgContainer,
-          // background: token.colorBgContainer,
-          // border: "1px solid rgba(226,232,240,0.8)",
           border: `1px solid ${token.colorBorderSecondary}`,
-          // boxShadow: "0 10px 40px rgba(15,23,42,0.06)",
           boxShadow: token.boxShadowSecondary,
         }}
       >
@@ -84,7 +69,6 @@ export default function GlobalWorkforceAnalyticsSection({
       </Card>
     );
   }
-
 
   const totalEmployees = jobTitleDistributionData.reduce(
     (sum, item) => sum + item.count,
@@ -96,12 +80,11 @@ export default function GlobalWorkforceAnalyticsSection({
       variant="borderless"
       style={{
         borderRadius: 32,
-        // background: "#ffffff",
+
         background: token.colorBgContainer,
-        // border: "1px solid rgba(226,232,240,0.8)",
+
         border: `1px solid ${token.colorBorderSecondary}`,
-        // border: `1px solid ${token.colorBorderSecondary}`,
-        // boxShadow: "0 10px 40px rgba(15,23,42,0.06)",
+
         boxShadow: token.boxShadowSecondary,
         overflow: "hidden",
       }}
@@ -121,7 +104,6 @@ export default function GlobalWorkforceAnalyticsSection({
           level={2}
           style={{
             marginBottom: 8,
-            // color: "#0f172a",
             color: token.colorText,
             fontWeight: 700,
             letterSpacing: "-0.8px",
@@ -132,7 +114,6 @@ export default function GlobalWorkforceAnalyticsSection({
 
         <Text
           style={{
-            // color: "#64748b",
             color: token.colorTextDescription,
             fontSize: 15,
           }}
@@ -150,7 +131,6 @@ export default function GlobalWorkforceAnalyticsSection({
                 style={{
                   fontSize: 18,
                   fontWeight: 700,
-                  // color: "#0f172a",
                   color: token.colorText,
                   letterSpacing: "-0.3px",
                 }}
@@ -161,11 +141,8 @@ export default function GlobalWorkforceAnalyticsSection({
             variant="borderless"
             style={{
               borderRadius: 24,
-              // background: "#ffffff",
               background: token.colorBgContainer,
-              // border: "1px solid rgba(226,232,240,0.7)",
               border: `1px solid ${token.colorBorderSecondary}`,
-              // boxShadow: "0 8px 28px rgba(15,23,42,0.05)",
               boxShadow: token.boxShadowSecondary,
               height: "100%",
             }}
@@ -244,7 +221,6 @@ export default function GlobalWorkforceAnalyticsSection({
                 style={{
                   fontSize: 18,
                   fontWeight: 700,
-                  // color: "#0f172a",
                   color: token.colorText,
                   letterSpacing: "-0.3px",
                 }}
@@ -255,11 +231,8 @@ export default function GlobalWorkforceAnalyticsSection({
             variant="borderless"
             style={{
               borderRadius: 24,
-              // background: "#ffffff",
               background: token.colorBgContainer,
-              // border: "1px solid rgba(226,232,240,0.7)",
               border: `1px solid ${token.colorBorderSecondary}`,
-              // boxShadow: "0 8px 28px rgba(15,23,42,0.05)",
               boxShadow: token.boxShadowSecondary,
               height: "100%",
             }}
@@ -294,7 +267,6 @@ export default function GlobalWorkforceAnalyticsSection({
                 <CartesianGrid
                   strokeDasharray="3 6"
                   vertical={false}
-                  // stroke="#e2e8f0"
                   stroke={token.colorBorderSecondary}
                 />
 
@@ -306,7 +278,6 @@ export default function GlobalWorkforceAnalyticsSection({
                   interval={0}
                   height={60}
                   tick={{
-                    // fill: "#64748b",
                     fill: token.colorTextSecondary,
                     fontSize: 12,
                     fontWeight: 500,
@@ -317,7 +288,6 @@ export default function GlobalWorkforceAnalyticsSection({
 
                 <YAxis
                   tick={{
-                    // fill: "#94a3b8",
                     fill: token.colorTextSecondary,
                     fontSize: 12,
                   }}
@@ -368,8 +338,7 @@ export default function GlobalWorkforceAnalyticsSection({
                   <span
                     style={{
                       fontSize: 18,
-                      fontWeight: 700,
-                      // color: "#0f172a",
+
                       color: token.colorText,
                       letterSpacing: "-0.3px",
                     }}
@@ -380,11 +349,11 @@ export default function GlobalWorkforceAnalyticsSection({
                 variant="borderless"
                 style={{
                   borderRadius: 24,
-                  // background: "#ffffff",
+
                   background: token.colorBgContainer,
-                  // border: "1px solid rgba(226,232,240,0.7)",
+
                   border: `1px solid ${token.colorBorderSecondary}`,
-                  // boxShadow: "0 8px 28px rgba(15,23,42,0.05)",
+
                   boxShadow: token.boxShadowSecondary,
                   height: "100%",
                 }}
@@ -426,7 +395,6 @@ export default function GlobalWorkforceAnalyticsSection({
                     <XAxis
                       type="number"
                       tick={{
-                        // fill: "#94a3b8",
                         fill: token.colorTextSecondary,
                         fontSize: 12,
                       }}
@@ -440,7 +408,6 @@ export default function GlobalWorkforceAnalyticsSection({
                       width={180}
                       tickFormatter={formatLabel}
                       tick={{
-                        // fill: "#64748b",
                         fill: token.colorTextSecondary,
                         fontSize: 13,
                         fontWeight: 500,
@@ -487,7 +454,7 @@ export default function GlobalWorkforceAnalyticsSection({
                     style={{
                       fontSize: 18,
                       fontWeight: 700,
-                      // color: "#0f172a",
+
                       color: token.colorText,
                       letterSpacing: "-0.3px",
                     }}
@@ -503,11 +470,11 @@ export default function GlobalWorkforceAnalyticsSection({
                 }}
                 style={{
                   borderRadius: 24,
-                  // background: "#ffffff",
+
                   background: token.colorBgContainer,
-                  // border: "1px solid rgba(226,232,240,0.7)",
+
                   border: `1px solid ${token.colorBorderSecondary}`,
-                  // boxShadow: "0 8px 28px rgba(15,23,42,0.05)",
+
                   boxShadow: token.boxShadowSecondary,
                   height: "100%",
                 }}
@@ -607,7 +574,7 @@ export default function GlobalWorkforceAnalyticsSection({
                       letterSpacing: "0.4px",
                       textTransform: "uppercase",
                       fontWeight: 600,
-                      // color: "#94a3b8",
+
                       color: token.colorTextSecondary,
                       display: "block",
                     }}
@@ -621,7 +588,7 @@ export default function GlobalWorkforceAnalyticsSection({
                       fontWeight: 800,
                       lineHeight: 1.1,
                       letterSpacing: "-1px",
-                      // color: "#0f172a",
+
                       color: token.colorText,
                     }}
                   >
