@@ -15,7 +15,63 @@ The system is optimized for organizations with 10,000+ employees.
 
 ---
 
-# Overview
+# Assessment Context
+
+This project was built as part of an engineering assessment focused on:
+
+- product thinking
+- engineering fundamentals
+- scalable architecture
+- production-quality code
+- deterministic testing
+- AI-assisted software development workflows
+
+The assessment emphasized:
+
+- clarity in thought and structured problem solving
+- maintainable and scalable engineering decisions
+- intentional AI usage with correctness validation
+- production-oriented implementation quality
+- incremental software evolution through commits
+- end-to-end functional system design
+
+---
+
+# Development Approach
+
+The project was developed using an AI-assisted engineering workflow while maintaining strong engineering standards.
+
+Key development principles followed:
+
+- Test-Driven Development (TDD)
+- incremental implementation
+- deterministic testing
+- modular architecture
+- production-style code organization
+- maintainable abstractions
+- scalable query design
+- intentional AI-assisted iteration
+
+AI tooling was used to:
+
+- accelerate implementation
+- validate architecture decisions
+- improve UI iteration speed
+- assist debugging workflows
+- refactor repetitive logic
+- improve development efficiency
+
+All generated outputs were manually:
+
+- reviewed
+- validated
+- tested
+- refactored
+- integrated intentionally
+
+---
+
+# Product Overview
 
 The platform enables HR teams and administrators to:
 
@@ -43,6 +99,17 @@ The application is designed to remain maintainable, responsive, and performant e
 - Paginated employee listing
 - Sorted employee querying
 
+Employee data includes:
+
+- full name
+- email
+- country
+- salary
+- currency
+- employment status
+- job title
+- date of joining
+
 ---
 
 # Salary Insights
@@ -61,6 +128,8 @@ The application is designed to remain maintainable, responsive, and performant e
 - Employee distribution by employment status
 - Employee distribution by job title
 
+Additional analytics were added to improve HR visibility and workforce understanding.
+
 ---
 
 # UI Features
@@ -75,6 +144,43 @@ The application is designed to remain maintainable, responsive, and performant e
 - Modern enterprise UI design
 
 ---
+
+# Application Screenshots
+
+## Dashboard
+
+![Dashboard](./screenshots/dashboard.png)
+
+---
+
+## Dashboard Dark Mode
+
+![Dashboard Dark Mode](./screenshots/dashboard_darkmode.png)
+
+---
+
+## Analytics
+
+![Analytics](./screenshots/analytics.png)
+
+---
+
+## Employees
+
+![Employees](./screenshots/employees.png)
+
+---
+
+## Employee Details
+
+![Employee Details](./screenshots/employees_details.png)
+
+
+# Demo Video
+
+Watch the application demo here:
+
+[Project Demo Video](https://your-video-link)
 
 # System Architecture
 
@@ -293,6 +399,26 @@ Improves:
 
 ---
 
+# Seeder Design
+
+The project includes optimized seeding scripts for generating 10,000 employees.
+
+Employee names are generated using combinations from:
+
+- `first_names.txt`
+- `last_names.txt`
+
+Seeder optimizations include:
+
+- batch inserts
+- controlled transaction sizes
+- bulk database operations
+- realistic workforce distributions
+
+This allows engineers to rerun seeding scripts efficiently during development.
+
+---
+
 # Docker Support
 
 PostgreSQL is managed using Docker Compose.
@@ -332,7 +458,19 @@ localStorage
 
 ---
 
-# Testing
+# Testing Strategy
+
+The project follows a Test-Driven Development (TDD) oriented workflow.
+
+The testing strategy focuses on:
+
+- deterministic tests
+- fast execution
+- isolated behavior validation
+- production-critical workflows
+- maintainable test structure
+
+---
 
 # Backend Testing
 
@@ -599,6 +737,21 @@ http://localhost:8000/redoc
 - Query composability
 - Migration-friendly structure
 - Strong database portability
+
+---
+
+# Artifacts & Engineering Notes
+
+The repository may include additional engineering artifacts such as:
+
+- architecture notes
+- planning documents
+- AI prompt references
+- tradeoff explanations
+- scalability considerations
+- testing strategy notes
+
+These artifacts help explain implementation decisions and development reasoning.
 
 ---
 
