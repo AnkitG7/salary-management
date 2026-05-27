@@ -1,36 +1,45 @@
-from fastapi import APIRouter
-from fastapi import Depends
-from fastapi import status
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Query,
+    Response,
+    status,
+)
+
+from sqlalchemy import (
+    func,
+    or_,
+)
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.models.employee import Employee
-from app.schemas.employee import EmployeeCreate
-from app.schemas.employee import EmployeeResponse
-from fastapi import Query
-from sqlalchemy.exc import IntegrityError
-
-from fastapi import HTTPException
-from sqlalchemy.exc import IntegrityError
-from app.schemas.employee import EmployeeUpdate
-
-from fastapi import Response
-from sqlalchemy import or_
+from app.schemas.employee import (
+    EmployeeCreate,
+    EmployeeResponse,
+    EmployeeUpdate,
+)
 from app.schemas.pagination import (
     EmployeeListResponse,
 )
-
 from app.utils.validators import (
     validate_country_currency,
 )
 
+
+# Maximum allowed page size
 MAX_PAGE_SIZE = 50
 
+# Default sorting field
 DEFAULT_SORT_BY = "id"
 
+# Default sorting order
 DEFAULT_ORDER = "desc"
 
 
+# Supported sortable fields
 ALLOWED_SORT_FIELDS = {
     "full_name":
         Employee.full_name,
@@ -49,9 +58,20 @@ ALLOWED_SORT_FIELDS = {
 }
 
 
+# Fields requiring case-insensitive sorting
+STRING_SORT_FIELDS = {
+    "full_name",
+    "employment_status",
+    "country",
+    "job_title",
+}
+
+
+# Create employee router
 router = APIRouter()
 
 
+# Create new employee
 @router.post(
     "/employees",
     response_model=EmployeeResponse,
@@ -61,10 +81,13 @@ def create_employee(
     payload: EmployeeCreate,
     db: Session = Depends(get_db),
 ):
+
+    # Validate country-currency mapping
     validate_country_currency(
         payload.country,
         payload.currency,
     )
+
     employee = Employee(
         full_name=payload.full_name,
         email=payload.email,
@@ -78,14 +101,14 @@ def create_employee(
 
     db.add(employee)
 
-    # db.add(employee)
-
     try:
         db.commit()
 
     except IntegrityError:
+
         db.rollback()
 
+        # Handle duplicate email constraint
         raise HTTPException(
             status_code=409,
             detail=(
@@ -94,17 +117,15 @@ def create_employee(
         )
 
     db.refresh(employee)
+
     return employee
 
 
-
+# List employees with pagination and filtering
 @router.get(
     "/employees",
-
     response_model=EmployeeListResponse,
-
     summary="List employees",
-
     description="""
 Retrieve employees with pagination,
 sorting, searching, and filtering.
@@ -201,25 +222,31 @@ def list_employees(
 
     db: Session = Depends(get_db),
 ):
+
+    # Enforce maximum page size
     limit = min(
         limit,
         MAX_PAGE_SIZE,
     )
 
+    # Validate sorting field
     if (
         sort_by != "id"
         and sort_by
         not in ALLOWED_SORT_FIELDS
     ):
+
         raise HTTPException(
             status_code=400,
             detail="Invalid sort field",
         )
 
+    # Validate sorting order
     if order not in {
         "asc",
         "desc",
     }:
+
         raise HTTPException(
             status_code=400,
             detail="Invalid sort order",
@@ -227,10 +254,7 @@ def list_employees(
 
     query = db.query(Employee)
 
-    # -------------------------
-    # Normalize Inputs
-    # -------------------------
-
+    # Normalize country filter
     if country:
         country = (
             country
@@ -238,6 +262,7 @@ def list_employees(
             .lower()
         )
 
+    # Normalize job title filter
     if job_title:
         job_title = (
             job_title
@@ -245,6 +270,7 @@ def list_employees(
             .lower()
         )
 
+    # Normalize employment status filter
     if employment_status:
         employment_status = (
             employment_status
@@ -252,6 +278,7 @@ def list_employees(
             .upper()
         )
 
+    # Normalize currency filter
     if currency:
         currency = (
             currency
@@ -259,6 +286,7 @@ def list_employees(
             .upper()
         )
 
+    # Normalize search query
     if search:
         search = (
             search
@@ -266,39 +294,37 @@ def list_employees(
             .lower()
         )
 
-    # -------------------------
-    # Apply Filters
-    # -------------------------
-
+    # Apply country filter
     if country:
         query = query.filter(
             Employee.country
             == country
         )
 
+    # Apply job title filter
     if job_title:
         query = query.filter(
             Employee.job_title
             == job_title
         )
 
+    # Apply employment status filter
     if employment_status:
         query = query.filter(
             Employee.employment_status
             == employment_status
         )
 
+    # Apply currency filter
     if currency:
         query = query.filter(
             Employee.currency
             == currency
         )
 
-    # -------------------------
-    # Apply Search
-    # -------------------------
-
+    # Apply search filter
     if search:
+
         search_term = (
             f"%{search}%"
         )
@@ -314,12 +340,10 @@ def list_employees(
             )
         )
 
+    # Get total matching records
     total = query.count()
 
-    # -------------------------
-    # Apply Sorting
-    # -------------------------
-
+    # Resolve sorting column
     if sort_by == "id":
         sort_column = Employee.id
     else:
@@ -329,21 +353,30 @@ def list_employees(
             ]
         )
 
-    if order == "asc":
-        query = query.order_by(
-            sort_column.asc(),
-            Employee.id.asc(),
+    # Apply case-insensitive sorting for string fields
+    if sort_by in STRING_SORT_FIELDS:
+        sort_expr = func.lower(
+            sort_column
         )
     else:
+        sort_expr = sort_column
+
+    # Apply sorting order
+    if order == "asc":
+
         query = query.order_by(
-            sort_column.desc(),
+            sort_expr.asc(),
+            Employee.id.asc(),
+        )
+
+    else:
+
+        query = query.order_by(
+            sort_expr.desc(),
             Employee.id.desc(),
         )
 
-    # -------------------------
-    # Apply Pagination
-    # -------------------------
-
+    # Apply pagination
     employees = (
         query
         .offset(offset)
@@ -357,6 +390,7 @@ def list_employees(
     }
 
 
+# Get employee by ID
 @router.get(
     "/employees/{employee_id}",
     response_model=EmployeeResponse,
@@ -365,6 +399,7 @@ def get_employee(
     employee_id: int,
     db: Session = Depends(get_db),
 ):
+
     employee = (
         db.query(Employee)
         .filter(
@@ -374,7 +409,9 @@ def get_employee(
         .first()
     )
 
+    # Raise error if employee does not exist
     if not employee:
+
         raise HTTPException(
             status_code=404,
             detail="Employee not found",
@@ -383,6 +420,7 @@ def get_employee(
     return employee
 
 
+# Update employee record
 @router.patch(
     "/employees/{employee_id}",
     response_model=EmployeeResponse,
@@ -392,12 +430,15 @@ def update_employee(
     payload: EmployeeUpdate,
     db: Session = Depends(get_db),
 ):
+
     employee = db.get(
         Employee,
         employee_id,
     )
 
+    # Raise error if employee does not exist
     if not employee:
+
         raise HTTPException(
             status_code=404,
             detail="Employee not found",
@@ -407,22 +448,27 @@ def update_employee(
         exclude_unset=True
     )
 
+    # Resolve updated country value
     updated_country = update_data.get(
         "country",
         employee.country,
     )
 
+    # Resolve updated currency value
     updated_currency = update_data.get(
         "currency",
         employee.currency,
     )
 
+    # Validate updated country-currency mapping
     validate_country_currency(
         updated_country,
         updated_currency,
-        )
+    )
 
+    # Apply field updates
     for field, value in update_data.items():
+
         setattr(
             employee,
             field,
@@ -433,11 +479,16 @@ def update_employee(
         db.commit()
 
     except IntegrityError:
+
         db.rollback()
 
+        # Handle database constraint violations
         raise HTTPException(
             status_code=400,
-            detail="Employee update violates database constraints",
+            detail=(
+                "Employee update violates "
+                "database constraints"
+            ),
         )
 
     db.refresh(employee)
@@ -445,6 +496,7 @@ def update_employee(
     return employee
 
 
+# Delete employee record
 @router.delete(
     "/employees/{employee_id}",
     status_code=status.HTTP_204_NO_CONTENT,
@@ -453,12 +505,15 @@ def delete_employee(
     employee_id: int,
     db: Session = Depends(get_db),
 ):
+
     employee = db.get(
         Employee,
         employee_id,
     )
 
+    # Raise error if employee does not exist
     if not employee:
+
         raise HTTPException(
             status_code=404,
             detail="Employee not found",

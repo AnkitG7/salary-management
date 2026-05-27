@@ -6,10 +6,14 @@ from fastapi.testclient import (
 
 from app.main import app
 
+
+# Create test client instance
 client = TestClient(app)
 
 
+# Test employee creation with valid country-currency mapping
 def test_create_employee_with_valid_currency():
+
     payload = {
         "full_name": "Valid User",
         "email": (
@@ -24,6 +28,7 @@ def test_create_employee_with_valid_currency():
         "date_of_joining": "2024-01-01",
     }
 
+    # Create employee record
     response = client.post(
         "/employees",
         json=payload,
@@ -33,12 +38,15 @@ def test_create_employee_with_valid_currency():
 
     data = response.json()
 
+    # Validate normalized country and currency
     assert data["country"] == "india"
 
     assert data["currency"] == "INR"
 
 
+# Test employee creation with invalid currency
 def test_create_employee_with_invalid_currency():
+
     payload = {
         "full_name": "Invalid User",
         "email": (
@@ -53,6 +61,7 @@ def test_create_employee_with_invalid_currency():
         "date_of_joining": "2024-01-01",
     }
 
+    # Attempt employee creation with invalid currency
     response = client.post(
         "/employees",
         json=payload,
@@ -60,13 +69,16 @@ def test_create_employee_with_invalid_currency():
 
     assert response.status_code == 400
 
+    # Validate currency mapping error message
     assert (
         response.json()["detail"]
         == "india must use INR"
     )
 
 
+# Test employee creation with unsupported country
 def test_create_employee_with_unknown_country():
+
     payload = {
         "full_name": (
             "Unknown Country User"
@@ -83,6 +95,7 @@ def test_create_employee_with_unknown_country():
         "date_of_joining": "2024-01-01",
     }
 
+    # Create employee with unknown country
     response = client.post(
         "/employees",
         json=payload,
@@ -92,12 +105,15 @@ def test_create_employee_with_unknown_country():
 
     data = response.json()
 
+    # Validate custom country support
     assert data["country"] == "xyzland"
 
     assert data["currency"] == "USD"
 
 
+# Test employee update with invalid currency
 def test_update_employee_with_invalid_currency():
+
     create_payload = {
         "full_name": "Update User",
         "email": (
@@ -112,6 +128,7 @@ def test_update_employee_with_invalid_currency():
         "date_of_joining": "2024-01-01",
     }
 
+    # Create employee record
     create_response = client.post(
         "/employees",
         json=create_payload,
@@ -125,6 +142,7 @@ def test_update_employee_with_invalid_currency():
         "currency": "USD"
     }
 
+    # Attempt invalid currency update
     response = client.patch(
         f"/employees/{employee_id}",
         json=update_payload,
@@ -132,13 +150,16 @@ def test_update_employee_with_invalid_currency():
 
     assert response.status_code == 400
 
+    # Validate currency validation error
     assert (
         response.json()["detail"]
         == "india must use INR"
     )
 
 
+# Test employee update with valid currency configuration
 def test_update_employee_with_valid_currency():
+
     create_payload = {
         "full_name": "Valid Update User",
         "email": (
@@ -153,6 +174,7 @@ def test_update_employee_with_valid_currency():
         "date_of_joining": "2024-01-01",
     }
 
+    # Create employee record
     create_response = client.post(
         "/employees",
         json=create_payload,
@@ -166,6 +188,7 @@ def test_update_employee_with_valid_currency():
         "salary": 90000
     }
 
+    # Update employee salary
     response = client.patch(
         f"/employees/{employee_id}",
         json=update_payload,
@@ -175,13 +198,15 @@ def test_update_employee_with_valid_currency():
 
     data = response.json()
 
-    # assert data["salary"] == 90000
+    # Validate updated salary value
     assert data["salary"] == "90000.00"
 
     assert data["currency"] == "INR"
 
 
+# Test employee update with unsupported country
 def test_update_employee_with_unknown_country():
+
     create_payload = {
         "full_name": (
             "Unknown Country Update"
@@ -198,6 +223,7 @@ def test_update_employee_with_unknown_country():
         "date_of_joining": "2024-01-01",
     }
 
+    # Create employee record
     create_response = client.post(
         "/employees",
         json=create_payload,
@@ -211,6 +237,7 @@ def test_update_employee_with_unknown_country():
         "currency": "EUR"
     }
 
+    # Update employee currency
     response = client.patch(
         f"/employees/{employee_id}",
         json=update_payload,
@@ -220,4 +247,5 @@ def test_update_employee_with_unknown_country():
 
     data = response.json()
 
+    # Validate updated currency value
     assert data["currency"] == "EUR"

@@ -1,22 +1,26 @@
-from fastapi import APIRouter
-from fastapi import Depends
-from fastapi import HTTPException
-from fastapi import Query
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Query,
+)
 
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.models.employee import Employee
-
-from app.schemas.salary_insights import SalaryInsightsResponse
 from app.schemas.salary_insights import (
     JobTitleSalaryInsightsResponse,
+    SalaryInsightsResponse,
 )
 
+
+# Create salary insights router
 router = APIRouter()
 
 
+# Get salary statistics by country
 @router.get(
     "/salary-insights",
     response_model=SalaryInsightsResponse,
@@ -36,17 +40,20 @@ Used by:
 - HR analytics dashboard
 - compensation analysis
 """,
-
 )
 def get_salary_insights(
     country: str = Query(...),
     db: Session = Depends(get_db),
 ):
+
+    # Normalize country value
     country = (
         country
         .strip()
         .lower()
     )
+
+    # Fetch distinct currencies for country
     currencies = (
         db.query(Employee.currency)
         .filter(
@@ -56,13 +63,17 @@ def get_salary_insights(
         .all()
     )
 
+    # Raise error if no salary data exists
     if not currencies:
+
         raise HTTPException(
             status_code=404,
             detail="No salary data found",
         )
 
+    # Prevent analytics on mixed currencies
     if len(currencies) > 1:
+
         raise HTTPException(
             status_code=400,
             detail=(
@@ -73,6 +84,7 @@ def get_salary_insights(
 
     currency = currencies[0][0]
 
+    # Calculate salary statistics
     result = (
         db.query(
             func.min(Employee.salary),
@@ -85,13 +97,21 @@ def get_salary_insights(
         .first()
     )
 
-    minimum_salary, maximum_salary, average_salary = result
+    (
+        minimum_salary,
+        maximum_salary,
+        average_salary,
+    ) = result
 
     return {
         "country": country,
+
         "currency": currency,
+
         "minimum_salary": minimum_salary,
+
         "maximum_salary": maximum_salary,
+
         "average_salary": round(
             average_salary,
             2,
@@ -99,6 +119,7 @@ def get_salary_insights(
     }
 
 
+# Get average salary by country and job title
 @router.get(
     "/salary-insights/job-title",
     response_model=(
@@ -110,17 +131,22 @@ def get_average_salary_by_job_title(
     job_title: str = Query(...),
     db: Session = Depends(get_db),
 ):
+
+    # Normalize country value
     country = (
         country
         .strip()
         .lower()
     )
 
+    # Normalize job title value
     job_title = (
         job_title
         .strip()
         .lower()
     )
+
+    # Fetch distinct currencies for country
     currencies = (
         db.query(Employee.currency)
         .filter(
@@ -130,13 +156,17 @@ def get_average_salary_by_job_title(
         .all()
     )
 
+    # Raise error if no salary data exists
     if not currencies:
+
         raise HTTPException(
             status_code=404,
             detail="No salary data found",
         )
 
+    # Prevent analytics on mixed currencies
     if len(currencies) > 1:
+
         raise HTTPException(
             status_code=400,
             detail=(
@@ -147,6 +177,7 @@ def get_average_salary_by_job_title(
 
     currency = currencies[0][0]
 
+    # Calculate average salary
     average_salary = (
         db.query(
             func.avg(Employee.salary)
@@ -158,7 +189,9 @@ def get_average_salary_by_job_title(
         .scalar()
     )
 
+    # Raise error if no matching salary data exists
     if average_salary is None:
+
         raise HTTPException(
             status_code=404,
             detail="No salary data found",
@@ -166,8 +199,11 @@ def get_average_salary_by_job_title(
 
     return {
         "country": country,
+
         "currency": currency,
+
         "job_title": job_title,
+
         "average_salary": round(
             average_salary,
             2,
@@ -175,12 +211,14 @@ def get_average_salary_by_job_title(
     }
 
 
+# Get employee count grouped by country
 @router.get(
     "/salary-insights/employee-count-by-country",
 )
 def get_employee_count_by_country(
     db: Session = Depends(get_db),
 ):
+
     results = (
         db.query(
             Employee.country,
@@ -196,12 +234,14 @@ def get_employee_count_by_country(
     }
 
 
+# Get employee count grouped by job title
 @router.get(
     "/salary-insights/employee-count-by-job-title",
 )
 def get_employee_count_by_job_title(
     db: Session = Depends(get_db),
 ):
+
     results = (
         db.query(
             Employee.job_title,
@@ -217,12 +257,14 @@ def get_employee_count_by_job_title(
     }
 
 
+# Get employee distribution by employment status
 @router.get(
     "/salary-insights/employment-status-distribution",
 )
 def get_employment_status_distribution(
     db: Session = Depends(get_db),
 ):
+
     results = (
         db.query(
             Employee.employment_status,
@@ -240,6 +282,7 @@ def get_employment_status_distribution(
     }
 
 
+# Allowed fields for filter values endpoint
 ALLOWED_FILTER_FIELDS = {
     "country": Employee.country,
     "job_title": Employee.job_title,
@@ -250,6 +293,7 @@ ALLOWED_FILTER_FIELDS = {
 }
 
 
+# Get distinct values for supported filter fields
 @router.get(
     "/salary-insights/filter-values",
 )
@@ -257,12 +301,17 @@ def get_filter_values(
     field: str = Query(...),
     db: Session = Depends(get_db),
 ):
+
+    # Normalize field value
     field = (
         field
         .strip()
         .lower()
     )
+
+    # Validate requested field
     if field not in ALLOWED_FILTER_FIELDS:
+
         raise HTTPException(
             status_code=400,
             detail="Invalid filter field",
@@ -270,6 +319,7 @@ def get_filter_values(
 
     column = ALLOWED_FILTER_FIELDS[field]
 
+    # Fetch unique values for field
     results = (
         db.query(column)
         .distinct()

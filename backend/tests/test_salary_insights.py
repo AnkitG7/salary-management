@@ -5,10 +5,14 @@ from fastapi.testclient import TestClient
 from app.main import app
 
 
+# Create test client instance
 client = TestClient(app)
 
 
+# Test salary insights calculation by country
 def test_salary_insights_by_country():
+
+    # Generate unique test emails
     email_1 = (
         f"salary1-{uuid.uuid4().hex[:6]}"
         "@example.com"
@@ -19,6 +23,7 @@ def test_salary_insights_by_country():
         "@example.com"
     )
 
+    # Generate unique country for test isolation
     country = (
         f"country-{uuid.uuid4().hex[:4]}"
     )
@@ -46,6 +51,7 @@ def test_salary_insights_by_country():
         },
     ]
 
+    # Create test employees
     for employee in employees:
         create_response = client.post(
             "/employees",
@@ -54,6 +60,7 @@ def test_salary_insights_by_country():
 
         assert create_response.status_code == 201
 
+    # Fetch salary insights
     response = client.get(
         "/salary-insights",
         params={"country": country},
@@ -63,19 +70,18 @@ def test_salary_insights_by_country():
 
     response_data = response.json()
 
+    # Validate salary analytics response
     assert response_data["country"] == country
-
     assert response_data["currency"] == "INR"
-
     assert response_data["minimum_salary"] == 100000
-
     assert response_data["maximum_salary"] == 300000
-
     assert response_data["average_salary"] == 200000
 
 
+# Test average salary calculation by job title
 def test_average_salary_by_job_title():
 
+    # Generate unique test emails
     email_1 = (
         f"sal-jb1-{uuid.uuid4().hex[:6]}"
         "@example.com"
@@ -86,6 +92,7 @@ def test_average_salary_by_job_title():
         "@example.com"
     )
 
+    # Generate unique country for test isolation
     country = (
         f"cty-jb-{uuid.uuid4().hex[:4]}"
     )
@@ -93,10 +100,8 @@ def test_average_salary_by_job_title():
     employees = [
         {
             "full_name": "Backend One",
-            # "email": "backend-job-1@example.com",
             "email": email_1,
             "job_title": "Backend Engineer",
-            # "country": "India",
             "country": country,
             "salary": 100000,
             "currency": "INR",
@@ -105,10 +110,8 @@ def test_average_salary_by_job_title():
         },
         {
             "full_name": "Backend Two",
-            # "email": "backend-job-2@example.com",
             "email": email_2,
             "job_title": "Backend Engineer",
-            # "country": "India",
             "country": country,
             "salary": 300000,
             "currency": "INR",
@@ -117,32 +120,27 @@ def test_average_salary_by_job_title():
         },
     ]
 
+    # Create test employees
     for employee in employees:
         client.post(
             "/employees",
             json=employee,
         )
 
-    # response = client.get(
-    #     "/salary-insights/job-title"
-    #     "?country=India"
-    #     "&job_title=Backend Engineer"
-    # )
-
+    # Fetch average salary insights by job title
     response = client.get(
-    "/salary-insights/job-title",
-    params={
-        # "country": "India",
-        "country": country,
-        "job_title": "Backend Engineer",
-    },
-)
+        "/salary-insights/job-title",
+        params={
+            "country": country,
+            "job_title": "Backend Engineer",
+        },
+    )
 
     assert response.status_code == 200
 
     response_data = response.json()
 
-    # assert response_data["country"] == "India"
+    # Validate average salary response
     assert response_data["country"] == country
 
     assert (
@@ -155,11 +153,10 @@ def test_average_salary_by_job_title():
     assert response_data["average_salary"] == 200000
 
 
-
-
+# Test employee count grouped by country
 def test_employee_count_by_country():
-    import uuid
 
+    # Generate unique countries for test isolation
     country_1 = (
         f"country-a-{uuid.uuid4().hex[:4]}"
     )
@@ -213,6 +210,7 @@ def test_employee_count_by_country():
         },
     ]
 
+    # Create test employees
     for employee in employees:
         create_response = client.post(
             "/employees",
@@ -221,6 +219,7 @@ def test_employee_count_by_country():
 
         assert create_response.status_code == 201
 
+    # Fetch employee distribution by country
     response = client.get(
         "/salary-insights/employee-count-by-country"
     )
@@ -229,13 +228,15 @@ def test_employee_count_by_country():
 
     response_data = response.json()
 
+    # Validate employee counts
     assert response_data[country_1] >= 2
-
     assert response_data[country_2] >= 1
 
-def test_employee_count_by_job_title():
-    import uuid
 
+# Test employee count grouped by job title
+def test_employee_count_by_job_title():
+
+    # Generate unique job title for test isolation
     job_title = (
         f"backend-{uuid.uuid4().hex[:4]}"
     )
@@ -271,6 +272,7 @@ def test_employee_count_by_job_title():
         },
     ]
 
+    # Create test employees
     for employee in employees:
         create_response = client.post(
             "/employees",
@@ -279,6 +281,7 @@ def test_employee_count_by_job_title():
 
         assert create_response.status_code == 201
 
+    # Fetch employee distribution by job title
     response = client.get(
         "/salary-insights/employee-count-by-job-title"
     )
@@ -287,10 +290,12 @@ def test_employee_count_by_job_title():
 
     response_data = response.json()
 
+    # Validate employee count
     assert response_data[job_title.lower()] >= 2
 
+
+# Test employment status distribution analytics
 def test_employment_status_distribution():
-    import uuid
 
     employees = [
         {
@@ -323,6 +328,7 @@ def test_employment_status_distribution():
         },
     ]
 
+    # Create test employees
     for employee in employees:
         create_response = client.post(
             "/employees",
@@ -331,6 +337,7 @@ def test_employment_status_distribution():
 
         assert create_response.status_code == 201
 
+    # Fetch employment status distribution
     response = client.get(
         "/salary-insights/employment-status-distribution"
     )
@@ -339,12 +346,14 @@ def test_employment_status_distribution():
 
     response_data = response.json()
 
+    # Validate status distribution counts
     assert response_data["FULL_TIME"] >= 1
-
     assert response_data["CONTRACT"] >= 1
 
 
+# Test unique filter values endpoint
 def test_filter_values_returns_unique_countries():
+
     response = client.get(
         "/salary-insights/filter-values"
         "?field=country"
@@ -354,6 +363,7 @@ def test_filter_values_returns_unique_countries():
 
     response_data = response.json()
 
+    # Validate response structure
     assert isinstance(response_data, list)
 
     assert len(response_data) > 0
@@ -363,7 +373,10 @@ def test_filter_values_returns_unique_countries():
         for value in response_data
     )
 
+
+# Test invalid filter field validation
 def test_filter_values_rejects_invalid_field():
+
     response = client.get(
         "/salary-insights/filter-values"
         "?field=salary"
@@ -371,14 +384,16 @@ def test_filter_values_rejects_invalid_field():
 
     assert response.status_code == 400
 
+
+# Test case-insensitive salary insights filtering
 def test_salary_insights_are_case_insensitive():
-    import uuid
 
     email = (
         f"case-test-{uuid.uuid4().hex[:6]}"
         "@example.com"
     )
 
+    # Create employee with lowercase currency
     client.post(
         "/employees",
         json={
@@ -393,6 +408,7 @@ def test_salary_insights_are_case_insensitive():
         },
     )
 
+    # Fetch insights using uppercase country filter
     response = client.get(
         "/salary-insights?country=INDIA"
     )

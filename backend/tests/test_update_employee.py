@@ -1,19 +1,23 @@
+from decimal import Decimal
+import uuid
+
 from fastapi.testclient import TestClient
 
 from app.main import app
-from decimal import Decimal
 
 
+# Create test client instance
 client = TestClient(app)
 
 
+# Test successful employee salary update
 def test_update_employee_salary():
-    import uuid
 
+    # Generate unique email for test isolation
     email = f"rohit{uuid.uuid4().hex[:6]}@example.com"
+
     create_payload = {
         "full_name": "Rohit Sharma",
-        # "email": "rohit@example.com",
         "email": email,
         "job_title": "Backend Engineer",
         "country": "India",
@@ -23,6 +27,7 @@ def test_update_employee_salary():
         "date_of_joining": "2024-01-10",
     }
 
+    # Create employee record
     create_response = client.post(
         "/employees",
         json=create_payload,
@@ -30,8 +35,8 @@ def test_update_employee_salary():
 
     employee_id = create_response.json()["id"]
 
+    # Update employee salary
     update_payload = {
-        # "salary": 150000
         "salary": 190000
     }
 
@@ -44,12 +49,13 @@ def test_update_employee_salary():
 
     response_data = response.json()
 
-    # assert response_data["salary"] == 150000
-    # assert response_data["salary"] == "190000"
+    # Validate updated salary value
     assert Decimal(response_data["salary"]) == Decimal("190000")
 
 
+# Test updating non-existing employee
 def test_update_nonexistent_employee_returns_404():
+
     response = client.patch(
         "/employees/999999",
         json={
@@ -60,16 +66,15 @@ def test_update_nonexistent_employee_returns_404():
     assert response.status_code == 404
 
 
+# Test duplicate email validation during update
 def test_update_employee_with_duplicate_email_returns_400():
 
-    import uuid
-
+    # Generate unique emails for both employees
     email_1 = f"alice{uuid.uuid4().hex[:6]}@example.com"
     email_2 = f"bob{uuid.uuid4().hex[:6]}@example.com"
 
     employee_one = {
         "full_name": "Alice",
-        # "email": "alice@example.com",
         "email": email_1,
         "job_title": "Engineer",
         "country": "India",
@@ -81,7 +86,6 @@ def test_update_employee_with_duplicate_email_returns_400():
 
     employee_two = {
         "full_name": "Bob",
-        # "email": "bob@example.com",
         "email": email_2,
         "job_title": "Engineer",
         "country": "India",
@@ -91,11 +95,13 @@ def test_update_employee_with_duplicate_email_returns_400():
         "date_of_joining": "2024-01-01",
     }
 
+    # Create first employee
     first_response = client.post(
         "/employees",
         json=employee_one,
     )
 
+    # Create second employee
     second_response = client.post(
         "/employees",
         json=employee_two,
@@ -103,10 +109,10 @@ def test_update_employee_with_duplicate_email_returns_400():
 
     employee_id = second_response.json()["id"]
 
+    # Attempt updating with duplicate email
     response = client.patch(
         f"/employees/{employee_id}",
         json={
-            # "email": "alice@example.com"
             "email": email_1
         },
     )

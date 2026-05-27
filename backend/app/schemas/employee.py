@@ -1,10 +1,12 @@
 from datetime import date
-
-from pydantic import BaseModel
-from pydantic import EmailStr
-from pydantic import Field
-from pydantic import field_validator
 from decimal import Decimal
+
+from pydantic import (
+    BaseModel,
+    EmailStr,
+    Field,
+    field_validator,
+)
 
 from app.utils.normalization import (
     normalize_lowercase,
@@ -12,7 +14,9 @@ from app.utils.normalization import (
 )
 
 
+# Schema for employee creation request
 class EmployeeCreate(BaseModel):
+
     full_name: str = Field(
         min_length=1,
         max_length=255,
@@ -30,7 +34,7 @@ class EmployeeCreate(BaseModel):
         max_length=100,
     )
 
-    # salary: int = Field(gt=0)
+    # Employee salary amount
     salary: Decimal = Field(gt=0)
 
     currency: str = Field(
@@ -45,6 +49,7 @@ class EmployeeCreate(BaseModel):
 
     date_of_joining: date
 
+    # Normalize lowercase fields
     @field_validator(
         "country",
         "job_title",
@@ -55,8 +60,10 @@ class EmployeeCreate(BaseModel):
         cls,
         value: str,
     ) -> str:
+
         return normalize_lowercase(value)
 
+    # Normalize uppercase fields
     @field_validator(
         "currency",
         "employment_status",
@@ -67,8 +74,10 @@ class EmployeeCreate(BaseModel):
         cls,
         value: str,
     ) -> str:
+
         return normalize_uppercase(value)
 
+    # Normalize email field
     @field_validator(
         "email",
         mode="before",
@@ -78,8 +87,10 @@ class EmployeeCreate(BaseModel):
         cls,
         value: str,
     ) -> str:
+
         return normalize_lowercase(value)
 
+    # Swagger example payload
     model_config = {
         "json_schema_extra": {
             "example": {
@@ -111,7 +122,9 @@ class EmployeeCreate(BaseModel):
     }
 
 
+# Schema for employee update request
 class EmployeeUpdate(BaseModel):
+
     full_name: str | None = Field(
         default=None,
         min_length=1,
@@ -132,10 +145,7 @@ class EmployeeUpdate(BaseModel):
         max_length=100,
     )
 
-    # salary: int | None = Field(
-    #     default=None,
-    #     gt=0,
-    # )
+    # Optional employee salary update
     salary: Decimal | None = Field(
         default=None,
         gt=0,
@@ -155,6 +165,7 @@ class EmployeeUpdate(BaseModel):
 
     date_of_joining: date | None = None
 
+    # Normalize lowercase fields
     @field_validator(
         "country",
         "job_title",
@@ -165,8 +176,10 @@ class EmployeeUpdate(BaseModel):
         cls,
         value: str,
     ) -> str:
+
         return normalize_lowercase(value)
 
+    # Normalize uppercase fields
     @field_validator(
         "currency",
         "employment_status",
@@ -177,9 +190,10 @@ class EmployeeUpdate(BaseModel):
         cls,
         value: str,
     ) -> str:
-        # return value.strip().upper()
+
         return normalize_uppercase(value)
 
+    # Normalize email field
     @field_validator(
         "email",
         mode="before",
@@ -189,36 +203,49 @@ class EmployeeUpdate(BaseModel):
         cls,
         value: str,
     ) -> str:
+
         return normalize_lowercase(value)
 
+    # Swagger example payload
     model_config = {
         "json_schema_extra": {
             "example": {
                 "salary":
-                "3000000.00",
+                    "3000000.00",
 
                 "job_title":
-                "staff engineer",
+                    "staff engineer",
             }
         }
     }
 
 
+# Schema for employee response payload
 class EmployeeResponse(BaseModel):
+
     id: int
+
     full_name: str
+
     email: EmailStr
+
     job_title: str
+
     country: str
-    # salary: int
+
     salary: Decimal
+
     currency: str
+
     employment_status: str
+
     date_of_joining: date
 
     model_config = {
+        # Enable ORM model serialization
         "from_attributes": True,
 
+        # Swagger example response
         "json_schema_extra": {
             "example": {
                 "id": 1,

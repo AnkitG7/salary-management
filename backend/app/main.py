@@ -1,15 +1,14 @@
 from fastapi import FastAPI
-
-from app.api.employees import router as employee_router
-
-from app.api.salary_insights import router as salary_insights_router
-
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.metadata import (
-    router as metadata_router,
+from app.api.employees import router as employee_router
+from app.api.metadata import router as metadata_router
+from app.api.salary_insights import (
+    router as salary_insights_router,
 )
 
+
+# Create FastAPI application instance
 app = FastAPI(
     title="Salary Management API",
 
@@ -33,6 +32,8 @@ Built using:
 
     version="1.0.0",
 )
+
+# Configure CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -44,13 +45,7 @@ app.add_middleware(
 )
 
 
-# @app.get("/health")
-# def health_check():
-#     return {
-#         "status": "healthy"
-#     }
-
-
+# Health check endpoint
 @app.get(
     "/health",
     tags=["Health"]
@@ -60,15 +55,20 @@ def health_check():
         "status": "healthy"
     }
 
-app.include_router(metadata_router,
-                    tags=["Metadata"])
 
+# Register metadata routes
+app.include_router(
+    metadata_router,
+    tags=["Metadata"],
+)
 
+# Register employee routes
 app.include_router(
     employee_router,
     tags=["Employees"],
 )
 
+# Register salary insights routes
 app.include_router(
     salary_insights_router,
     tags=["Salary Insights"],

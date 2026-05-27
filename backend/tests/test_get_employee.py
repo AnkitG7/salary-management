@@ -5,12 +5,16 @@ from fastapi.testclient import (
 from app.main import app
 
 
+# Create test client instance
 client = TestClient(app)
 
 
+# Test fetching employee by ID
 def test_get_employee_by_id():
+
     import uuid
 
+    # Generate unique email for test isolation
     email = (
         f"get-employee-"
         f"{uuid.uuid4().hex[:6]}"
@@ -42,6 +46,7 @@ def test_get_employee_by_id():
             "2024-01-01",
     }
 
+    # Create employee record
     create_response = client.post(
         "/employees",
         json=create_payload,
@@ -51,6 +56,7 @@ def test_get_employee_by_id():
         create_response.json()["id"]
     )
 
+    # Fetch employee by ID
     response = client.get(
         f"/employees/{employee_id}"
     )
@@ -59,13 +65,16 @@ def test_get_employee_by_id():
 
     response_data = response.json()
 
+    # Validate returned employee ID
     assert (
         response_data["id"]
         == employee_id
     )
 
 
+# Test fetching non-existing employee
 def test_get_nonexistent_employee_returns_404():
+
     response = client.get(
         "/employees/999999"
     )

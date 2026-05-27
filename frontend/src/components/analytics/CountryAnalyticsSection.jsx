@@ -39,7 +39,6 @@ export default function CountryAnalyticsSection({
       style={{
         borderRadius: 32,
         marginBottom: 28,
-        // background: "#ffffff",
         background: token.colorBgContainer,
         // border: "1px solid rgba(226,232,240,0.8)",
         // border: "1px solid rgba(226,232,240,0.8)",

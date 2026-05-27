@@ -5,10 +5,14 @@ from fastapi.testclient import TestClient
 from app.main import app
 
 
+# Create test client instance
 client = TestClient(app)
 
 
+# Test successful employee deletion
 def test_delete_employee_returns_204():
+
+    # Generate unique email for test isolation
     email = (
         f"delete-test-{uuid.uuid4().hex[:6]}"
         "@example.com"
@@ -25,6 +29,7 @@ def test_delete_employee_returns_204():
         "date_of_joining": "2024-01-01",
     }
 
+    # Create employee record
     create_response = client.post(
         "/employees",
         json=create_payload,
@@ -36,6 +41,7 @@ def test_delete_employee_returns_204():
         create_response.json()["id"]
     )
 
+    # Delete employee record
     response = client.delete(
         f"/employees/{employee_id}"
     )
@@ -43,7 +49,10 @@ def test_delete_employee_returns_204():
     assert response.status_code == 204
 
 
+# Test deleted employee is inaccessible
 def test_deleted_employee_is_no_longer_returned():
+
+    # Generate unique email for test isolation
     email = (
         f"delete-verify-{uuid.uuid4().hex[:6]}"
         "@example.com"
@@ -60,6 +69,7 @@ def test_deleted_employee_is_no_longer_returned():
         "date_of_joining": "2024-01-01",
     }
 
+    # Create employee record
     create_response = client.post(
         "/employees",
         json=create_payload,
@@ -71,40 +81,14 @@ def test_deleted_employee_is_no_longer_returned():
         create_response.json()["id"]
     )
 
+    # Delete employee record
     delete_response = client.delete(
         f"/employees/{employee_id}"
     )
 
     assert delete_response.status_code == 204
 
-    # list_response = client.get(
-    #     "/employees"
-    # )
-
-    # assert list_response.status_code == 200
-
-    # employees = list_response.json()
-
-    # response_data = (
-    #     list_response.json()
-    # )
-
-
-    # employees = (
-    #     response_data["items"]
-    # )
-
-    # employee_ids = [
-    #     employee["id"]
-    #     for employee in employees
-    # ]
-
-    # employee_ids = [
-    #     employee["id"]
-    #     for employee in employees
-    # ]
-
-    # assert employee_id not in employee_ids
+    # Verify deleted employee cannot be fetched
     get_response = client.get(
         f"/employees/{employee_id}"
     )
@@ -115,7 +99,9 @@ def test_deleted_employee_is_no_longer_returned():
     )
 
 
+# Test deleting non-existing employee
 def test_delete_nonexistent_employee_returns_404():
+
     response = client.delete(
         "/employees/999999"
     )
